@@ -1,0 +1,20 @@
+# Motor de cobrança 24/7 — GitHub Actions é gratuito e não tem o limite
+# de 1 execução/dia do plano Hobby da Vercel.
+name: PubliProva — régua de cobrança
+
+on:
+  schedule:
+    - cron: '0 12 * * *'   # 12:00 UTC = 09:00 em Brasília
+  workflow_dispatch:
+
+jobs:
+  nudges:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disparar a régua
+        run: |
+          code=$(curl -sS -o /tmp/out.json -w '%{http_code}' \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.APP_URL }}/api/cron/nudges")
+          cat /tmp/out.json
+          test "$code" = "200"
