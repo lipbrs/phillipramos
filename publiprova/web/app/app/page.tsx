@@ -1,8 +1,11 @@
 import Link from 'next/link';
-import { listCampaigns, creatorsWithState, usingSupabase } from '@/lib/store';
+import { redirect } from 'next/navigation';
+import { listCampaignsByAgency, creatorsWithState, usingSupabase } from '@/lib/store';
 import { totals } from '@/lib/metrics';
 import { formatBr } from '@/lib/parse';
-import { createCampaignAction } from '../actions';
+import { currentAgency } from '@/lib/auth';
+import { PLANS, planUsage } from '@/lib/plans';
+import { createCampaignAction, logoutAction } from '../actions';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,29 +13,56 @@ function iso(daysFromNow: number) {
   return new Date(Date.now() + daysFromNow * 86_400_000).toISOString().slice(0, 10);
 }
 
-export default async function Dashboard() {
-  const campaigns = await listCampaigns();
-  const rows = await Promise.all(
-    campaigns.map(async (c) => ({ campaign: c, t: totals(await creatorsWithState(c.id)) })),
-  );
+export default async function Dashboard({
+  searchParams,
+}: {
+  searchParams: Promise<{ erro?: string }>;
+}) {
+  const agency = await currentAgency();
+  if (!agency) redirect('/login');
+
+  const { erro } = await searchParams;
+  const campaigns = await listCampaignsByAgency(agency.id);
+  const [rows, usage] = await Promise.all([
+    Promise.all(campaigns.map(async (c) => ({ campaign: c, t: totals(await creatorsWithState(c.id)) }))),
+    planUsage(agency.id, agency.plan),
+  ]);
+  const plan = PLANS[agency.plan] ?? PLANS.free;
 
   return (
     <>
       <header className="topbar">
         <div className="wrap">
           <Link href="/" className="logo">Publi<span>Prova</span></Link>
-          <span className="badge badge-brand">{usingSupabase ? 'Supabase' : 'modo demonstração'}</span>
+          <div className="row">
+            <span className="badge badge-brand">
+              {plan.label} · {usage.creatorsThisMonth}/{usage.creatorsPerMonth} creators no mês
+            </span>
+            {!usingSupabase && <span className="badge badge-warn">demonstração</span>}
+            <form action={logoutAction}>
+              <button className="btn btn-ghost btn-sm" type="submit">Sair</button>
+            </form>
+          </div>
         </div>
       </header>
 
       <main className="wrap section">
-        <h1 style={{ fontSize: '1.9rem' }}>Suas campanhas</h1>
+        <div className="spread" style={{ marginBottom: 8 }}>
+          <h1 style={{ fontSize: '1.9rem', margin: 0 }}>Suas campanhas</h1>
+          <span className="small muted">{agency.email}</span>
+        </div>
+
+        {erro && (
+          <div className="card" style={{ borderColor: 'var(--late)', margin: '16px 0' }}>
+            <p className="small" style={{ margin: 0, color: 'var(--late)' }}>{erro}</p>
+          </div>
+        )}
 
         {rows.length === 0 && (
           <p className="muted">Nenhuma campanha ainda. Crie a primeira aqui embaixo.</p>
         )}
 
-        <div className="stack" style={{ marginBottom: 48 }}>
+        <div className="stack" style={{ margin: '16px 0 48px' }}>
           {rows.map(({ campaign, t }) => (
             <Link key={campaign.id} href={`/app/c/${campaign.id}`} className="card spread" style={{ textDecoration: 'none' }}>
               <div>
@@ -70,7 +100,7 @@ export default async function Dashboard() {
               </div>
               <div className="field">
                 <label htmlFor="agencyName">Sua agência</label>
-                <input id="agencyName" name="agencyName" defaultValue="Minha agência" />
+                <input id="agencyName" name="agencyName" defaultValue={agency.name} />
               </div>
             </div>
 
@@ -85,7 +115,7 @@ export default async function Dashboard() {
               </div>
               <div className="field">
                 <label htmlFor="agencyColor">Cor da marca no relatório</label>
-                <input id="agencyColor" name="agencyColor" type="color" defaultValue="#4f46e5" style={{ padding: 4, height: 42 }} />
+                <input id="agencyColor" name="agencyColor" type="color" defaultValue={agency.color} style={{ padding: 4, height: 42 }} />
               </div>
             </div>
 
@@ -106,6 +136,11 @@ export default async function Dashboard() {
             </div>
 
             <button className="btn" type="submit">Criar campanha e gerar os links</button>
+            <p className="tiny muted" style={{ marginTop: 10 }}>
+              Plano {plan.label}: até {usage.creatorsPerMonth} creators/mês
+              {Number.isFinite(usage.activeCampaignsLimit) ? ` e ${usage.activeCampaignsLimit} campanha(s) ativa(s)` : ''}.
+              O limite vale só na criação — campanha em andamento nunca é travada.
+            </p>
           </form>
         </section>
       </main>

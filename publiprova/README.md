@@ -30,6 +30,7 @@ Sem nenhuma configuração o app sobe em **modo demonstração** (dados em memó
 exemplo: 4 creators, 2 que entregaram e 2 pendentes.
 
 - `/` — landing
+- `/login` — entrar (no modo demonstração, um clique)
 - `/app` — painel da agência
 - `/app/c/demo` — campanha com semáforo, links mágicos e cobrança
 - `/r/verao-hidrata-demo` — o relatório que o cliente recebe
@@ -44,9 +45,11 @@ Fluxo completo verificado em navegador real: coleta pelo link mágico, atualiza�
 consolidação no relatório, cálculo de CPM e régua de cobrança idempotente que para de cobrar quem
 já entregou.
 
-**Falta antes de abrir cadastro público:** autenticação multi-tenant (hoje o painel é protegido por
-código de acesso), upload do print no Storage, limites de plano e cobrança recorrente. Lista
-priorizada em [03 §5](docs/03-ideia-para-software.md#5-o-que-falta-antes-de-abrir-cadastro-público).
+**Já implementado além do fluxo básico:** login por link mágico multi-tenant (cada agência só vê as
+próprias campanhas), print original persistido e servido como registro auditável, e limites de plano
+aplicados na criação — nunca no meio de uma campanha. **Falta:** cobrança recorrente (Stripe/Asaas)
+e os textos jurídicos de LGPD. Detalhes em
+[03 §5](docs/03-ideia-para-software.md#5-o-que-já-está-pronto-para-cadastro-público--e-o-que-falta).
 
 ## Teste de ponta a ponta
 

@@ -183,23 +183,30 @@ pular.
 
 ---
 
-## 5. O que falta antes de abrir cadastro público
+## 5. O que já está pronto para cadastro público — e o que falta
 
-Sendo honesto sobre o estado do código — ele fecha campanha de verdade, mas não é multi-tenant:
+Itens que estavam nesta lista e **já foram implementados**:
 
-1. **Autenticação.** O painel hoje é protegido por um código de acesso (`AGENCY_ACCESS_CODE`), o que
-   basta para atender os primeiros clientes fundadores no modo concierge. Trocar por Supabase Auth
-   (magic link) e passar a filtrar campanhas por `agency_id` — a coluna já existe no schema, com as
-   policies de RLS escritas.
-2. **Upload do print no Storage.** Hoje a imagem é lida pela IA e descartada; o campo
-   `screenshot_url` e o bucket privado `prints` já estão prontos para receber o arquivo. Necessário
-   antes de prometer "prova auditável".
-3. **Cobrança em cartão/PIX.** Stripe ou Asaas com webhook atualizando `agencies.plan`. Só depois de
-   ter os 3 clientes pré-vendidos — antes disso, cobrar por PIX manual é mais rápido.
-4. **Limite de plano.** Contar creators por mês e bloquear criação acima do limite (nunca no meio de
-   uma campanha em andamento).
+- ✅ **Autenticação multi-tenant.** Login por link mágico (sem senha), com sessão de 30 dias.
+  Cada agência só enxerga as próprias campanhas — campanha alheia devolve 404. As tabelas
+  `agencies`, `login_tokens` e `sessions` estão no schema; no modo demonstração o link de
+  acesso aparece na própria tela de login.
+- ✅ **Print persistido.** A imagem original sobe junto com o formulário do creator (até 6 MB) e
+  fica guardada — bucket privado `prints` servido por URL assinada no Supabase, memória no modo
+  demonstração. O painel, o relatório e a confirmação do creator linkam o arquivo. É o registro
+  auditável da entrega.
+- ✅ **Limites de plano.** Creators/mês e campanhas ativas checados **na criação**, com mensagem
+  clara no painel — nunca no meio de uma campanha em andamento.
 
-Ordem recomendada: 1 → 2 → 4 → 3.
+O que ainda falta:
+
+1. **Cobrança em cartão/PIX.** Stripe ou Asaas com webhook atualizando `agencies.plan`. Só depois de
+   ter os 3 clientes pré-vendidos — antes disso, cobrar por PIX manual e mudar o plano no banco é
+   mais rápido (`update agencies set plan = 'agencia' where email = ...`).
+2. **Política de privacidade e contrato de tratamento (LGPD).** Texto jurídico, não código — a
+   retenção automática e o bucket privado já existem.
+3. **Rate limiting no pedido de login** (hoje qualquer e-mail pode receber links à vontade — inócuo
+   para segurança, mas gasta cota do Resend).
 
 ---
 

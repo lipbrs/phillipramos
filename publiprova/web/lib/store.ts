@@ -1,5 +1,5 @@
 import type {
-  Campaign, Creator, CreatorWithState, Metrics, NudgeLog, Submission,
+  Agency, Campaign, Creator, CreatorWithState, Metrics, NudgeLog, PlanId, Submission,
 } from './types';
 import { slugify, token } from './parse';
 
@@ -39,27 +39,45 @@ export function stateOf(
 /* ----------------------------- memória ---------------------------- */
 
 type Mem = {
+  agencies: Agency[];
   campaigns: Campaign[];
   creators: Creator[];
   submissions: Submission[];
   nudges: NudgeLog[];
+  sessions: { token: string; agencyId: string; expiresAt: number }[];
+  loginTokens: { token: string; email: string; expiresAt: number; usedAt: number | null }[];
+  prints: Map<string, { data: Buffer; type: string }>;
 };
 
 const g = globalThis as unknown as { __publiprova?: Mem };
 
 function mem(): Mem {
   if (!g.__publiprova) {
-    g.__publiprova = { campaigns: [], creators: [], submissions: [], nudges: [] };
+    g.__publiprova = {
+      agencies: [], campaigns: [], creators: [], submissions: [], nudges: [],
+      sessions: [], loginTokens: [], prints: new Map(),
+    };
     seed(g.__publiprova);
   }
   return g.__publiprova;
 }
 
+export const DEMO_AGENCY_ID = 'ag-demo';
+
 function seed(db: Mem) {
   const id = 'demo';
+  db.agencies.push({
+    id: DEMO_AGENCY_ID,
+    email: 'demo@publiprova.local',
+    name: 'Agência Exemplo',
+    color: '#4f46e5',
+    plan: 'agencia',
+    createdAt: new Date().toISOString(),
+  });
   const day = (d: number) => new Date(Date.now() + d * 86_400_000).toISOString().slice(0, 10);
   db.campaigns.push({
     id,
+    agencyId: DEMO_AGENCY_ID,
     slug: 'verao-hidrata-demo',
     agencyName: 'Agência Exemplo',
     agencyColor: '#4f46e5',
@@ -117,7 +135,7 @@ async function sb() {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fromRowCampaign = (r: any): Campaign => ({
-  id: r.id, slug: r.slug, agencyName: r.agency_name, agencyColor: r.agency_color,
+  id: r.id, agencyId: r.agency_id, slug: r.slug, agencyName: r.agency_name, agencyColor: r.agency_color,
   client: r.client, brand: r.brand, briefing: r.briefing ?? '',
   postDeadline: r.post_deadline, proofDeadline: r.proof_deadline, createdAt: r.created_at,
 });
@@ -125,6 +143,10 @@ const fromRowCreator = (r: any): Creator => ({
   id: r.id, campaignId: r.campaign_id, name: r.name, handle: r.handle ?? '',
   email: r.email ?? '', whatsapp: r.whatsapp ?? '', deliverables: r.deliverables ?? '',
   fee: Number(r.fee ?? 0), token: r.token, createdAt: r.created_at,
+});
+const fromRowAgency = (r: any): Agency => ({
+  id: r.id, email: r.email, name: r.name, color: r.color ?? '#4f46e5',
+  plan: (r.plan ?? 'free') as PlanId, createdAt: r.created_at,
 });
 const fromRowSubmission = (r: any): Submission => ({
   id: r.id, creatorId: r.creator_id, postUrl: r.post_url, screenshotUrl: r.screenshot_url,
@@ -174,7 +196,7 @@ export async function createCampaign(input: NewCampaign, creators: NewCreator[])
   }
   const c = await sb();
   const { data, error } = await c.from('campaigns').insert({
-    slug, agency_name: input.agencyName, agency_color: input.agencyColor,
+    slug, agency_id: input.agencyId, agency_name: input.agencyName, agency_color: input.agencyColor,
     client: input.client, brand: input.brand, briefing: input.briefing,
     post_deadline: input.postDeadline, proof_deadline: input.proofDeadline,
   }).select('*').single();
@@ -282,4 +304,160 @@ export async function logNudge(creatorId: string, kind: string): Promise<void> {
   }
   const c = await sb();
   await c.from('nudges').insert({ creator_id: creatorId, kind });
+}
+
+/* ---------------------- agências e sessões ------------------------ */
+
+const SESSION_TTL = 30 * 86_400_000;     // 30 dias
+const LOGIN_TOKEN_TTL = 15 * 60_000;     // 15 minutos
+
+export async function getAgency(id: string): Promise<Agency | null> {
+  if (!usingSupabase) return mem().agencies.find((a) => a.id === id) ?? null;
+  const c = await sb();
+  const { data } = await c.from('agencies').select('*').eq('id', id).maybeSingle();
+  return data ? fromRowAgency(data) : null;
+}
+
+export async function getOrCreateAgencyByEmail(email: string): Promise<Agency> {
+  const normalized = email.trim().toLowerCase();
+  if (!usingSupabase) {
+    const db = mem();
+    const found = db.agencies.find((a) => a.email === normalized);
+    if (found) return found;
+    const agency: Agency = {
+      id: token(10), email: normalized, name: 'Minha agência', color: '#4f46e5',
+      plan: 'free', createdAt: new Date().toISOString(),
+    };
+    db.agencies.push(agency);
+    return agency;
+  }
+  const c = await sb();
+  const { data } = await c.from('agencies').select('*').eq('email', normalized).maybeSingle();
+  if (data) return fromRowAgency(data);
+  const { data: created, error } = await c.from('agencies')
+    .insert({ email: normalized, name: 'Minha agência' }).select('*').single();
+  if (error) throw new Error(error.message);
+  return fromRowAgency(created);
+}
+
+export async function createLoginToken(email: string): Promise<string> {
+  const tk = token(28);
+  const expiresAt = Date.now() + LOGIN_TOKEN_TTL;
+  if (!usingSupabase) {
+    mem().loginTokens.push({ token: tk, email: email.trim().toLowerCase(), expiresAt, usedAt: null });
+    return tk;
+  }
+  const c = await sb();
+  const { error } = await c.from('login_tokens').insert({
+    email: email.trim().toLowerCase(), token: tk, expires_at: new Date(expiresAt).toISOString(),
+  });
+  if (error) throw new Error(error.message);
+  return tk;
+}
+
+/** Valida, marca como usado e devolve o e-mail — ou null se inválido/expirado. */
+export async function consumeLoginToken(tk: string): Promise<string | null> {
+  if (!usingSupabase) {
+    const row = mem().loginTokens.find((t) => t.token === tk);
+    if (!row || row.usedAt || row.expiresAt < Date.now()) return null;
+    row.usedAt = Date.now();
+    return row.email;
+  }
+  const c = await sb();
+  const { data } = await c.from('login_tokens').select('*').eq('token', tk).is('used_at', null).maybeSingle();
+  if (!data || Date.parse(data.expires_at) < Date.now()) return null;
+  const { error } = await c.from('login_tokens').update({ used_at: new Date().toISOString() }).eq('id', data.id);
+  if (error) throw new Error(error.message);
+  return data.email;
+}
+
+export async function createSession(agencyId: string): Promise<string> {
+  const tk = token(32);
+  const expiresAt = Date.now() + SESSION_TTL;
+  if (!usingSupabase) {
+    mem().sessions.push({ token: tk, agencyId, expiresAt });
+    return tk;
+  }
+  const c = await sb();
+  const { error } = await c.from('sessions').insert({
+    token: tk, agency_id: agencyId, expires_at: new Date(expiresAt).toISOString(),
+  });
+  if (error) throw new Error(error.message);
+  return tk;
+}
+
+export async function getSessionAgency(tk: string): Promise<Agency | null> {
+  if (!tk) return null;
+  if (!usingSupabase) {
+    const row = mem().sessions.find((s) => s.token === tk && s.expiresAt > Date.now());
+    return row ? getAgency(row.agencyId) : null;
+  }
+  const c = await sb();
+  const { data } = await c.from('sessions').select('agency_id, expires_at').eq('token', tk).maybeSingle();
+  if (!data || Date.parse(data.expires_at) < Date.now()) return null;
+  return getAgency(data.agency_id);
+}
+
+export async function deleteSession(tk: string): Promise<void> {
+  if (!usingSupabase) {
+    const db = mem();
+    db.sessions = db.sessions.filter((s) => s.token !== tk);
+    return;
+  }
+  const c = await sb();
+  await c.from('sessions').delete().eq('token', tk);
+}
+
+export async function listCampaignsByAgency(agencyId: string): Promise<Campaign[]> {
+  return (await listCampaigns()).filter((c) => c.agencyId === agencyId);
+}
+
+/* ----------------------- uso e limites de plano ------------------- */
+
+export async function countActiveCampaigns(agencyId: string): Promise<number> {
+  const now = today();
+  return (await listCampaignsByAgency(agencyId)).filter((c) => c.proofDeadline >= now).length;
+}
+
+/** Creators criados no mês corrente — a métrica cobrada dos planos. */
+export async function countCreatorsThisMonth(agencyId: string): Promise<number> {
+  const monthStart = today().slice(0, 7) + '-01';
+  if (!usingSupabase) {
+    const ids = new Set(mem().campaigns.filter((c) => c.agencyId === agencyId).map((c) => c.id));
+    return mem().creators.filter((cr) => ids.has(cr.campaignId) && cr.createdAt.slice(0, 10) >= monthStart).length;
+  }
+  const c = await sb();
+  const { count, error } = await c.from('creators')
+    .select('id, campaigns!inner(agency_id)', { count: 'exact', head: true })
+    .eq('campaigns.agency_id', agencyId)
+    .gte('created_at', monthStart);
+  if (error) throw new Error(error.message);
+  return count ?? 0;
+}
+
+/* --------------------------- prints ------------------------------- */
+
+export type StoredPrint =
+  | { kind: 'data'; data: Buffer; type: string }
+  | { kind: 'url'; url: string };
+
+export async function savePrint(id: string, data: Buffer, type: string): Promise<void> {
+  if (!usingSupabase) {
+    mem().prints.set(id, { data, type });
+    return;
+  }
+  const c = await sb();
+  const { error } = await c.storage.from('prints').upload(id, data, { contentType: type, upsert: true });
+  if (error) throw new Error(error.message);
+}
+
+export async function getPrint(id: string): Promise<StoredPrint | null> {
+  if (!usingSupabase) {
+    const row = mem().prints.get(id);
+    return row ? { kind: 'data', data: row.data, type: row.type } : null;
+  }
+  const c = await sb();
+  const { data, error } = await c.storage.from('prints').createSignedUrl(id, 300);
+  if (error || !data?.signedUrl) return null;
+  return { kind: 'url', url: data.signedUrl };
 }

@@ -5,13 +5,32 @@ create extension if not exists "pgcrypto";
 
 create table if not exists agencies (
   id           uuid primary key default gen_random_uuid(),
-  owner_id     uuid references auth.users(id) on delete cascade,
+  email        text not null unique,
   name         text not null,
   color        text not null default '#4f46e5',
   logo_url     text,
   plan         text not null default 'free',
   created_at   timestamptz not null default now()
 );
+
+-- Login por link mágico (sem senha): token de uso único com validade curta.
+create table if not exists login_tokens (
+  id         uuid primary key default gen_random_uuid(),
+  email      text not null,
+  token      text not null unique,
+  expires_at timestamptz not null,
+  used_at    timestamptz,
+  created_at timestamptz not null default now()
+);
+create index if not exists login_tokens_email_idx on login_tokens(email);
+
+create table if not exists sessions (
+  token      text primary key,
+  agency_id  uuid not null references agencies(id) on delete cascade,
+  expires_at timestamptz not null,
+  created_at timestamptz not null default now()
+);
+create index if not exists sessions_agency_idx on sessions(agency_id);
 
 create table if not exists campaigns (
   id             uuid primary key default gen_random_uuid(),
@@ -70,29 +89,14 @@ alter table agencies    enable row level security;
 alter table campaigns   enable row level security;
 alter table creators    enable row level security;
 alter table submissions enable row level security;
-alter table nudges      enable row level security;
+alter table nudges       enable row level security;
+alter table login_tokens enable row level security;
+alter table sessions     enable row level security;
 
-drop policy if exists "dono lê a própria agência" on agencies;
-create policy "dono lê a própria agência" on agencies
-  for all using (owner_id = auth.uid()) with check (owner_id = auth.uid());
-
-drop policy if exists "dono lê as próprias campanhas" on campaigns;
-create policy "dono lê as próprias campanhas" on campaigns
-  for all using (agency_id in (select id from agencies where owner_id = auth.uid()));
-
-drop policy if exists "dono lê os próprios creators" on creators;
-create policy "dono lê os próprios creators" on creators
-  for all using (campaign_id in (
-    select c.id from campaigns c join agencies a on a.id = c.agency_id
-    where a.owner_id = auth.uid()));
-
-drop policy if exists "dono lê as próprias submissões" on submissions;
-create policy "dono lê as próprias submissões" on submissions
-  for all using (creator_id in (
-    select cr.id from creators cr
-    join campaigns c on c.id = cr.campaign_id
-    join agencies a on a.id = c.agency_id
-    where a.owner_id = auth.uid()));
+-- Nenhuma política pública: todo acesso passa pelo servidor da aplicação
+-- (service_role), que escopa cada consulta pela agência da sessão. A anon
+-- key não lê nada. Se um dia houver acesso client-side, criar políticas
+-- explícitas aqui — nunca desligar o RLS.
 
 -- Storage dos prints: bucket privado, servido por URL assinada.
 insert into storage.buckets (id, name, public)
@@ -104,4 +108,6 @@ on conflict (id) do nothing;
 --   select cron.schedule('retencao-publiprova', '0 4 * * *', $$select purge_old_campaigns()$$);
 create or replace function purge_old_campaigns() returns void language sql as $$
   delete from campaigns where proof_deadline < current_date - interval '180 days';
+  delete from login_tokens where expires_at < now() - interval '1 day';
+  delete from sessions where expires_at < now();
 $$;

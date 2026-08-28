@@ -44,6 +44,11 @@ export default async function CreatorPage({
                 <span className="badge badge-brand" key={k}>{k}: {Number(v).toLocaleString('pt-BR')}</span>
               ))}
             </div>
+            {submission!.screenshotUrl && (
+              <p className="tiny" style={{ margin: '10px 0 0' }}>
+                <a href={submission!.screenshotUrl} target="_blank" rel="noreferrer">ver o print enviado ↗</a>
+              </p>
+            )}
           </div>
           {ok === '1' && <p className="small muted">Pode fechar esta página. Obrigado! 🙌</p>}
         </div>

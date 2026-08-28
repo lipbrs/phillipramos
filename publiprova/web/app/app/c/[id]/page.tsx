@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { creatorsWithState, getCampaign } from '@/lib/store';
+import { currentAgency } from '@/lib/auth';
 import { brl, num, pct, totals, engagement, reachBase } from '@/lib/metrics';
 import { formatBr, whatsappNudge } from '@/lib/parse';
 import { SCHEDULE } from '@/lib/nudges';
@@ -21,8 +22,9 @@ const badgeClass = { comprovado: 'badge-ok', pendente: 'badge-warn', atrasado: '
 
 export default async function CampaignPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const campaign = await getCampaign(id);
-  if (!campaign) notFound();
+  const [agency, campaign] = await Promise.all([currentAgency(), getCampaign(id)]);
+  if (!agency) notFound();
+  if (!campaign || campaign.agencyId !== agency.id) notFound();
 
   const creators = await creatorsWithState(id);
   const t = totals(creators);
@@ -96,7 +98,14 @@ export default async function CampaignPage({ params }: { params: Promise<{ id: s
                         <span className={`badge ${badgeClass[c.status]}`}>{c.status}</span>
                         {c.daysLate > 0 && <div className="tiny muted">{c.daysLate}d de atraso</div>}
                       </td>
-                      <td className="num">{m ? num(reachBase(m)) : '—'}</td>
+                      <td className="num">
+                        {m ? num(reachBase(m)) : '—'}
+                        {c.submission?.screenshotUrl && (
+                          <div className="tiny">
+                            <a href={c.submission.screenshotUrl} target="_blank" rel="noreferrer">print ↗</a>
+                          </div>
+                        )}
+                      </td>
                       <td className="num">{m ? num(engagement(m)) : '—'}</td>
                       <td className="num">{brl(c.fee)}</td>
                       <td>

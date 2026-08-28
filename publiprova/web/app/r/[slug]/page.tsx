@@ -89,6 +89,9 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               </table>
               <p className="tiny" style={{ margin: '10px 0 0', wordBreak: 'break-all' }}>
                 <a href={c.submission!.postUrl} target="_blank" rel="noreferrer">ver post publicado ↗</a>
+                {c.submission!.screenshotUrl && (
+                  <> · <a href={c.submission!.screenshotUrl} target="_blank" rel="noreferrer">print dos insights ↗</a></>
+                )}
               </p>
             </article>
           );

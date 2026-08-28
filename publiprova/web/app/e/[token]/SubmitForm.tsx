@@ -63,9 +63,11 @@ export default function SubmitForm({ token }: { token: string }) {
 
       <div className="field">
         <label htmlFor="screenshot">2. Print dos insights</label>
-        <input id="screenshot" type="file" accept="image/*" onChange={onFile} />
+        <input id="screenshot" name="screenshotFile" type="file" accept="image/png,image/jpeg,image/webp" onChange={onFile} />
         <p className="tiny muted" style={{ margin: '6px 0 0' }}>
-          {reading ? 'Lendo o print…' : 'A imagem é lida no envio e os números aparecem preenchidos abaixo.'}
+          {reading
+            ? 'Lendo o print…'
+            : 'Os números aparecem preenchidos abaixo, e o print original fica guardado como registro da entrega.'}
         </p>
       </div>
 

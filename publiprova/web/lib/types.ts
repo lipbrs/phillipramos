@@ -11,8 +11,20 @@ export type Metrics = {
 
 export type CreatorStatus = 'pendente' | 'comprovado' | 'atrasado';
 
+export type PlanId = 'free' | 'solo' | 'agencia' | 'studio';
+
+export type Agency = {
+  id: string;
+  email: string;
+  name: string;
+  color: string;
+  plan: PlanId;
+  createdAt: string;
+};
+
 export type Campaign = {
   id: string;
+  agencyId: string;
   slug: string;
   agencyName: string;
   agencyColor: string;
