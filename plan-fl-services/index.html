@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PLan FL. Services — Making your plans easier. Personalized trip and itinerary planning for your Florida experience.">
+    <title>PLan FL. Services — Making your plans easier</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --panel: #141414;
+            --panel-2: #1c1c1c;
+            --text: #f2f2f2;
+            --muted: #b5b5b5;
+            --green: #a8c24a;
+            --teal: #3fae9c;
+            --blue: #4f86d8;
+            --gradient: linear-gradient(120deg, #a8c24a 0%, #3fae9c 45%, #4f86d8 100%);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+        }
+        a { color: var(--teal); }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 12px 24px;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid #222;
+        }
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            white-space: nowrap;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .nav-links a:hover { color: var(--teal); }
+        .lang-toggle {
+            background: none;
+            border: 1px solid #333;
+            border-radius: 20px;
+            color: var(--text);
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .lang-toggle:hover { border-color: var(--teal); }
+
+        /* Hero */
+        header.hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 64px 24px 80px;
+            background:
+                radial-gradient(ellipse at 20% 10%, rgba(168, 194, 74, 0.10), transparent 50%),
+                radial-gradient(ellipse at 80% 30%, rgba(79, 134, 216, 0.12), transparent 55%),
+                var(--bg);
+        }
+        .hero img {
+            width: min(520px, 90vw);
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(63, 174, 156, 0.15);
+        }
+        .hero h1 {
+            margin-top: 36px;
+            font-size: clamp(1.6rem, 4vw, 2.6rem);
+            font-weight: 700;
+        }
+        .hero p.tagline {
+            margin-top: 12px;
+            font-size: clamp(1rem, 2.2vw, 1.25rem);
+            color: var(--muted);
+            max-width: 640px;
+        }
+        .cta {
+            display: inline-block;
+            margin-top: 32px;
+            padding: 14px 36px;
+            border-radius: 30px;
+            background: var(--gradient);
+            color: #0a0a0a;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1.05rem;
+        }
+        .cta:hover { filter: brightness(1.1); }
+
+        /* Sections */
+        section {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 72px 24px;
+        }
+        section h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 8px;
+        }
+        .underline {
+            width: 72px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--gradient);
+            margin-bottom: 28px;
+        }
+        section p.lead {
+            color: var(--muted);
+            max-width: 760px;
+        }
+
+        /* Services grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+        .card {
+            background: var(--panel);
+            border: 1px solid #232323;
+            border-radius: 12px;
+            padding: 28px 24px;
+        }
+        .card:hover { border-color: var(--teal); }
+        .card .icon { font-size: 1.9rem; }
+        .card h3 { margin: 14px 0 8px; font-size: 1.1rem; }
+        .card p { color: var(--muted); font-size: 0.95rem; }
+
+        /* Steps */
+        .steps {
+            counter-reset: step;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+        .step {
+            background: var(--panel-2);
+            border-radius: 12px;
+            padding: 26px 22px;
+            position: relative;
+        }
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: #0a0a0a;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+        .step h3 { font-size: 1.05rem; margin-bottom: 6px; }
+        .step p { color: var(--muted); font-size: 0.95rem; }
+
+        /* Contact */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-width: 560px;
+            margin-top: 28px;
+        }
+        input, textarea {
+            background: var(--panel);
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: var(--text);
+            padding: 13px 16px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--teal);
+        }
+        textarea { min-height: 130px; resize: vertical; }
+        button[type="submit"] {
+            align-self: flex-start;
+            padding: 13px 40px;
+            border: none;
+            border-radius: 30px;
+            background: var(--gradient);
+            color: #0a0a0a;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover { filter: brightness(1.1); }
+        .form-note { color: var(--muted); font-size: 0.85rem; }
+
+        footer {
+            border-top: 1px solid #222;
+            padding: 28px 24px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        footer a { color: var(--muted); }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-brand">PLan FL. Services</span>
+        <ul class="nav-links">
+            <li><a href="#about" data-i18n="nav_about">About</a></li>
+            <li><a href="#services" data-i18n="nav_services">Services</a></li>
+            <li><a href="#how" data-i18n="nav_how">How it works</a></li>
+            <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+            <li><button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">PT-BR</button></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <img src="assets/logo.jpg" alt="PLan FL. Services logo — watercolor map of Florida on a black background with the tagline 'Making your plans easier'">
+        <h1 data-i18n="hero_title">Making your plans easier</h1>
+        <p class="tagline" data-i18n="hero_sub">Personalized planning for your Florida experience — so you spend your time enjoying it, not organizing it.</p>
+        <a class="cta" href="#contact" data-i18n="hero_cta">Start planning</a>
+    </header>
+
+    <section id="about">
+        <h2 data-i18n="about_title">About us</h2>
+        <div class="underline"></div>
+        <p class="lead" data-i18n="about_text">
+            PLan FL. Services helps you make the most of Florida. Whether you are visiting for the first time,
+            returning for another vacation, or settling in, planning everything on your own takes hours of research.
+            We do that work for you — building plans around your goals, your dates, and your budget, with the local
+            knowledge that makes the difference.
+        </p>
+    </section>
+
+    <section id="services">
+        <h2 data-i18n="services_title">Services</h2>
+        <div class="underline"></div>
+        <p class="lead" data-i18n="services_lead">Everything you need to plan your time in Florida, in one place.</p>
+        <div class="grid">
+            <div class="card">
+                <div class="icon">🗺️</div>
+                <h3 data-i18n="svc1_title">Custom itineraries</h3>
+                <p data-i18n="svc1_text">Day-by-day plans built around your group, pace, and interests — theme parks, beaches, nature, shopping, and more.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🎢</div>
+                <h3 data-i18n="svc2_title">Theme park planning</h3>
+                <p data-i18n="svc2_text">Guidance on tickets, park order, reservations, and strategies to skip the longest lines at Orlando's parks.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🏨</div>
+                <h3 data-i18n="svc3_title">Accommodation &amp; transport</h3>
+                <p data-i18n="svc3_text">Recommendations for hotels and vacation homes, plus car rental and airport transfer options that fit your budget.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🍽️</div>
+                <h3 data-i18n="svc4_title">Dining &amp; experiences</h3>
+                <p data-i18n="svc4_text">Restaurant suggestions and reservations, tours, and local experiences beyond the usual tourist stops.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🧳</div>
+                <h3 data-i18n="svc5_title">Trip support</h3>
+                <p data-i18n="svc5_text">Checklists, tips on what to pack and buy, and support before and during your trip when plans change.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🤝</div>
+                <h3 data-i18n="svc6_title">Personalized assistance</h3>
+                <p data-i18n="svc6_text">Have a different plan in mind? Tell us what you need in Florida and we will make it easier.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="how">
+        <h2 data-i18n="how_title">How it works</h2>
+        <div class="underline"></div>
+        <div class="steps">
+            <div class="step">
+                <h3 data-i18n="step1_title">Tell us your plans</h3>
+                <p data-i18n="step1_text">Share your dates, group, budget, and what you want out of your time in Florida.</p>
+            </div>
+            <div class="step">
+                <h3 data-i18n="step2_title">We build your plan</h3>
+                <p data-i18n="step2_text">We research and assemble a personalized plan with clear options and honest recommendations.</p>
+            </div>
+            <div class="step">
+                <h3 data-i18n="step3_title">Review and adjust</h3>
+                <p data-i18n="step3_text">You review everything and we fine-tune it together until it fits you perfectly.</p>
+            </div>
+            <div class="step">
+                <h3 data-i18n="step4_title">Enjoy Florida</h3>
+                <p data-i18n="step4_text">Travel with everything organized — and with support if anything changes along the way.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 data-i18n="contact_title">Contact us</h2>
+        <div class="underline"></div>
+        <p class="lead" data-i18n="contact_lead">Tell us about your plans and we will get back to you.</p>
+        <form action="#" method="post" onsubmit="return false;">
+            <input type="text" name="name" data-i18n-placeholder="form_name" placeholder="Your name" required>
+            <input type="email" name="email" data-i18n-placeholder="form_email" placeholder="Your email" required>
+            <textarea name="message" data-i18n-placeholder="form_message" placeholder="Tell us about your plans..." required></textarea>
+            <button type="submit" data-i18n="form_send">Send</button>
+            <p class="form-note" data-i18n="form_note">Contact form coming soon — for now, reach us through social media.</p>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 PLan FL. Services — <span data-i18n="footer_tagline">Making your plans easier</span></p>
+        <p><a href="../index.html" data-i18n="footer_back">Phillip Ramos da Silva</a></p>
+    </footer>
+
+    <script>
+        const i18n = {
+            en: {
+                nav_about: "About", nav_services: "Services", nav_how: "How it works", nav_contact: "Contact",
+                hero_title: "Making your plans easier",
+                hero_sub: "Personalized planning for your Florida experience — so you spend your time enjoying it, not organizing it.",
+                hero_cta: "Start planning",
+                about_title: "About us",
+                about_text: "PLan FL. Services helps you make the most of Florida. Whether you are visiting for the first time, returning for another vacation, or settling in, planning everything on your own takes hours of research. We do that work for you — building plans around your goals, your dates, and your budget, with the local knowledge that makes the difference.",
+                services_title: "Services",
+                services_lead: "Everything you need to plan your time in Florida, in one place.",
+                svc1_title: "Custom itineraries",
+                svc1_text: "Day-by-day plans built around your group, pace, and interests — theme parks, beaches, nature, shopping, and more.",
+                svc2_title: "Theme park planning",
+                svc2_text: "Guidance on tickets, park order, reservations, and strategies to skip the longest lines at Orlando's parks.",
+                svc3_title: "Accommodation & transport",
+                svc3_text: "Recommendations for hotels and vacation homes, plus car rental and airport transfer options that fit your budget.",
+                svc4_title: "Dining & experiences",
+                svc4_text: "Restaurant suggestions and reservations, tours, and local experiences beyond the usual tourist stops.",
+                svc5_title: "Trip support",
+                svc5_text: "Checklists, tips on what to pack and buy, and support before and during your trip when plans change.",
+                svc6_title: "Personalized assistance",
+                svc6_text: "Have a different plan in mind? Tell us what you need in Florida and we will make it easier.",
+                how_title: "How it works",
+                step1_title: "Tell us your plans",
+                step1_text: "Share your dates, group, budget, and what you want out of your time in Florida.",
+                step2_title: "We build your plan",
+                step2_text: "We research and assemble a personalized plan with clear options and honest recommendations.",
+                step3_title: "Review and adjust",
+                step3_text: "You review everything and we fine-tune it together until it fits you perfectly.",
+                step4_title: "Enjoy Florida",
+                step4_text: "Travel with everything organized — and with support if anything changes along the way.",
+                contact_title: "Contact us",
+                contact_lead: "Tell us about your plans and we will get back to you.",
+                form_name: "Your name", form_email: "Your email", form_message: "Tell us about your plans...",
+                form_send: "Send",
+                form_note: "Contact form coming soon — for now, reach us through social media.",
+                footer_tagline: "Making your plans easier",
+                footer_back: "Phillip Ramos da Silva"
+            },
+            pt: {
+                nav_about: "Sobre", nav_services: "Serviços", nav_how: "Como funciona", nav_contact: "Contato",
+                hero_title: "Facilitando os seus planos",
+                hero_sub: "Planejamento personalizado para a sua experiência na Flórida — para você aproveitar o seu tempo, em vez de gastá-lo organizando.",
+                hero_cta: "Começar a planejar",
+                about_title: "Sobre nós",
+                about_text: "A PLan FL. Services ajuda você a aproveitar a Flórida ao máximo. Seja na sua primeira visita, em mais umas férias ou na sua mudança, planejar tudo sozinho exige horas de pesquisa. Nós fazemos esse trabalho por você — montando planos de acordo com os seus objetivos, as suas datas e o seu orçamento, com o conhecimento local que faz a diferença.",
+                services_title: "Serviços",
+                services_lead: "Tudo o que você precisa para planejar o seu tempo na Flórida, em um só lugar.",
+                svc1_title: "Roteiros personalizados",
+                svc1_text: "Planos dia a dia montados para o seu grupo, o seu ritmo e os seus interesses — parques, praias, natureza, compras e mais.",
+                svc2_title: "Planejamento de parques",
+                svc2_text: "Orientação sobre ingressos, ordem dos parques, reservas e estratégias para fugir das filas nos parques de Orlando.",
+                svc3_title: "Hospedagem e transporte",
+                svc3_text: "Recomendações de hotéis e casas de temporada, além de opções de aluguel de carro e transfer que cabem no seu orçamento.",
+                svc4_title: "Restaurantes e experiências",
+                svc4_text: "Sugestões e reservas de restaurantes, passeios e experiências locais além dos pontos turísticos de sempre.",
+                svc5_title: "Suporte de viagem",
+                svc5_text: "Checklists, dicas do que levar e comprar, e suporte antes e durante a viagem quando os planos mudam.",
+                svc6_title: "Assistência personalizada",
+                svc6_text: "Tem um plano diferente em mente? Conte o que você precisa na Flórida e nós facilitamos.",
+                how_title: "Como funciona",
+                step1_title: "Conte seus planos",
+                step1_text: "Compartilhe suas datas, seu grupo, seu orçamento e o que você espera do seu tempo na Flórida.",
+                step2_title: "Montamos seu plano",
+                step2_text: "Pesquisamos e montamos um plano personalizado com opções claras e recomendações honestas.",
+                step3_title: "Revise e ajuste",
+                step3_text: "Você revisa tudo e ajustamos juntos até ficar perfeito para você.",
+                step4_title: "Aproveite a Flórida",
+                step4_text: "Viaje com tudo organizado — e com suporte se algo mudar pelo caminho.",
+                contact_title: "Fale conosco",
+                contact_lead: "Conte sobre os seus planos e retornaremos em breve.",
+                form_name: "Seu nome", form_email: "Seu email", form_message: "Conte sobre os seus planos...",
+                form_send: "Enviar",
+                form_note: "Formulário de contato em breve — por enquanto, fale conosco pelas redes sociais.",
+                footer_tagline: "Facilitando os seus planos",
+                footer_back: "Phillip Ramos da Silva"
+            }
+        };
+
+        let lang = "en";
+        const toggle = document.getElementById("langToggle");
+
+        function applyLang() {
+            const dict = i18n[lang];
+            document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                if (dict[key]) el.textContent = dict[key];
+            });
+            document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+                const key = el.getAttribute("data-i18n-placeholder");
+                if (dict[key]) el.placeholder = dict[key];
+            });
+            toggle.textContent = lang === "en" ? "PT-BR" : "EN";
+        }
+
+        toggle.addEventListener("click", () => {
+            lang = lang === "en" ? "pt" : "en";
+            applyLang();
+            try { localStorage.setItem("planfl-lang", lang); } catch (e) {}
+        });
+
+        try {
+            const saved = localStorage.getItem("planfl-lang");
+            if (saved === "pt" || saved === "en") lang = saved;
+            else if (navigator.language && navigator.language.toLowerCase().startsWith("pt")) lang = "pt";
+        } catch (e) {}
+        applyLang();
+    </script>
+</body>
+</html>
