@@ -13,15 +13,18 @@
 
 ## 1. Setup do perfil @publiprova (20 minutos, uma vez)
 
-- **Username:** @publiprova (checar disponibilidade; alternativas: @publiprova.app, @usepubliprova)
+- **Username:** @publiprova.app (DECIDIDO em 29/08/2026 — @publiprova está ocupado por conta
+  italiana morta e privada, "Account di prova"; reavaliar reivindicação se registrarmos marca)
 - **Nome no perfil:** PubliProva · Campanhas com creators
 - **Bio (150 chars):**
   > Sua agência para de cobrar print no WhatsApp.
   > Cobrança automática + relatório do cliente pronto.
-  > Por @[seu LinkedIn] · em construção 🔨
+  > Por Phillip Ramos · em construção 🔨
 - **Foto:** o logotipo mais simples possível — "P•P" ou "PubliProva" em branco sobre o roxo
   da marca (#4f46e5). Sem design elaborado agora.
-- **Link da bio:** por enquanto, o LinkedIn pessoal; depois do deploy, o app.
+- **Link da bio:** NENHUM até o deploy (decisão 29/08/2026: o LinkedIn pessoal está
+  desatualizado e o fundador prefere não se expor — link parado credibiliza menos que
+  link nenhum). Evolução planejada: landing de 1 página do produto. Depois do deploy, o app.
 - Publicar os 4 posts abaixo **em 2 dias** (2 por dia), ANTES da primeira DM/e-mail.
 
 ---
@@ -120,7 +123,11 @@
 
 ---
 
-## 3. Os 2 posts pessoais no LinkedIn
+## 3. Os 2 posts pessoais no LinkedIn — SUSPENSO (29/08/2026)
+
+> O LinkedIn saiu da operação por decisão do fundador (perfil desatualizado, preferência
+> por não se expor). Os textos ficam guardados caso a decisão mude. O peso migra para
+> e-mail (canal nº 1) e DM do @publiprova.app.
 
 ### LinkedIn 1 — Anúncio da pesquisa (publicar no dia 1 das abordagens)
 
@@ -194,7 +201,7 @@ E-mail não mostra contagem de seguidores. Endereço: seu Gmail atual até o dom
 > Topa? Me responde aqui mesmo que eu te mando a primeira pergunta.
 >
 > Phillip Ramos
-> [LinkedIn] · construindo o PubliProva
+> construindo o PubliProva · @publiprova.app
 
 **Follow-up (4 dias depois, um só):**
 
@@ -210,6 +217,6 @@ nunca anexo, nunca link de venda. Follow-up único — segundo follow-up vira sp
 ## 5. Ordem de canais para perfil low-profile (substitui a ordem do Passo 2 do kit)
 
 1. **E-mail** — seguidores invisíveis, agências publicam contato@ no site
-2. **LinkedIn pessoal** (com os 2 posts acima publicados) — lá ninguém olha seguidores
-3. **DM do @publiprova** (com os 4 posts publicados) — a marca aborda, não a pessoa
+2. **DM do @publiprova.app** (com os 4 posts publicados) — a marca aborda, não a pessoa
+3. LinkedIn pessoal — **suspenso em 29/08/2026** (ver seção 3)
 4. Instagram pessoal — **não se usa; permanece privado**

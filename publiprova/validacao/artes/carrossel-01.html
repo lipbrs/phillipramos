@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Artes — Carrossel 01 @publiprova.app</title>
+<style>
+  :root {
+    --roxo: #4f46e5;
+    --roxo-fundo: #46409f;
+    --roxo-escuro: #37308a;
+    --claro: #c7d2fe;
+    --branco: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a2e; font-family: 'Segoe UI', Arial, sans-serif; }
+
+  .frame {
+    width: 1080px; height: 1350px;
+    background: var(--roxo);
+    color: var(--branco);
+    position: relative;
+    display: flex; flex-direction: column;
+    padding: 96px 88px;
+    overflow: hidden;
+    margin: 40px auto;
+  }
+  .frame.quadrado { height: 1080px; }
+
+  .topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; }
+  .handle { font-size: 30px; font-weight: 600; letter-spacing: 2px; opacity: .9; }
+  .tag {
+    font-size: 26px; font-weight: 700; letter-spacing: 3px;
+    border: 3px solid rgba(255,255,255,.55); border-radius: 14px;
+    padding: 10px 24px;
+  }
+  .rodape {
+    position: absolute; bottom: 64px; left: 88px; right: 88px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 26px; font-weight: 600; opacity: .85; letter-spacing: 1px;
+  }
+
+  h1 { font-family: 'Segoe UI Black', 'Arial Black', 'Segoe UI', sans-serif;
+       font-weight: 900; text-transform: uppercase; line-height: 1.04; }
+  .marcado {
+    background: var(--branco); color: var(--roxo);
+    padding: 2px 18px; display: inline-block; border-radius: 8px;
+  }
+  .sub { font-size: 40px; line-height: 1.35; font-weight: 400; color: var(--claro); }
+
+  /* ---------- Slide 1 — capa ---------- */
+  #s1 h1 { font-size: 128px; margin-top: 40px; }
+  #s1 .sub { margin-top: 64px; max-width: 800px; }
+
+  /* ---------- Slide 2 — whatsapp ---------- */
+  #s2 .chat {
+    background: #0b141a; border-radius: 32px; padding: 56px 44px;
+    display: flex; flex-direction: column; gap: 28px; margin-top: 24px;
+  }
+  #s2 .bolha {
+    align-self: flex-end; max-width: 82%;
+    background: #005c4b; color: #e9edef;
+    border-radius: 18px 4px 18px 18px;
+    padding: 26px 30px; font-size: 34px; line-height: 1.35;
+  }
+  #s2 .hora { display: block; text-align: right; font-size: 24px; color: #8696a0; margin-top: 10px; }
+  #s2 h1 { font-size: 62px; margin-bottom: 12px; }
+  #s2 .sub { margin-top: 56px; font-size: 38px; }
+  #s2 .sub b { color: var(--branco); }
+
+  /* ---------- Slide 3 — custo ---------- */
+  #s3 h1 { font-size: 78px; }
+  #s3 ul { list-style: none; margin-top: 72px; display: flex; flex-direction: column; gap: 44px; }
+  #s3 li { display: flex; gap: 30px; font-size: 42px; line-height: 1.3; align-items: flex-start; }
+  #s3 .box { width: 46px; height: 46px; border: 4px solid rgba(255,255,255,.7); border-radius: 10px; flex: none; margin-top: 6px; }
+  #s3 .fecho { margin-top: 76px; font-size: 44px; font-weight: 700; line-height: 1.35; }
+  #s3 .fecho .marcado { font-weight: 900; }
+
+  /* ---------- Slides 4-5 — checklist ---------- */
+  .check h1 { font-size: 58px; }
+  .check h1 small { display: block; font-size: 34px; font-weight: 600; text-transform: none;
+                    color: var(--claro); letter-spacing: 1px; margin-top: 14px; }
+  .check .itens { margin-top: 64px; display: flex; flex-direction: column; gap: 56px; }
+  .check .item { display: flex; gap: 36px; }
+  .check .num {
+    flex: none; width: 92px; height: 92px; border-radius: 20px;
+    background: var(--branco); color: var(--roxo);
+    font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+    font-size: 52px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .check .item h2 { font-size: 40px; font-weight: 800; margin-bottom: 12px; line-height: 1.15; }
+  .check .item p { font-size: 33px; line-height: 1.4; color: var(--claro); }
+
+  /* ---------- Slide 6 — salvar ---------- */
+  #s6 { justify-content: center; text-align: center; }
+  #s6 .icone { font-size: 130px; margin-bottom: 48px; }
+  #s6 h1 { font-size: 96px; }
+  #s6 .sub { margin: 56px auto 0; max-width: 780px; }
+  #s6 .obs { margin: 96px auto 0; font-size: 34px; color: var(--claro); max-width: 760px; line-height: 1.4; }
+
+  /* ---------- Slide 7 — produto ---------- */
+  #s7 h1 { font-size: 62px; line-height: 1.1; }
+  #s7 .janela {
+    margin-top: 56px; background: #f4f4f8; border-radius: 24px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,.35);
+  }
+  #s7 .barra { background: #e2e2ea; height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 24px; }
+  #s7 .barra i { width: 20px; height: 20px; border-radius: 50%; background: #c0c0cc; }
+  #s7 .janela img { width: 100%; display: block; }
+  #s7 .legenda { margin-top: 44px; margin-bottom: 90px; font-size: 33px; line-height: 1.45; color: var(--claro); }
+  #s7 .legenda b { color: var(--branco); }
+
+  /* ---------- Post 2 — building in public ---------- */
+  #post2 h1 { font-size: 68px; line-height: 1.1; }
+  #post2 .janela {
+    margin-top: 60px; background: #f4f4f8; border-radius: 24px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,.35);
+  }
+  #post2 .barra { background: #e2e2ea; height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 24px; }
+  #post2 .barra i { width: 20px; height: 20px; border-radius: 50%; background: #c0c0cc; }
+  #post2 .janela img { width: 100%; display: block; }
+  #post2 .legenda { margin-top: 48px; font-size: 36px; line-height: 1.45; color: var(--claro); }
+
+  /* ---------- Post 3 — o lado do creator ---------- */
+  #post3 { flex-direction: row; align-items: center; gap: 60px; }
+  #post3 .texto { flex: 1; }
+  #post3 h1 { font-size: 64px; line-height: 1.12; }
+  #post3 ol { margin-top: 48px; list-style: none; display: flex; flex-direction: column; gap: 30px; }
+  #post3 ol li { font-size: 34px; line-height: 1.35; color: var(--claro); display: flex; gap: 20px; }
+  #post3 ol b { color: var(--branco); }
+  #post3 .n { flex: none; width: 52px; height: 52px; border-radius: 50%; background: var(--branco);
+              color: var(--roxo); font-weight: 900; font-size: 30px;
+              display: flex; align-items: center; justify-content: center; }
+  #post3 .fecho { margin-top: 52px; font-size: 36px; font-weight: 800; }
+  #post3 .fone {
+    flex: none; width: 360px; background: #111; border-radius: 48px; padding: 16px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.4);
+  }
+  #post3 .fone .telinha { border-radius: 34px; overflow: hidden; display: block; }
+  #post3 .fone img { width: 100%; display: block; }
+
+  /* ---------- Slide 8 — CTA ---------- */
+  #s8 { text-align: center; }
+  #s8 h1 { font-size: 72px; margin-top: 20px; }
+  #s8 .sub { margin: 48px auto 0; max-width: 820px; font-size: 36px; }
+  #s8 .cartao {
+    margin: 72px auto 0; background: var(--branco); color: var(--roxo);
+    border-radius: 36px; padding: 64px 90px; width: 640px;
+  }
+  #s8 .cartao .rotulo { font-size: 38px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
+  #s8 .cartao .palavra {
+    font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+    font-size: 200px; font-weight: 900; line-height: 1;
+  }
+  #s8 .abaixo { margin-top: 64px; font-size: 42px; font-weight: 700; }
+
+  /* ---------- Foto de perfil ---------- */
+  #perfil { width: 1000px; height: 1000px; padding: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #perfil .pp { font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+                font-size: 360px; font-weight: 900; letter-spacing: -8px; }
+  #perfil .nome { font-size: 64px; font-weight: 700; letter-spacing: 10px; margin-top: 8px; }
+
+  /* ---------- Post 1 — "Cadê o print?" ---------- */
+  #post1 { justify-content: center; }
+  #post1 h1 { font-size: 168px; }
+  #post1 .sub { margin-top: 72px; font-size: 42px; max-width: 820px; }
+</style>
+</head>
+<body>
+
+<!-- Foto de perfil -->
+<div class="frame" id="perfil" data-nome="perfil">
+  <div class="pp">P•P</div>
+  <div class="nome">PUBLIPROVA</div>
+</div>
+
+<!-- Post 1 -->
+<div class="frame" id="post1" data-nome="post1-cade-o-print">
+  <div class="topo"><span class="handle">@publiprova.app</span></div>
+  <h1>"Cadê<br>o print?"</h1>
+  <p class="sub">A mensagem que encerra toda campanha com creators — e abre o segundo trabalho da agência.</p>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Post 2 — building in public -->
+<div class="frame" id="post2" data-nome="post2-primeiro-print">
+  <div class="topo"><span class="handle">@publiprova.app</span></div>
+  <h1>O primeiro print do produto. 🔨</h1>
+  <div class="janela">
+    <div class="barra"><i></i><i></i><i></i></div>
+    <img src="painel-print.png" alt="Painel do PubliProva">
+  </div>
+  <p class="legenda">Campanha real de demonstração: quem entregou ficou verde sozinho. Quem não entregou está sendo cobrado agora.</p>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Post 3 — o lado do creator -->
+<div class="frame" id="post3" data-nome="post3-lado-do-creator">
+  <div class="texto">
+    <div class="topo" style="margin-bottom:40px"><span class="handle">@publiprova.app</span></div>
+    <h1>O creator não cria conta.</h1>
+    <ol>
+      <li><span class="n">1</span><span>Chega por <b>link</b>, direto no celular</span></li>
+      <li><span class="n">2</span><span>Cola o link do post, <b>sobe o print</b></span></li>
+      <li><span class="n">3</span><span>A IA lê os números — ele <b>confere e envia</b></span></li>
+    </ol>
+    <p class="fecho">90 segundos.<br>Sem senha, sem app.</p>
+  </div>
+  <div class="fone"><span class="telinha"><img src="creator-print.png" alt="Tela do creator"></span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Slide 1 — capa -->
+<div class="frame" id="s1" data-nome="slide-01-capa">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">01 / 08</span></div>
+  <h1><span class="marcado">8 a 15 horas</span><br>por mês<br>cobrando<br>print.</h1>
+  <p class="sub">O segundo trabalho que toda campanha com creators cria.</p>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Slide 2 — reconhecimento -->
+<div class="frame" id="s2" data-nome="slide-02-whatsapp">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">02 / 08</span></div>
+  <h1>Você já mandou essa mensagem.</h1>
+  <div class="chat">
+    <div class="bolha">Oi! Consegue me mandar o link do post? 🙏<span class="hora">ter 14:02</span></div>
+    <div class="bolha">Oi de novo! E o print dos stories?<span class="hora">qui 09:15</span></div>
+    <div class="bolha">Amigo, o cliente pede o relatório amanhã 🥲<span class="hora">sex 22:47</span></div>
+  </div>
+  <p class="sub">Se a sua agência roda campanha com creators, <b>você já mandou as três.</b></p>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Slide 3 — o custo -->
+<div class="frame" id="s3" data-nome="slide-03-custo">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">03 / 08</span></div>
+  <h1>A campanha acaba.<br>O trabalho, não:</h1>
+  <ul>
+    <li><span class="box"></span>Cobrar o link de cada um dos 30 creators</li>
+    <li><span class="box"></span>Cobrar o print. Cobrar de novo.</li>
+    <li><span class="box"></span>Copiar número por número pra planilha</li>
+    <li><span class="box"></span>Montar o PDF de madrugada</li>
+  </ul>
+  <p class="fecho">O trabalho mais caro que existe:<br><span class="marcado">correr atrás de gente.</span></p>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Slide 4 — checklist 1-3 -->
+<div class="frame check" id="s4" data-nome="slide-04-checklist-a">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">04 / 08</span></div>
+  <h1>O checklist de fechamento<small>(rouba, é seu — parte 1 de 2)</small></h1>
+  <div class="itens">
+    <div class="item"><div class="num">1</div><div>
+      <h2>Prazo de coleta no contrato do creator</h2>
+      <p>72h após o post, escrito no briefing. Cobrança sem prazo combinado é favor.</p>
+    </div></div>
+    <div class="item"><div class="num">2</div><div>
+      <h2>Print com data e métrica visíveis</h2>
+      <p>Insights sem data o cliente contesta. Defina o que é print válido antes da campanha.</p>
+    </div></div>
+    <div class="item"><div class="num">3</div><div>
+      <h2>Uma fonte só</h2>
+      <p>Link, print e números no mesmo lugar. Caçar em 4 conversas é onde as horas somem.</p>
+    </div></div>
+  </div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Slide 5 — checklist 4-6 -->
+<div class="frame check" id="s5" data-nome="slide-05-checklist-b">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">05 / 08</span></div>
+  <h1>O checklist de fechamento<small>(parte 2 de 2)</small></h1>
+  <div class="itens">
+    <div class="item"><div class="num">4</div><div>
+      <h2>Cobrança agendada, não lembrada</h2>
+      <p>Mensagem pronta, disparada todo dia útil pra quem falta. Decidir "quem cobro hoje" é o que ninguém faz.</p>
+    </div></div>
+    <div class="item"><div class="num">5</div><div>
+      <h2>Relatório que começa no dia 1</h2>
+      <p>O template do cliente aberto desde o primeiro post no ar — não na véspera da entrega.</p>
+    </div></div>
+    <div class="item"><div class="num">6</div><div>
+      <h2>Registro do que NÃO foi entregue</h2>
+      <p>Creator que não postou é dado do relatório também. É o que protege a agência.</p>
+    </div></div>
+  </div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Slide 6 — salvar -->
+<div class="frame" id="s6" data-nome="slide-06-salvar">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">06 / 08</span></div>
+  <div class="icone">🔖</div>
+  <h1>Salva este post</h1>
+  <p class="sub">pro fechamento da próxima campanha.</p>
+  <p class="obs">(E manda pra quem vive cobrando print aí na agência.)</p>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Slide 7 — produto -->
+<div class="frame" id="s7" data-nome="slide-07-produto">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">07 / 08</span></div>
+  <h1>Estamos construindo a ferramenta que faz esse checklist sozinha.</h1>
+  <div class="janela">
+    <div class="barra"><i></i><i></i><i></i></div>
+    <img src="painel-print.png" alt="Painel do PubliProva">
+  </div>
+  <p class="legenda">Cada creator recebe um <b>link</b> — sem cadastro, sem senha. Quem não entrega é <b>cobrado sozinho</b>, todo dia. No fim, o relatório do cliente sai <b>pronto</b>.</p>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- Slide 8 — CTA -->
+<div class="frame" id="s8" data-nome="slide-08-cta">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">08 / 08</span></div>
+  <h1>Antes de abrir, estou ouvindo 15 agências.</h1>
+  <p class="sub">Sem pitch. 6 perguntas, por mensagem, no seu tempo. Em troca: o benchmark do que eu ouvir das outras.</p>
+  <div class="cartao">
+    <div class="rotulo">Comente:</div>
+    <div class="palavra">EU</div>
+  </div>
+  <p class="abaixo">que eu te chamo. 👇</p>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+</body>
+</html>
