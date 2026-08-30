@@ -154,6 +154,15 @@
   }
   #s8 .abaixo { margin-top: 64px; font-size: 42px; font-weight: 700; }
 
+  /* ---------- Story diário (a rotina edita #story-dia e #story-texto) ---------- */
+  #story { width: 1080px; height: 1920px; justify-content: center; padding: 110px 90px; }
+  #story .dia { font-size: 40px; font-weight: 700; color: var(--claro); letter-spacing: 3px;
+                text-transform: uppercase; margin-bottom: 40px; }
+  #story h1 { font-size: 96px; }
+  #story .texto { margin-top: 56px; font-size: 46px; line-height: 1.4; color: var(--claro); }
+  #story .texto b { color: var(--branco); }
+  #story .rodape { bottom: 100px; }
+
   /* ---------- Foto de perfil ---------- */
   #perfil { width: 1000px; height: 1000px; padding: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -168,6 +177,14 @@
 </style>
 </head>
 <body>
+
+<!-- Story diário — a rotina troca os textos e renderiza -->
+<div class="frame" id="story" data-nome="story-do-dia">
+  <div class="dia" id="story-dia">Construindo em público · dia 2</div>
+  <h1 id="story-titulo">O relatório que se monta sozinho.</h1>
+  <p class="texto" id="story-texto">Hoje o painel ganhou o botão de <b>copiar link do relatório</b> — a agência manda pro cliente sem exportar nada.</p>
+  <div class="rodape"><span>@publiprova.app</span><span>link na bio</span></div>
+</div>
 
 <!-- Foto de perfil -->
 <div class="frame" id="perfil" data-nome="perfil">
