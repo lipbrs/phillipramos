@@ -66,3 +66,35 @@ Repositórios avaliados e aprovados para uso nos projetos do Phillip, em especia
 - **Cline** (agente de código): redundante — o Claude Code já cumpre esse papel.
 - **Pipecat** (agente de voz em tempo real): fora do escopo de creators/agências; exige 3 chaves de API pagas.
 - **Nota geral:** custos de API entram no preço de qualquer serviço vendido sobre essas ferramentas; calcular antes de precificar.
+
+## 3D — modelagem, renderização e impressão (Blender + skills)
+
+Skills da comunidade vetadas em set/2026 (código lido: sem chamadas suspeitas, sem exfiltração; chamadas externas só a APIs declaradas). Contexto: loja Etsy de impressão 3D + vídeos de produto.
+
+### Pré-requisito comum: Blender MCP
+
+- **Repositório:** https://github.com/ahujasid/blender-mcp — ponte entre o Claude Code e o Blender.
+- **Setup (uma vez, na máquina local):** instalar `uv`; instalar o `addon.py` do repo no Blender (Edit → Preferences → Add-ons); na sidebar do Blender (`N`) → BlenderMCP → Connect to Claude; no Claude Code: `claude mcp add blender -- uvx blender-mcp`.
+
+### kevinbadi/blender-skills — produto e câmera (prioridade 1)
+
+- **Repositório:** https://github.com/kevinbadi/blender-skills — 16 skills: turntable, dolly-rotate, slow-zoom, crane-shot, perfect-loop, product-polish, cenas/HDRI/materiais Poly Haven, image-to-3d e multi-image-to-3d (via API Meshy, chave própria), threejs-export.
+- **Instalação:** copiar as pastas de skill para `.claude/skills/` do projeto.
+- **Requisitos:** Blender MCP + ffmpeg; chave Meshy só para as skills de geração 3D.
+- **Quando usar:** vídeos de produto dos itens 3D (turntable/zoom para Etsy, Reels, pins).
+
+### mfranzon/render — CAD paramétrico para impressão (prioridade 1)
+
+- **Repositório:** https://github.com/mfranzon/render — skill `/render`: gera modelo 3D paramétrico com build123d a partir de descrição ou foto de referência, viewer no navegador (localhost:3123), exporta STL/STEP.
+- **Instalação:** copiar para `.claude/skills/`; o `setup.sh` (limpo, vetado) cria venv e instala build123d.
+- **Quando usar:** modelar peças imprimíveis com medidas ajustáveis — o caminho certo para impressão 3D (não requer Blender).
+
+### Aprofundamento Blender (instalar quando precisar)
+
+- **arjun988/blender-skills** — https://github.com/arjun988/blender-skills — 94 skills, pipeline completo (modelagem, geometry nodes, lighting, archviz, estilos). `claude plugin marketplace add arjun988/blender-skills` → `claude plugin install blender-skills@blender-skills`. Pesado; instalar só para trabalho Blender a fundo.
+- **ra100/blender-claude-plugin** — https://github.com/ra100/blender-claude-plugin — 8 skills de referência da API Python do Blender 5.x. `claude plugin marketplace add ra100/blender-claude-plugin` → `claude plugin install blender-skills@blender-claude-marketplace`. Atenção: o plugin também se chama "blender-skills"; conferir colisão de nomes se instalar junto com o do arjun988.
+- **BlenderXAlpha-3DGenSkill** — https://github.com/ig-shadow-walker/BlenderXAlpha-3DGenSkill — texto → modelo 3D no Blender via provedores pagos (Alpha3D/Meshy/Tripo). Opcional.
+
+### Nota sobre softwares CAD
+
+FreeCAD, OpenSCAD, JSCAD e afins são aplicações, não skills. Para modelo imprimível paramétrico via Claude, usar build123d (skill render) — mesmo paradigma código→peça do OpenSCAD, em Python. O Higgsfield (`generate_3d`) gera malha GLB de uma foto: bom para visualização, não sai pronto para imprimir.
