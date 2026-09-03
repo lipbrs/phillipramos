@@ -8,11 +8,16 @@
 > Identidade mantida: roxo #4f46e5, Segoe UI Black, rodapé "construindo em público".
 >
 > Artes: `artes/carrosseis-lote-02.html` → `node render-lote.mjs carrosseis-lote-02.html`
-> Agenda (Meta Business Suite, 11h00): C02 05/09 · C03 07/09 · C04 09/09 · C05 11/09 · C06 13/09
+>
+> AGENDA REAL (decidida 03/09): **C02 PUBLICADO 03/09** ao vivo pelo Instagram web
+> (o Meta Business Suite deste navegador não tem o publiprova — sessão do MBS é de outro
+> perfil do Chrome, e o composer novo do IG web não tem agendamento). Os demais saem pela
+> tarefa agendada `publicar-lote-02` (11h00): C03 05/09 · C04 07/09 · C06 09/09 · C05 11/09
+> (C05 por último para os "14 dias" da capa baterem com o calendário: conta criada 29/08).
 
 ---
 
-## C02 — 3 mensagens prontas pra cobrar creator (sex 05/09)
+## C02 — 3 mensagens prontas pra cobrar creator (PUBLICADO qua 03/09)
 
 Valor copiável puro: os 3 textos de cobrança que não estragam a relação.
 Palavra-chave: **PRINT**.
