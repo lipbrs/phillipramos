@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Artes — Lote 02 (carrosséis 02 a 06) @publiprova.app</title>
+<style>
+  :root {
+    --roxo: #4f46e5;
+    --roxo-fundo: #46409f;
+    --roxo-escuro: #37308a;
+    --tinta: #1a1a2e;
+    --claro: #c7d2fe;
+    --branco: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #101020; font-family: 'Segoe UI', Arial, sans-serif; }
+
+  .frame {
+    width: 1080px; height: 1350px;
+    background: var(--roxo);
+    color: var(--branco);
+    position: relative;
+    display: flex; flex-direction: column;
+    padding: 96px 88px;
+    overflow: hidden;
+    margin: 40px auto;
+  }
+
+  .topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 56px; }
+  .handle { font-size: 30px; font-weight: 600; letter-spacing: 2px; opacity: .9; }
+  .tag {
+    font-size: 26px; font-weight: 700; letter-spacing: 3px;
+    border: 3px solid rgba(255,255,255,.55); border-radius: 14px;
+    padding: 10px 24px;
+  }
+  .rodape {
+    position: absolute; bottom: 64px; left: 88px; right: 88px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 26px; font-weight: 600; opacity: .85; letter-spacing: 1px;
+  }
+
+  h1 { font-family: 'Segoe UI Black', 'Arial Black', 'Segoe UI', sans-serif;
+       font-weight: 900; text-transform: uppercase; line-height: 1.06; }
+  .marcado {
+    background: var(--branco); color: var(--roxo);
+    padding: 2px 18px; display: inline-block; border-radius: 8px;
+  }
+  .sub { font-size: 40px; line-height: 1.35; font-weight: 400; color: var(--claro); }
+  .sub b { color: var(--branco); }
+
+  /* Fio contínuo — a linha que atravessa o carrossel inteiro e puxa o swipe */
+  .fio { position: absolute; left: 0; right: 0; bottom: 178px; height: 7px;
+         background: rgba(255,255,255,.22); }
+  .fio i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--branco); }
+  .fio .seta { position: absolute; right: -6px; top: 50%; transform: translateY(-58%);
+               font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+               font-size: 64px; font-weight: 900; color: var(--branco); line-height: 1; }
+
+  /* Slide claro (invertido) — mesma paleta, fundo branco */
+  .frame.claro { background: var(--branco); color: var(--roxo); }
+  .frame.claro .sub { color: #5b5b7a; }
+  .frame.claro .sub b { color: var(--roxo); }
+  .frame.claro .tag { border-color: rgba(79,70,229,.5); }
+  .frame.claro .marcado { background: var(--roxo); color: var(--branco); }
+  .frame.claro .fio { background: rgba(79,70,229,.18); }
+  .frame.claro .fio i, .frame.claro .fio .seta { background: var(--roxo); color: var(--roxo); }
+  .frame.claro .fio .seta { background: none; }
+
+  /* Capa padrão */
+  .capa h1 { font-size: 108px; margin-top: 36px; }
+  .capa .sub { margin-top: 60px; max-width: 840px; }
+
+  /* Slide de uma ideia só (micro-learning) */
+  .ideia, .lista-num { justify-content: center; }
+  .ideia .topo, .lista-num .topo { position: absolute; top: 96px; left: 88px; right: 88px; margin-bottom: 0; }
+  .ideia h1 { font-size: 84px; max-width: 900px; }
+  .ideia .sub { margin-top: 56px; max-width: 860px; }
+  .ideia .num-gigante {
+    font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+    font-size: 260px; font-weight: 900; line-height: .95; letter-spacing: -6px;
+  }
+  .ideia .num-rotulo { font-size: 44px; font-weight: 700; color: var(--claro);
+                       text-transform: uppercase; letter-spacing: 3px; margin-top: 8px; }
+
+  /* Rótulo editorial acima de bloco */
+  .rotulo { font-size: 30px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase;
+            color: var(--claro); margin-bottom: 28px; }
+
+  /* Bolha de WhatsApp copiável */
+  .chat { background: #0b141a; border-radius: 32px; padding: 52px 44px;
+          display: flex; flex-direction: column; gap: 24px; }
+  .bolha { align-self: flex-end; max-width: 86%;
+           background: #005c4b; color: #e9edef;
+           border-radius: 18px 4px 18px 18px;
+           padding: 30px 34px; font-size: 37px; line-height: 1.42; }
+  .bolha .hora { display: block; text-align: right; font-size: 24px; color: #8696a0; margin-top: 12px; }
+
+  /* Split de contraste */
+  .split-fundo { position: absolute; inset: 0; display: flex; }
+  .split-fundo .lado-a { flex: 1; background: var(--tinta); }
+  .split-fundo .lado-b { flex: 1; background: var(--branco); }
+  .split-conteudo { position: relative; flex: 1; display: flex; gap: 0; }
+  .split-conteudo .col { flex: 1; padding: 40px 44px 0 0; }
+  .split-conteudo .col + .col { padding: 40px 0 0 44px; }
+  .split-conteudo h2 { font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+                       font-size: 54px; font-weight: 900; text-transform: uppercase; }
+  .split-conteudo ul { list-style: none; margin-top: 44px; display: flex; flex-direction: column; gap: 34px; }
+  .split-conteudo li { font-size: 34px; line-height: 1.35; }
+  .lado-antes { color: #b9b9cc; }
+  .lado-antes h2 { color: var(--branco); }
+  .lado-depois { color: #5b5b7a; }
+  .lado-depois h2 { color: var(--roxo); }
+  .tempo { margin-top: 48px; font-size: 40px; font-weight: 800; }
+  .lado-antes .tempo { color: #ff8f8f; }
+  .lado-depois .tempo { color: var(--roxo); }
+
+  /* Lista com números (erros, motivos) */
+  .lista-num { justify-content: center; }
+  .lista-num .item { display: flex; gap: 36px; margin-top: 52px; }
+  .lista-num .n {
+    flex: none; width: 92px; height: 92px; border-radius: 20px;
+    background: var(--branco); color: var(--roxo);
+    font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+    font-size: 52px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lista-num .item h2 { font-size: 42px; font-weight: 800; line-height: 1.15; margin-bottom: 12px; }
+  .lista-num .item p { font-size: 33px; line-height: 1.4; color: var(--claro); }
+
+  /* Janela de produto */
+  .janela { margin-top: 52px; background: #f4f4f8; border-radius: 24px; overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+  .janela .barra { background: #e2e2ea; height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 24px; }
+  .janela .barra i { width: 20px; height: 20px; border-radius: 50%; background: #c0c0cc; }
+  .janela img { width: 100%; display: block; }
+
+  /* CTA final com cartão */
+  .cta { text-align: center; }
+  .cta h1 { font-size: 72px; margin-top: 16px; }
+  .cta .sub { margin: 44px auto 0; max-width: 830px; font-size: 36px; }
+  .cartao { margin: 60px auto 0; background: var(--branco); color: var(--roxo);
+            border-radius: 36px; padding: 56px 90px; width: 680px; }
+  .cartao .cartao-rotulo { font-size: 36px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
+  .cartao .palavra { font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+                     font-size: 170px; font-weight: 900; line-height: 1.05; }
+  .cta .abaixo { margin-top: 52px; font-size: 40px; font-weight: 700; }
+
+  /* CTA salvar */
+  .salvar { justify-content: center; text-align: center; }
+  .salvar .icone { font-size: 120px; margin-bottom: 44px; }
+  .salvar h1 { font-size: 92px; }
+  .salvar .sub { margin: 52px auto 0; max-width: 800px; }
+  .salvar .obs { margin: 80px auto 0; font-size: 34px; color: var(--claro); max-width: 780px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     C02 — 3 mensagens prontas pra cobrar creator
+     ============================================================ -->
+
+<div class="frame capa" data-nome="c02-01-capa">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">01 / 06</span></div>
+  <h1><span class="marcado">3 mensagens prontas</span><br>pra cobrar creator<br>sem virar o chato.</h1>
+  <p class="sub">Copia, cola, troca o nome. O print chega.</p>
+  <div class="fio"><i style="width:16.7%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c02-02-por-que-doi">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">02 / 06</span></div>
+  <h1>Cobrar creator é constrangedor.</h1>
+  <p class="sub">Você precisa do print dele — <b>e precisa dele na próxima campanha.</b><br><br>Por isso a cobrança certa tem 3 tempos. 👉</p>
+  <div class="fio"><i style="width:33.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame" data-nome="c02-03-msg-vespera">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">03 / 06</span></div>
+  <p class="rotulo">1 · A véspera — lembrete, não cobrança</p>
+  <div class="chat">
+    <div class="bolha">Oi, [nome]! Amanhã fecha a coleta da campanha 💛 Consegue me mandar o link do post + o print dos insights até as 18h?<span class="hora">14:02 ✓✓</span></div>
+  </div>
+  <p class="sub" style="margin-top:52px">Prazo claro + pedido único. <b>Quem avisa na véspera não constrange no atraso.</b></p>
+  <div class="fio"><i style="width:50%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame" data-nome="c02-04-msg-dia-seguinte">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">04 / 06</span></div>
+  <p class="rotulo">2 · O dia seguinte — dá o motivo</p>
+  <div class="chat">
+    <div class="bolha">Oi! Falta só o seu print pra eu fechar o relatório do cliente 🙏 Me salva? É só responder aqui com a imagem.<span class="hora">09:15 ✓✓</span></div>
+  </div>
+  <p class="sub" style="margin-top:52px">O motivo (<b>o relatório</b>) tira o peso pessoal: não é você cobrando, é a entrega esperando.</p>
+  <div class="fio"><i style="width:66.7%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame" data-nome="c02-05-msg-ultima">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">05 / 06</span></div>
+  <p class="rotulo">3 · A última — consequência, sem drama</p>
+  <div class="chat">
+    <div class="bolha">Preciso enviar o relatório amanhã cedo. Sem o seu print, a entrega vai sem o seu post — e isso fica registrado pro cliente. Me manda até as 20h?<span class="hora">16:40 ✓✓</span></div>
+  </div>
+  <p class="sub" style="margin-top:52px">Consequência real e verificável. <b>Não é ameaça — é o que acontece.</b></p>
+  <div class="fio"><i style="width:83.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame cta" data-nome="c02-06-cta">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">06 / 06</span></div>
+  <h1>🔖 Salva pra próxima campanha.</h1>
+  <p class="sub">E se quiser que essas mensagens saiam <b>sozinhas, todo dia, só pra quem falta</b> — é o que estamos construindo.</p>
+  <div class="cartao">
+    <div class="cartao-rotulo">Comente:</div>
+    <div class="palavra">PRINT</div>
+  </div>
+  <p class="abaixo">que eu te mostro como fica. 👇</p>
+  <div class="fio"><i style="width:100%"></i></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- ============================================================
+     C03 — A mesma campanha, dois fechamentos (contraste)
+     ============================================================ -->
+
+<div class="frame capa" data-nome="c03-01-capa">
+  <div class="split-fundo" style="opacity:.16"><div class="lado-a"></div><div class="lado-b"></div></div>
+  <div class="topo" style="position:relative"><span class="handle">@publiprova.app</span><span class="tag">01 / 06</span></div>
+  <h1 style="position:relative">A mesma campanha.<br><span class="marcado">Dois fechamentos.</span></h1>
+  <p class="sub" style="position:relative;margin-top:60px;max-width:840px">Um custa 8 a 15 horas por mês. O outro, 20 minutos.</p>
+  <div class="fio"><i style="width:16.7%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame" style="background:var(--tinta)" data-nome="c03-02-antes">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">02 / 06</span></div>
+  <p class="rotulo" style="color:#8f8fa8">O fechamento de hoje</p>
+  <h1 style="font-size:76px">Antes.</h1>
+  <ul style="list-style:none;margin-top:64px;display:flex;flex-direction:column;gap:44px">
+    <li style="font-size:40px;line-height:1.35;color:#b9b9cc">💬 Cobrar 30 creators, um por um, no WhatsApp</li>
+    <li style="font-size:40px;line-height:1.35;color:#b9b9cc">📋 Copiar número por número pra planilha</li>
+    <li style="font-size:40px;line-height:1.35;color:#b9b9cc">🌙 Montar o PDF de madrugada, na véspera</li>
+  </ul>
+  <p class="tempo" style="margin-top:72px;font-size:48px;font-weight:900;color:#ff8f8f">⏱ 8 a 15 horas por mês</p>
+  <div class="fio"><i style="width:33.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame claro" data-nome="c03-03-depois">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">03 / 06</span></div>
+  <p class="rotulo" style="color:#8a86d8">O fechamento que estamos construindo</p>
+  <h1 style="font-size:76px">Depois.</h1>
+  <ul style="list-style:none;margin-top:64px;display:flex;flex-direction:column;gap:44px">
+    <li style="font-size:40px;line-height:1.35;color:#5b5b7a">🔗 Cada creator recebe um link — sem senha, sem app</li>
+    <li style="font-size:40px;line-height:1.35;color:#5b5b7a">🤖 Quem não entrega é cobrado sozinho, todo dia</li>
+    <li style="font-size:40px;line-height:1.35;color:#5b5b7a">📄 O relatório sai pronto, com a marca da agência</li>
+  </ul>
+  <p class="tempo" style="margin-top:72px;font-size:48px;font-weight:900">⏱ 20 minutos</p>
+  <div class="fio"><i style="width:50%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame" data-nome="c03-04-lado-a-lado">
+  <div class="split-fundo"><div class="lado-a"></div><div class="lado-b"></div></div>
+  <div class="topo" style="position:relative"><span class="handle" style="color:#fff">@publiprova.app</span><span class="tag" style="color:#4f46e5;border-color:rgba(79,70,229,.5)">04 / 06</span></div>
+  <div class="split-conteudo">
+    <div class="col lado-antes">
+      <h2>Antes</h2>
+      <ul>
+        <li>4 conversas abertas por creator</li>
+        <li>"Oi de novo! E o print?"</li>
+        <li>Planilha que ninguém confia</li>
+        <li>Relatório na véspera</li>
+      </ul>
+      <p class="tempo">8–15 h</p>
+    </div>
+    <div class="col lado-depois">
+      <h2>Depois</h2>
+      <ul>
+        <li>1 link por creator</li>
+        <li>Cobrança automática diária</li>
+        <li>Tudo num painel só</li>
+        <li>Relatório desde o dia 1</li>
+      </ul>
+      <p class="tempo">20 min</p>
+    </div>
+  </div>
+  <div class="fio" style="background:rgba(122,116,228,.35)"><i style="width:66.7%;background:var(--roxo)"></i><span class="seta" style="color:var(--roxo)">›</span></div>
+  <div class="rodape" style="color:#9a9ab0"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame" data-nome="c03-05-produto">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">05 / 06</span></div>
+  <h1 style="font-size:58px;line-height:1.12">O "depois" já existe. Este é o print de ontem:</h1>
+  <div class="janela">
+    <div class="barra"><i></i><i></i><i></i></div>
+    <img src="painel-print.png" alt="Painel do PubliProva">
+  </div>
+  <p class="sub" style="margin-top:44px;font-size:33px;margin-bottom:90px">Campanha de demonstração: quem entregou ficou <b>verde sozinho</b>. Quem não entregou está sendo cobrado agora.</p>
+  <div class="fio"><i style="width:83.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame cta" data-nome="c03-06-cta">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">06 / 06</span></div>
+  <h1>Antes de abrir, estou ouvindo 15 agências.</h1>
+  <p class="sub">Sem pitch. 6 perguntas, por mensagem, no seu tempo. Em troca: o benchmark do que eu ouvir das outras.</p>
+  <div class="cartao">
+    <div class="cartao-rotulo">Comente:</div>
+    <div class="palavra">EU</div>
+  </div>
+  <p class="abaixo">que eu te chamo. 👇</p>
+  <div class="fio"><i style="width:100%"></i></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- ============================================================
+     C04 — 5 erros no relatório que custam a renovação
+     ============================================================ -->
+
+<div class="frame capa" data-nome="c04-01-capa">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">01 / 06</span></div>
+  <h1><span class="marcado">5 erros</span><br>no relatório<br>que custam<br>a renovação.</h1>
+  <p class="sub">É a última coisa que o cliente vê antes de decidir se continua.</p>
+  <div class="fio"><i style="width:16.7%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c04-02-erro1">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">02 / 06</span></div>
+  <div class="num-gigante">1</div>
+  <h1 style="font-size:72px;margin-top:24px">Print solto, sem leitura.</h1>
+  <p class="sub">O cliente não sabe ler insight. <b>Todo número precisa de uma frase:</b> o que ele significa pra campanha.</p>
+  <div class="fio"><i style="width:33.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c04-03-erro2">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">03 / 06</span></div>
+  <div class="num-gigante">2</div>
+  <h1 style="font-size:72px;margin-top:24px">Esconder quem não postou.</h1>
+  <p class="sub">Quando a marca descobre — e descobre — <b>ela desconfia do relatório inteiro.</b> Creator que sumiu é dado também.</p>
+  <div class="fio"><i style="width:50%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c04-04-erro3">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">04 / 06</span></div>
+  <div class="num-gigante">3</div>
+  <h1 style="font-size:72px;margin-top:24px">Só alcance e curtida.</h1>
+  <p class="sub">Métrica de vaidade não renova contrato. <b>Amarre cada número ao que o cliente pediu</b> no briefing.</p>
+  <div class="fio"><i style="width:66.7%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame lista-num" data-nome="c04-05-erros45">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">05 / 06</span></div>
+  <div class="item"><div class="n">4</div><div>
+    <h2>Relatório na véspera</h2>
+    <p>Começa no dia 1 da campanha, com o template do cliente aberto — não na noite anterior à entrega.</p>
+  </div></div>
+  <div class="item"><div class="n">5</div><div>
+    <h2>PDF sem a marca da agência</h2>
+    <p>O relatório é a peça que circula na diretoria do cliente. É mídia sua — assine.</p>
+  </div></div>
+  <div class="fio"><i style="width:83.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame salvar" data-nome="c04-06-cta">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">06 / 06</span></div>
+  <div class="icone">🔖</div>
+  <h1>Salva pro próximo relatório</h1>
+  <p class="sub">e manda pra quem assina a entrega aí na agência.</p>
+  <p class="obs">(Estamos construindo a ferramenta que monta esse relatório sozinha — sem os 5 erros. Segue pra acompanhar.)</p>
+  <div class="fio"><i style="width:100%"></i></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- ============================================================
+     C05 — Primeiros 14 dias: a conta honesta
+     ============================================================ -->
+
+<div class="frame capa claro" data-nome="c05-01-capa">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">01 / 06</span></div>
+  <h1>14 dias construindo em público.<br><span class="marcado">A conta</span><br><span class="marcado">honesta.</span></h1>
+  <p class="sub">Os números reais — inclusive os feios.</p>
+  <div class="fio"><i style="width:16.7%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c05-02-posts">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">02 / 06</span></div>
+  <div class="num-gigante">7</div>
+  <p class="num-rotulo">posts publicados</p>
+  <p class="sub" style="margin-top:64px">Views? <b>Dá pra contar nos dedos.</b><br>Conta nova não tem distribuição — tem constância. Seguimos.</p>
+  <div class="fio"><i style="width:33.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c05-03-emails">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">03 / 06</span></div>
+  <div class="num-gigante">6</div>
+  <p class="num-rotulo">agências reais abordadas</p>
+  <p class="sub" style="margin-top:64px">E-mails de pesquisa, um a um, com abertura específica sobre cada agência. <b>Meta: 15 conversas</b> antes de abrir a plataforma.</p>
+  <div class="fio"><i style="width:50%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c05-04-custo">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">04 / 06</span></div>
+  <div class="num-gigante">R$ 0</div>
+  <p class="num-rotulo">gastos até aqui</p>
+  <p class="sub" style="margin-top:64px">Produto funcionando, landing no ar, artes, e-mails. <b>Tudo em ferramenta gratuita.</b> Dinheiro só entra depois da validação.</p>
+  <div class="fio"><i style="width:66.7%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c05-05-aprendizado">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">05 / 06</span></div>
+  <p class="rotulo">O aprendizado da quinzena</p>
+  <h1 style="font-size:72px">Distribuição não é orgânica no dia 1.</h1>
+  <p class="sub" style="margin-top:56px">Postar e esperar não gera conversa. <b>Quem quer conversa, chama.</b> Por isso o e-mail virou o canal nº 1.</p>
+  <div class="fio"><i style="width:83.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame cta" data-nome="c05-06-cta">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">06 / 06</span></div>
+  <h1>Essa conta sai toda semana.</h1>
+  <p class="sub">Do jeito que ela estiver: número bonito e número feio. É o que "construir em público" significa.</p>
+  <div class="cartao">
+    <div class="cartao-rotulo">Toca o</div>
+    <div class="palavra" style="font-size:120px">SEGUIR</div>
+  </div>
+  <p class="abaixo">e acompanha a construção. 🔨</p>
+  <div class="fio"><i style="width:100%"></i></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<!-- ============================================================
+     C06 — O creator não é o vilão
+     ============================================================ -->
+
+<div class="frame capa" data-nome="c06-01-capa">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">01 / 06</span></div>
+  <h1>O creator<br><span class="marcado">não é o vilão.</span></h1>
+  <p class="sub">4 motivos reais de o print não chegar — e nenhum é "preguiça".</p>
+  <div class="fio"><i style="width:16.7%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c06-02-motivo1">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">02 / 06</span></div>
+  <div class="num-gigante">1</div>
+  <h1 style="font-size:68px;margin-top:24px">O pedido chega tarde.</h1>
+  <p class="sub">Dias depois do post, quando ele já está em <b>outras 3 campanhas.</b> A memória foi junto.</p>
+  <div class="fio"><i style="width:33.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c06-03-motivo2">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">03 / 06</span></div>
+  <div class="num-gigante">2</div>
+  <h1 style="font-size:68px;margin-top:24px">O insight expira.</h1>
+  <p class="sub">Stories somem em 24h. <b>Se ninguém pediu o print no dia, o dado morreu</b> — e não volta.</p>
+  <div class="fio"><i style="width:50%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame ideia" data-nome="c06-04-motivo3">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">04 / 06</span></div>
+  <div class="num-gigante">3</div>
+  <h1 style="font-size:68px;margin-top:24px">Sua mensagem afunda.</h1>
+  <p class="sub">Ele responde <b>30 marcas no mesmo WhatsApp.</b> O seu "oi, e o print?" está na página 4.</p>
+  <div class="fio"><i style="width:66.7%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame lista-num" data-nome="c06-05-solucao">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">05 / 06</span></div>
+  <div class="item"><div class="n">4</div><div>
+    <h2>Ninguém combinou o prazo</h2>
+    <p>Se o briefing não diz "print em 72h", cobrar depois é pedir favor.</p>
+  </div></div>
+  <div class="item" style="margin-top:72px"><div class="n" style="background:none;border:4px solid rgba(255,255,255,.7);color:#fff">✓</div><div>
+    <h2>Cobrança não conserta estrutura</h2>
+    <p>O que conserta: prazo no contrato, <b style="color:#fff">um link só</b> pra entregar tudo, e lembrete automático que não depende de ninguém lembrar.</p>
+  </div></div>
+  <div class="fio"><i style="width:83.4%"></i><span class="seta">›</span></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+<div class="frame cta" data-nome="c06-06-cta">
+  <div class="topo"><span class="handle">@publiprova.app</span><span class="tag">06 / 06</span></div>
+  <h1>Marca um creator que vive isso 😅</h1>
+  <p class="sub">E se você é agência: estou ouvindo 15 sobre fechamento de campanha. Sem pitch, 6 perguntas, por mensagem.</p>
+  <div class="cartao">
+    <div class="cartao-rotulo">Comente:</div>
+    <div class="palavra">EU</div>
+  </div>
+  <p class="abaixo">que eu te chamo. 👇</p>
+  <div class="fio"><i style="width:100%"></i></div>
+  <div class="rodape"><span>construindo em público</span><span>@publiprova.app</span></div>
+</div>
+
+</body>
+</html>
