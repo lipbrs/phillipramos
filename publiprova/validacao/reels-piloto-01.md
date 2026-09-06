@@ -86,6 +86,29 @@ inventada; o post leva o rótulo "criado com IA" do Instagram e a legenda diz
 
 ---
 
+## Produção — status 06/09/2026
+
+- **Reel 1** `artes/video/reel1-final.mp4` (34 s, 3,7 MB) — pronto. Voz ElevenLabs "Andre"
+  (a feminina "Ines" tropeçou em "creators"/"senha"); tela real gravada por
+  `artes/gravar-reels.mjs`; montagem `artes/reels/edit1.jsx` (higgsedit).
+- **Reel 2** `artes/video/reel2-final.mp4` (32 s, 3,4 MB) — pronto. `artes/reels/edit2.jsx`.
+- **Reel 3** `artes/video/reel3-final.mp4` (30 s, 9,0 MB) — pronto. Fluxo `ugc-website-video`
+  do Higgsfield: seed `soul_2` + de-slop `seedream_v5_pro`, 2 clipes Seedance 2.5 (15 s,
+  1080p, 135 cr cada), cards reais do site, legendas por whisper. **Publicar com o rótulo
+  "criado com IA" do Instagram.**
+- Custo real do piloto: 277,5 créditos (2.287,6 → 2.010,1). Reels 1 e 2 custaram ~4.
+- Publicação: **Reel 1 publicado em 06/09 ~18h05** (IG web, perfil passou de 5 para 6 posts):
+  https://www.instagram.com/publiprova.app/reel/Dc9krrWxDad/ — arquivo `reel1-ig.mp4`.
+  Reel 2 em 08/09 e Reel 3 em 10/09 pela tarefa `publicar-lote-02` (dias alternados com
+  os carrosséis C03 07/09, C04 09/09, C06 11/09, C05 13/09).
+- **Como o vídeo subiu:** o `file_upload` da extensão entrega bytes íntegros mas o
+  Instagram nunca processa vídeo por ele (o File não é apoiado em disco; imagem funciona).
+  Funcionou o diálogo nativo: clique REAL em "Selecionar do computador" + caminho colado
+  no "Abrir" — script `artes/video/subir-video-ig.ps1` (guardas: máquina ociosa ≥120 s e
+  título da janela conferido). Duas armadilhas: aba oculta não abre o menu "Criar"
+  (rAF pausado — a aba precisa estar em primeiro plano) e fechar aba do grupo da extensão
+  dissolve o grupo (recriar com tabs_context_mcp).
+
 ## Como medir (7 dias após cada publicação)
 Alcance total, % de não-seguidores, retenção média, comentários com a palavra-chave,
 seguidores ganhos. Comparar Reel 1 e 2 (tela real) × Reel 3 (apresentadora) × média dos
