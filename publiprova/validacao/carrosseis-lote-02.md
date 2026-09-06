@@ -12,8 +12,10 @@
 > AGENDA REAL (decidida 03/09): **C02 PUBLICADO 03/09** ao vivo pelo Instagram web
 > (o Meta Business Suite deste navegador não tem o publiprova — sessão do MBS é de outro
 > perfil do Chrome, e o composer novo do IG web não tem agendamento). Os demais saem pela
-> tarefa agendada `publicar-lote-02` (11h00): C03 05/09 · C04 07/09 · C06 09/09 · C05 11/09
-> (C05 por último para os "14 dias" da capa baterem com o calendário: conta criada 29/08).
+> tarefa agendada `publicar-lote-02` (11h00). Tentativa de 05/09 falhou (feed do IG com
+> "Ocorreu um erro"; a tarefa parou na 2ª falha, como deve). Calendário ajustado em 06/09:
+> **C03 07/09 · C04 09/09 · C06 11/09 · C05 13/09** (C05 por último: é a conta dos
+> primeiros 14 dias — conta criada 29/08).
 
 ---
 
@@ -67,7 +69,7 @@ Salva pra montar o próximo relatório — e manda pra quem assina a entrega aí
 
 #marketingdeinfluencia #agencias #relatorio #creators #socialmediabrasil #clientes
 
-## C05 — Primeiros 14 dias: a conta honesta (qui 11/09)
+## C05 — Primeiros 14 dias: a conta honesta (sáb 13/09)
 
 Building in public editorial: números reais, os feios também. CTA: seguir.
 
@@ -83,7 +85,7 @@ Segue pra acompanhar a construção — número bonito e número feio. 🔨
 
 #buildinpublic #startupbrasil #saas #marketingdeinfluencia #contahonesta
 
-## C06 — O creator não é o vilão (sáb 13/09)
+## C06 — O creator não é o vilão (qui 11/09)
 
 Empatia com o creator + a solução estrutural. Palavras-chave: marcar creator / **EU**.
 
