@@ -117,8 +117,31 @@ construindo o PubliProva · @publiprova.app
 
 ---
 
-## Follow-up único (4 dias depois — 05/09)
+## Follow-up único (enviado 07/09, 00h00 hora da máquina = 01h Brasília)
 
-Oi! Só refluturando 🙂 Se a agenda não deixar, sem problema — me responde só uma:
+Oi! Passando só pra reforçar 🙂 Se a agenda não deixar, sem problema — me responde só uma:
 quem aí na [agência] junta os prints dos creators no fim da campanha? É o atendimento
 ou tem alguém só pra isso?
+
+Phillip Ramos
+construindo o PubliProva · Instagram @publiprova.app
+
+## Status (07/09/2026)
+
+| Agência | 1º e-mail | Resposta | Follow-up |
+|---|---|---|---|
+| Holofotte | 02/09 22h06 | nenhuma | enviado 07/09 |
+| Brunch | 02/09 22h07 | nenhuma | enviado 07/09 |
+| Mosaico | 02/09 22h07 | nenhuma | enviado 07/09 |
+| CoCreators | 02/09 22h07 | nenhuma | enviado 07/09 |
+| MID | 02/09 22h07 | nenhuma | enviado 07/09 |
+| In Code (Gilberto) | 02/09 22h07 | nenhuma | enviado 07/09 |
+
+Lições: (1) o Gmail transformou "@publiprova.app" da assinatura num link de redirecionamento
+do Google (`google.com/url?q=…`) nos e-mails de 02/09 — a partir de agora a assinatura
+escreve "Instagram @publiprova.app" em texto puro; (2) o follow-up foi enviado como resposta
+nova na mesma conversa (`reply` com `to` forçado para a agência — o padrão responderia ao
+próprio remetente), não pelos rascunhos de 05/09, que tinham o link quebrado e o
+"reflutuando"; os 6 rascunhos continuam no Gmail e devem ser descartados à mão (o conector
+não tem permissão de lixeira). Regra do lote: 1 follow-up só — sem resposta até 14/09, a
+agência sai da lista ativa e entra o lote 02.
