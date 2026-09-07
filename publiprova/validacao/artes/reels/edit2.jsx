@@ -5,7 +5,9 @@ import { W, M, CW, BR, CL, TI, VD, RX, fit, fade } from "./comum.mjs";
 export default async ({ project }) => {
   const p = await project({ dir: "reel2", size: "1080x1920", fps: 30, background: RX });
   const voz = await p.add("reel2/r2.mp3"); const cel = await p.add("reel2/creator.mp4"); const dep = await p.add("reel2/depois.mp4");
-  p.cut(voz, { at: 0, from: 0, dur: 29.8 });
+  // v3 (07/09): narração refeita no ElevenLabs (voz Yuri) — 29,75 s contra 29,8 da
+  // versão com a voz Andre, então os beats não precisaram ser remarcados.
+  p.cut(voz, { at: 0, from: 0, dur: 29.75 });
   const marca = () => <text x={M} y={150} width={CW} fontFamily="Inter" fontWeight={600} fontSize={30} color={CL} letterSpacing={2}>@publiprova.app  ·  construindo em público</text>;
   const titulo = (t, size, y, t0, dur, a = 0, b = null) => <text x={M} y={y} width={CW} at={t0 + a} duration={(b ?? dur) - a} fontFamily="Inter" fontWeight={900} fontSize={size} color={BR} lineHeight={1.05} motion={{ by: "word", from: { y: 40, opacity: 0 }, overlap: 0.6, easing: "house", duration: fit(0.45, (b ?? dur) - a) }}>{t}</text>;
   const legenda = (t, dur) => <column x={M} y={1460} width={CW} padding={24} fill={TI} radius={20} animate={fade(dur)}><text width={872} fontFamily="Inter" fontWeight={700} fontSize={40} color={BR} align="center" lineHeight={1.25}>{t}</text></column>;

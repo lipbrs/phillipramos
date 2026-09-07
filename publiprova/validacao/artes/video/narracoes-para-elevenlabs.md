@@ -12,9 +12,13 @@
 - **Stability:** ~45%. **Similarity:** ~75%. **Style:** baixo (0–15%).
 - **Formato:** MP3, 128 kbps ou melhor.
 
-## ⚠️ Anote a voz escolhida (para reusarmos sempre)
-- Nome da voz: `___________________`
-- Voice ID: `___________________`
+## ✅ VOZ OFICIAL DA CONTA (definida em 07/09/2026)
+- Nome da voz: **Yuri**
+- Voice ID (ElevenLabs): `3Je7qW9yPOhc47iG41pH`
+- **O Higgsfield NÃO aceita esse id** (`text2speech_v2` devolve "Voice not found" — o
+  catálogo dele usa UUIDs próprios). Toda narração daqui pra frente é gerada pelo Phillip
+  na conta do ElevenLabs e salva nesta pasta; o Claude só monta.
+- Já geradas: `voz-r5-metodo48.mp3` (88,45 s) e `voz-r2-creator.mp3` (29,75 s).
 
 ## Onde salvar
 Nesta mesma pasta: `phillipramos/publiprova/validacao/artes/video/`

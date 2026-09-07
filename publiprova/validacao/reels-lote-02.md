@@ -113,29 +113,49 @@ no fim os cinco aparecem juntos — esse é o quadro que a pessoa salva.
   Duas correções vieram da folha de prova (`artes/video/prova-r4.jpg`): o fade de 0,4 s
   deixava os cortes de 0,7 s translúcidos (baixado para 0,1 s) e o último corte começava
   num formulário em vez do painel verde (`trimStart` 1 → 1,6).
-- **R5: ROTEIRO PRONTO, ESPERANDO A VOZ.** Ver "A voz da marca" abaixo.
+- **R5: PRONTO E AGENDADO** — `artes/video/r5-ig.mp4` (90,0 s, 2,9 MB), montagem em
+  `artes/reels/edit5.jsx`, narração `artes/video/voz-r5-metodo48.mp3` (voz Yuri, 88,45 s).
+  Agendado para **seg 14/09, 10:00 = 11h Brasília**. Cortes casados nos timestamps de
+  palavra do whisper (a lista está no cabeçalho do edit5.jsx).
+  Dois defeitos pegos na folha de prova: o "celular" saiu cinza porque usei
+  `reel2-creator.webm` sem o corte `crop=540:1170:0:0`, e a faixa ampliada da régua ficou
+  fina demais (trocada pela janela inteira do painel).
+- **Reel 2 REFEITO com a voz nova** — `artes/video/r2-ig.mp4` (32 s, 1,4 MB). A narração
+  nova tem 29,75 s contra 29,8 s da antiga, então os beats do `edit2.jsx` não precisaram
+  ser remarcados: só troquei o mp3. **Ainda não substituiu o agendado** (ver abaixo).
 
 ## A voz da marca (decisão de 07/09)
 As vozes de TTS do Higgsfield foram reprovadas pelo Phillip: **Andre tem sotaque de
-Portugal** (é a voz do Reel 1, já publicado, e do Reel 2, agendado) e **Marcus é lento
+Portugal** (é a voz do Reel 1, já publicado, e do Reel 2 agendado) e **Marcus é lento
 demais**. Foram testadas 6 vozes (Arthur, Marcus, Julian, Sienna, Marisol e Marcus/minimax)
 — amostras em `artes/video/vozes/`. O `text2speech_v2` **não aceita voice_id nativo do
-ElevenLabs** (`4za2kOXGgUd57HRSQ1fn` devolveu "Voice not found"): os ids do Higgsfield são
-UUIDs de um catálogo próprio. Decisão: **Phillip gera a narração na conta dele do
-ElevenLabs** e a voz escolhida passa a ser a voz oficial da conta. Textos e configuração
-em `artes/video/narracoes-para-elevenlabs.md`.
+ElevenLabs** (testados `4za2kOXGgUd57HRSQ1fn` e o id do Yuri: "Voice not found"), porque o
+catálogo do Higgsfield usa UUIDs próprios.
+
+**Decisão: a voz oficial da conta é a `Yuri` do ElevenLabs (`3Je7qW9yPOhc47iG41pH`),
+gerada pelo Phillip e salva na pasta `artes/video/`.** O Claude não gera mais narração —
+só monta. Textos, configuração e nomes de arquivo em
+`artes/video/narracoes-para-elevenlabs.md`.
 
 ## Publicação e medição
 
 - **R4** sáb 12/09, 11h (Brasília) — encaixa no vão livre entre C06 (11/09) e C05 (13/09).
-- **R5** seg 14/09, 11h — abre a semana e é o material que dá para mandar por e-mail/DM
-  para as agências da pesquisa; tem vida fora do algoritmo, o que o R4 não tem.
-  **Só entra na fila quando o `voz-r5-metodo48.mp3` existir.**
-- **Reel 2 (ter 08/09)** está agendado com a voz portuguesa. Ele é consistente com o
-  Reel 1, que já está no ar com a mesma voz — por isso a recomendação é deixar publicar e
-  começar a voz nova no R5. Se o Phillip preferir trocar, o item precisa ser apagado à mão
-  no Business Suite (Content → Scheduled → "..." → Manage post): o menu dessa lista não
-  responde a clique automatizado, foi a única coisa que não deu para fazer daqui.
+- **R5** seg 14/09, 11h — AGENDADO. Abre a semana e é o material que dá para mandar por
+  e-mail/DM para as agências da pesquisa; tem vida fora do algoritmo, o que o R4 não tem.
+
+## PENDÊNCIA — trocar o Reel 2 agendado (só o Phillip consegue)
+O Reel 2 com a voz portuguesa continua agendado para **ter 08/09, 10:00**. A versão nova
+(`r2-ig.mp4`, voz Yuri) está pronta mas **não dá para substituir sem apagar a antiga**, e
+o menu da lista de agendados resiste a automação: o menu abre, navega por teclado
+(Down/Up + Return abre submenu), mas "Manage post" nunca expande — nem por clique, nem por
+hover, nem por teclado. Pelo Planner, clicar no card abre um compositor NOVO no lugar
+daquele horário, não o post existente.
+
+**O que o Phillip precisa fazer (30 segundos):** Business Suite → Content → Scheduled →
+"..." da linha de terça 08/09 → Manage post → Delete. Depois me avisar: eu agendo a versão
+nova no mesmo horário em uma rodada.
+Se não der tempo antes das 11h de amanhã, a versão portuguesa publica — o que não é
+incoerente, já que o Reel 1 no ar tem a mesma voz.
 - Medir em 7 dias, contra o Reel 2 (tela real, 08/09) e o Reel 3 (apresentadora, 10/09):
   alcance de não-seguidores, retenção média, **salvamentos e compartilhamentos** (é onde
   o formato B tem de ganhar) e comentários com a palavra-chave.
