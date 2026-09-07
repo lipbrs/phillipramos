@@ -9,13 +9,14 @@
 >
 > Artes: `artes/carrosseis-lote-02.html` → `node render-lote.mjs carrosseis-lote-02.html`
 >
-> AGENDA REAL (decidida 03/09): **C02 PUBLICADO 03/09** ao vivo pelo Instagram web
-> (o Meta Business Suite deste navegador não tem o publiprova — sessão do MBS é de outro
-> perfil do Chrome, e o composer novo do IG web não tem agendamento). Os demais saem pela
-> tarefa agendada `publicar-lote-02` (11h00). Tentativa de 05/09 falhou (feed do IG com
-> "Ocorreu um erro"; a tarefa parou na 2ª falha, como deve). Calendário ajustado em 06/09:
-> **C03 07/09 · C04 09/09 · C06 11/09 · C05 13/09** (C05 por último: é a conta dos
-> primeiros 14 dias — conta criada 29/08).
+> AGENDA REAL: **C02 PUBLICADO 03/09** ao vivo pelo Instagram web. A tentativa de 05/09
+> pela tarefa agendada falhou (feed do IG com "Ocorreu um erro"). Em 06/09 o Phillip
+> ligou o @publiprova.app ao portfólio "planflservices" do Meta Business Suite e o resto
+> do lote foi **AGENDADO NO MBS** (Content → Scheduled), 10:00 no fuso da máquina (UTC−4)
+> = 11h Brasília: **C03 seg 07/09 · Reel 2 ter 08/09 · C04 qua 09/09 · Reel 3 qui 10/09 ·
+> C06 sex 11/09 · C05 dom 13/09** (C05 por último: é a conta dos primeiros 14 dias —
+> conta criada 29/08). Tarefa `publicar-lote-02` desativada. Técnica de upload no MBS
+> (input capturado + legenda por evento paste) documentada em `reels-piloto-01.md`.
 
 ---
 

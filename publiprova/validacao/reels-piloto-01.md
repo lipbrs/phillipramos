@@ -99,8 +99,20 @@ inventada; o post leva o rótulo "criado com IA" do Instagram e a legenda diz
 - Custo real do piloto: 277,5 créditos (2.287,6 → 2.010,1). Reels 1 e 2 custaram ~4.
 - Publicação: **Reel 1 publicado em 06/09 ~18h05** (IG web, perfil passou de 5 para 6 posts):
   https://www.instagram.com/publiprova.app/reel/Dc9krrWxDad/ — arquivo `reel1-ig.mp4`.
-  Reel 2 em 08/09 e Reel 3 em 10/09 pela tarefa `publicar-lote-02` (dias alternados com
-  os carrosséis C03 07/09, C04 09/09, C06 11/09, C05 13/09).
+  **Reels 2 e 3 AGENDADOS no Meta Business Suite** (06/09, à noite): Reel 2 ter 08/09 e
+  Reel 3 qui 10/09, 10:00 no fuso da máquina (UTC−4) = 11h Brasília — intercalados com os
+  carrosséis C03 07/09, C04 09/09, C06 11/09, C05 13/09, todos no mesmo painel
+  (Content → Scheduled). A tarefa `publicar-lote-02` foi desativada.
+  **Pendência do Reel 3:** o compositor do MBS não tem o toggle "rótulo de IA"; a legenda
+  já abre com "Apresentadora virtual, produto real", mas depois de publicado (10/09)
+  marcar "Adicionar rótulo de IA" em Editar post (app ou IG web).
+- **Como o vídeo entrou no MBS (sem diálogo nativo, com o Phillip usando o PC):** o botão
+  "Add Video"/"Add photo/video" cria um `<input type=file>` fora do DOM e chama `.click()`;
+  interceptando `HTMLInputElement.prototype.click` dá para prender esse input no DOM e
+  alimentá-lo pelo `file_upload` da extensão — o MBS sobe o arquivo por XHR (não decodifica
+  no navegador), então vídeo de 8 MB passou. Legenda: o editor é Draft.js — só aceita
+  evento `paste` sintético (`ClipboardEvent` com `DataTransfer` text/plain); `execCommand`
+  quebra o componente. Data: digitar `mm/dd/yyyy` + Enter no campo; hora nos spinbuttons.
 - **Como o vídeo subiu:** o `file_upload` da extensão entrega bytes íntegros mas o
   Instagram nunca processa vídeo por ele (o File não é apoiado em disco; imagem funciona).
   Funcionou o diálogo nativo: clique REAL em "Selecionar do computador" + caminho colado
