@@ -161,6 +161,8 @@ export default function Landing() {
 
       <footer className="wrap small muted" style={{ padding: '32px 20px 48px', borderTop: '1px solid var(--border)' }}>
         PubliProva · comprovação de campanhas com creators · feito para agências pequenas do Brasil
+        {' · '}
+        <Link href="/privacidade">Política de Privacidade</Link>
       </footer>
     </>
   );
