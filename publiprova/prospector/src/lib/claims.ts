@@ -1,11 +1,11 @@
 /**
- * The claims gate.
+ * O portao das afirmacoes.
  *
- * The model may only assert what is in `verifiedClaims`. That cannot be checked
- * semantically with any confidence, so this is a deny-filter on the shapes a
- * false claim takes — numbers, prices, guarantees, superlatives, relationships.
- * Anything it catches is blocked and sent to human review rather than softened,
- * because a paraphrased unverified claim is still an unverified claim.
+ * A IA so pode afirmar o que esta em `verifiedClaims`. Isso nao da para checar
+ * semanticamente com confianca, entao este e um filtro de negacao sobre os
+ * formatos que uma afirmacao falsa assume — numero, preco, garantia,
+ * superlativo, relacao. O que ele pega e bloqueado e vai para revisao humana,
+ * nunca suavizado: afirmacao nao comprovada parafraseada continua nao comprovada.
  */
 
 export type Violation = { rule: string; match: string; detail: string };
@@ -62,7 +62,7 @@ const RULES: Rule[] = [
 export function checkClaims(text: string): ClaimCheck {
   const violations: Violation[] = [];
   for (const rule of RULES) {
-    // Fresh lastIndex per call: these are /g regexes reused across invocations.
+    // Zera o lastIndex a cada chamada: sao regex /g reaproveitadas entre chamadas.
     rule.pattern.lastIndex = 0;
     const found = text.match(rule.pattern);
     if (found) {
@@ -74,7 +74,7 @@ export function checkClaims(text: string): ClaimCheck {
   return violations.length === 0 ? { ok: true } : { ok: false, violations };
 }
 
-/** Human-readable reason for the exceptions queue. */
+/** Motivo legivel para a fila de excecoes. */
 export function describeViolations(violations: Violation[]): string {
   return violations
     .map((v) => `[${v.rule}] "${v.match}" — ${v.detail}`)

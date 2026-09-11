@@ -11,9 +11,9 @@ import {
 export type Stage = CustomerStage | AffiliateStage;
 
 /**
- * Allowed forward edges. Anything not listed is rejected, which is what keeps a
- * lead from jumping straight to `active_customer` because a model said so.
- * Every stage may go to `closed`; nothing may leave `closed`.
+ * Arestas permitidas. O que nao esta listado e recusado - e isso que impede um
+ * lead de pular direto para `active_customer` porque um modelo achou que sim.
+ * Toda etapa pode ir para `closed`; nada sai de `closed`.
  */
 const CUSTOMER_EDGES: Record<CustomerStage, readonly CustomerStage[]> = {
   discovered: ["qualified", "closed"],
@@ -40,9 +40,9 @@ const AFFILIATE_EDGES: Record<AffiliateStage, readonly AffiliateStage[]> = {
 };
 
 /**
- * Channel machine. First contact is a private reply to a comment through the
- * official API, so a lead only becomes contactable once it arrives inbound.
- * `do_not_contact` and `blocked` are absorbing: nothing leaves them, ever.
+ * Maquina do canal. O primeiro contato e resposta privada a comentario pela API
+ * oficial, entao o lead so vira contatavel depois de chegar por conta propria.
+ * `do_not_contact` e `blocked` sao absorventes: nada sai deles, nunca.
  */
 const CHANNEL_EDGES: Record<ChannelState, readonly ChannelState[]> = {
   inbound_pending: ["private_reply_sent", "human_review_required", "do_not_contact", "blocked"],
@@ -100,15 +100,15 @@ export function assertChannelTransition(from: ChannelState, to: ChannelState): v
   }
 }
 
-/** Absorbing states: reached once, never left. */
+/** Estados absorventes: entrou, nao sai mais. */
 export function isTerminalChannel(state: ChannelState): boolean {
   return CHANNEL_EDGES[state].length === 0;
 }
 
 /**
- * The channel-ownership lock. Only these states may produce an outbound
- * message, and each one allows exactly one kind — this is what makes a double
- * send between the private-reply path and the API path impossible.
+ * A trava de propriedade do canal. So estes estados podem gerar envio, e cada um
+ * permite exatamente um tipo — e isto que torna impossivel o envio duplicado
+ * entre o caminho da resposta privada e o da API.
  */
 const SENDABLE: Partial<Record<ChannelState, "private_reply" | "api_dm">> = {
   inbound_pending: "private_reply",

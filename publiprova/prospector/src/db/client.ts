@@ -1,5 +1,5 @@
-// NOTE: no "server-only" here — the worker is a plain Node process and imports
-// this too. "server-only" belongs in the Next query layer, not the shared client.
+// Sem "server-only" aqui: o worker e um processo Node comum e importa este
+// mesmo cliente. O "server-only" fica na camada de consulta do Next, nao aqui.
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 
@@ -7,9 +7,9 @@ import { env } from "../lib/env.ts";
 import * as schema from "./schema.ts";
 
 /**
- * libsql is SQLite: DATABASE_URL is a `file:` path on disk. WAL and a busy
- * timeout are set once here so every caller inherits them — without WAL the
- * worker and the dashboard block each other on the first concurrent write.
+ * libsql e SQLite: DATABASE_URL e um caminho `file:` em disco. WAL e busy
+ * timeout sao ligados uma vez aqui para todo mundo herdar — sem WAL, o worker e
+ * o painel se bloqueiam na primeira escrita concorrente.
  */
 const client = createClient({ url: env.DATABASE_URL });
 
@@ -26,7 +26,7 @@ export async function applyPragmas(): Promise<void> {
 export const db = drizzle(client, { schema });
 export { client, schema };
 
-/** Windows keeps the file locked while the connection lives — tests must close it. */
+/** O Windows trava o arquivo enquanto a conexao vive; o teste precisa fechar. */
 export function closeDb(): void {
   client.close();
 }

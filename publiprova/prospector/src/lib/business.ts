@@ -50,7 +50,7 @@ export function loadBusiness(path = resolve(process.cwd(), "config/business.json
   return cached;
 }
 
-/** Placeholders still left to fill — the dashboard warns instead of sending them. */
+/** Placeholders que faltam preencher — o painel avisa em vez de envia-los. */
 export function pendingPlaceholders(b: Business): string[] {
   const out: string[] = [];
   if (b.links.whatsapp.includes("{{")) out.push("links.whatsapp");

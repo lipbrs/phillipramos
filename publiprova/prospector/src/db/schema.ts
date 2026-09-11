@@ -9,9 +9,9 @@ import {
 } from "drizzle-orm/sqlite-core";
 
 /**
- * Internal values are English; the UI translates them (see src/lib/labels.ts).
- * Pipeline and channel are deliberately separate columns: a lead can sit at
- * `interested` in the customer pipeline while its channel is `api_window_closed`.
+ * Os valores internos ficam em ingles e a interface traduz (src/lib/labels.ts).
+ * Pipeline e canal sao colunas separadas de proposito: um lead pode estar em
+ * `interested` no funil e com o canal em `api_window_closed` ao mesmo tempo.
  */
 export const CUSTOMER_STAGES = [
   "discovered",
@@ -38,8 +38,8 @@ export const AFFILIATE_STAGES = [
 ] as const;
 
 /**
- * First contact is a private reply to a comment (official API, 7-day window),
- * never an unsolicited DM — so the channel machine starts at `inbound_pending`.
+ * O primeiro contato e resposta privada a comentario (API oficial, janela de 7
+ * dias), nunca DM nao solicitada — por isso a maquina comeca em `inbound_pending`.
  */
 export const CHANNEL_STATES = [
   "inbound_pending",
@@ -67,9 +67,9 @@ export const leads = sqliteTable(
   "leads",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
-    /** Instagram numeric user id, known only once Meta sends it. */
+    /** Id numerico do Instagram; so existe depois que a Meta manda. */
     igUserId: text("ig_user_id"),
-    /** Handle without the leading @, lowercased. The dedupe key. */
+    /** Handle sem @ e em minusculas. E a chave de deduplicacao. */
     handle: text("handle").notNull(),
     displayName: text("display_name"),
     bio: text("bio"),
@@ -78,17 +78,17 @@ export const leads = sqliteTable(
     funnel: text("funnel").$type<Funnel>().notNull(),
     stage: text("stage").notNull(),
     channelState: text("channel_state").$type<ChannelState>().notNull(),
-    /** 0..100 ICP fit. */
+    /** Aderencia ao ICP, de 0 a 100. */
     score: integer("score").notNull().default(0),
     scoreReason: text("score_reason"),
     /** "comment_keyword" | "vidiq_search" | "manual" | "referral" */
     source: text("source").notNull(),
     sourceDetail: text("source_detail"),
-    /** Which post and keyword pulled them in. */
+    /** Qual post e qual palavra-chave trouxeram o lead. */
     originPostId: text("origin_post_id"),
     originKeyword: text("origin_keyword"),
     tags: text("tags", { mode: "json" }).$type<string[]>(),
-    /** Meta messaging window expiry, ISO-8601 UTC. */
+    /** Quando a janela de mensagem da Meta expira, em ISO-8601 UTC. */
     messagingWindowExpiresAt: text("messaging_window_expires_at"),
     nextActionAt: text("next_action_at"),
     nextActionKind: text("next_action_kind"),
@@ -115,7 +115,7 @@ export const messages = sqliteTable(
     /** "private_reply" | "api_dm" | "comment" */
     channel: text("channel").notNull(),
     body: text("body").notNull(),
-    /** Meta message id — the idempotency key for inbound webhooks. */
+    /** Id da mensagem na Meta — chave de idempotencia do webhook. */
     externalId: text("external_id"),
     variantId: integer("variant_id"),
     sentAt: text("sent_at").notNull().default(now),
@@ -147,7 +147,7 @@ export const jobs = sqliteTable(
     id: integer("id").primaryKey({ autoIncrement: true }),
     kind: text("kind").notNull(),
     payload: text("payload", { mode: "json" }),
-    /** Dedupe key so the same logical job is never queued twice. */
+    /** Chave que impede a mesma job logica de entrar duas vezes na fila. */
     idempotencyKey: text("idempotency_key"),
     status: text("status")
       .$type<"pending" | "running" | "done" | "failed" | "dead">()
@@ -169,14 +169,14 @@ export const jobs = sqliteTable(
 export const experiments = sqliteTable("experiments", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull().unique(),
-  /** The single variable under test, e.g. "opening_line". */
+  /** A unica variavel em teste, por exemplo "opening_line". */
   variable: text("variable").notNull(),
   funnel: text("funnel").$type<Funnel>().notNull(),
   status: text("status")
     .$type<"draft" | "running" | "stopped" | "decided">()
     .notNull()
     .default("draft"),
-  /** Minimum assignments per arm before a winner may be declared. */
+  /** Minimo de alocacoes por braco antes de poder declarar vencedor. */
   minSampleSize: integer("min_sample_size").notNull().default(50),
   primaryMetric: text("primary_metric").notNull(),
   decidedVariantId: integer("decided_variant_id"),
@@ -192,7 +192,7 @@ export const variants = sqliteTable(
       .references(() => experiments.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     isControl: integer("is_control", { mode: "boolean" }).notNull().default(false),
-    /** Relative weight for assignment; the explore arm keeps a floor. */
+    /** Peso relativo na alocacao; o braco de exploracao tem piso garantido. */
     weight: real("weight").notNull().default(1),
     content: text("content", { mode: "json" }).notNull(),
   },
@@ -232,7 +232,7 @@ export const aiCalls = sqliteTable(
   (t) => [index("ai_calls_created_idx").on(t.createdAt)],
 );
 
-/** One row per key: global pause, circuit breakers, warmup counters. */
+/** Uma linha por chave: pausa geral, circuit breakers, contadores de aquecimento. */
 export const systemState = sqliteTable("system_state", {
   key: text("key").primaryKey(),
   value: text("value", { mode: "json" }).notNull(),

@@ -1,64 +1,69 @@
-# Architecture decisions — PubliProva Prospector
+# Decisões de arquitetura — Prospector do PubliProva
 
-Developer documentation is in English (per the system spec). The operator manual
-(`SETUP.md`) is in Portuguese, and so is the whole UI.
+Tudo em português: código, comentário, documentação, commit e interface. O
+projeto é para creators e agências brasileiras e quem mantém isto lê em
+português. Os únicos termos que ficam em inglês são os **valores internos de
+estado** (`discovered`, `api_active`, `do_not_contact`) e os nomes de tabela e
+coluna — a interface traduz, e trocá-los depois de o banco existir seria
+retrabalho sem ganho.
 
-## ADR-001 — First contact is a private reply to a comment, not a cold DM
+## ADR-001 — O primeiro contato é resposta a comentário, não DM fria
 
-**Status:** decided, 2026-09-10.
+**Status:** decidido em 10/09/2026.
 
-**Context.** The original spec routed first contact through the operator's real
-logged-in Chrome over CDP, with a 90–240s gap, a 30/day cap and a 5/day warmup.
-Its stated reason: *"a API oficial da Meta não abre conversa com quem nunca
-respondeu."*
+**Contexto.** A especificação original mandava o primeiro contato pelo Chrome
+real do operador via CDP, com intervalo de 90–240 s, teto de 30/dia e aquecimento
+de 5/dia. O motivo declarado: *"a API oficial da Meta não abre conversa com quem
+nunca respondeu"*.
 
-**Decision.** We do not build that. Two reasons, and the first is enough:
+**Decisão.** Não construímos essa etapa. Dois motivos, e o primeiro já basta:
 
-1. Meta blocks conversation-opening on purpose. Driving the logged-in browser to
-   do what the API refuses is circumventing a platform restriction — which the
-   same spec lists under *Proibido*. The pacing and warmup schedule are tuned so
-   the account is not flagged; that is evasion by design regardless of intent.
-2. Unsolicited automated DMs are against the Instagram Terms of Use. The account
-   at risk is `@publiprova.app` itself, which is the company's only distribution
-   channel today.
+1. A Meta bloqueia abrir conversa de propósito. Dirigir o navegador logado para
+   fazer o que a API recusa é contornar a restrição da plataforma — que a própria
+   especificação lista em *Proibido*. O ritmo e o aquecimento são calibrados para
+   a conta não ser sinalizada; isso é evasão por desenho, seja qual for a
+   intenção declarada.
+2. DM automática não solicitada é o que os Termos de Uso do Instagram proíbem. A
+   conta em risco seria a `@publiprova.app`, que hoje é o único canal de
+   distribuição da empresa.
 
-**What we build instead.** The official Instagram Messaging API supports
-**private replies to comments**: when someone comments on one of our posts, a
-messaging window opens and we may send them one DM through the official API.
-This is documented, supported, and is the mechanism ManyChat and OpenReply use.
+**O que construímos no lugar.** A API oficial de mensagens do Instagram suporta
+**resposta privada a comentário**: quando alguém comenta num post nosso, abre uma
+janela de mensagem e podemos mandar uma DM por ali, pela API oficial. É
+documentado, é suportado, e é o mecanismo que o ManyChat e o OpenReply usam.
 
-It fits what already exists: every post scheduled through 19/09 ends in a keyword
-CTA — *comenta RELATÓRIO*, *comenta PRINT*, *comenta EU*. The inbound funnel is
-already being filled by the content calendar; the system harvests it.
+Encaixa no que já existe: todo post agendado até 19/09 termina numa palavra-chave
+— *comenta RELATÓRIO*, *comenta PRINT*, *comenta EU*. O calendário de conteúdo já
+está enchendo o funil de entrada; o sistema passa a colhê-lo.
 
-**Consequences.**
+**Consequências.**
 
-- The channel machine starts at `inbound_pending` instead of a pending cold
-  contact. Nothing is sendable until the person has commented first.
-- Leads are warmer: they self-selected by typing a keyword.
-- Volume is bounded by comment volume, not by a daily send cap. `MAX_DMS_PER_DAY`
-  stays as a ceiling for account health.
-- Lead discovery and ICP scoring use the vidIQ Instagram endpoints (a legitimate
-  third-party API already connected to this workspace), not scraping.
-- Funnel B (affiliates) works the same way, plus assisted outreach where the
-  system drafts and the operator sends.
+- A máquina de canal começa em `inbound_pending`. Nada é enviável antes de a
+  pessoa comentar.
+- Os leads chegam mais quentes: se identificaram digitando a palavra-chave.
+- O volume passa a ser limitado pelo volume de comentários, não por um teto de
+  disparo. O `MAX_DMS_PER_DAY` continua como teto de saúde da conta.
+- Descoberta e score de ICP usam os endpoints de Instagram do vidIQ (API de
+  terceiro legítima, já conectada a este workspace), não raspagem.
+- O funil B (afiliados) funciona igual, mais abordagem assistida em que o sistema
+  redige e o operador envia.
 
-## ADR-002 — libsql instead of better-sqlite3
+## ADR-002 — libsql no lugar de better-sqlite3
 
-`better-sqlite3` ships no prebuilt binary for Node 24 on Windows and needs Visual
-Studio to compile, which this machine does not have. `@libsql/client` is SQLite,
-ships prebuilt bindings, and has a first-class Drizzle driver. `DATABASE_URL` is
-still a `file:` path on local disk; WAL, foreign keys and busy timeout are set in
-`src/db/client.ts`. SQLite remains the single source of truth.
+O `better-sqlite3` não tem binário pronto para Node 24 no Windows e exige Visual
+Studio para compilar, que esta máquina não tem. O `@libsql/client` é SQLite, tem
+binário pré-compilado e driver first-class no Drizzle. O `DATABASE_URL` continua
+sendo um caminho `file:` em disco local; WAL, foreign keys e busy timeout ficam
+em `src/db/client.ts`. O SQLite segue como fonte única da verdade.
 
-## ADR-003 — No `server-only` in the shared DB client
+## ADR-003 — Sem `server-only` no cliente de banco compartilhado
 
-The worker is a plain Node process and imports the same client. `server-only`
-would break it. The guard belongs in the Next.js query layer instead.
+O worker é um processo Node comum e importa o mesmo cliente; `server-only`
+quebraria ele. A trava fica na camada de consulta do Next, não no cliente.
 
-## Open conflict with `phillipramos/CLAUDE.md`
+## ADR-004 — Idioma
 
-`CLAUDE.md` says every comment and commit in this repo is pt-BR. The system spec
-for this subproject says code, comments and commits are English, with the
-operator manual in Portuguese. This subproject follows the spec; the rest of the
-repo keeps pt-BR. Worth settling explicitly if it starts to grate.
+Resolvido pelo Phillip em 10/09: **tudo em português**. Isso alinha com o
+`phillipramos/CLAUDE.md`, que já mandava pt-BR em todo o repositório. A
+especificação deste subprojeto pedia código em inglês; ficou valendo o
+português, com a exceção dos valores internos de estado explicada no topo.

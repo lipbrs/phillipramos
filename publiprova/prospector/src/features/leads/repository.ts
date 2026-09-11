@@ -19,7 +19,7 @@ export type Lead = typeof leads.$inferSelect;
 
 const utcNow = () => new Date().toISOString();
 
-/** Handles are compared lowercased and without the @ — that is the dedupe key. */
+/** Handle e comparado em minusculas e sem @ — essa e a chave de deduplicacao. */
 export function normalizeHandle(raw: string): string {
   return raw.trim().replace(/^@+/, "").toLowerCase();
 }
@@ -40,9 +40,10 @@ export type DiscoverInput = {
 export type DiscoverResult = { lead: Lead; created: boolean; suppressed: boolean };
 
 /**
- * Idempotent discovery. Re-running the same search never creates a second row:
- * the unique index on (handle, funnel) is the guarantee, not an existence check
- * — two workers racing would both pass a check, but only one wins the insert.
+ * Descoberta idempotente. Rodar a mesma busca de novo nunca cria segunda linha:
+ * a garantia e o indice unico em (handle, funnel), nao uma checagem de
+ * existencia — dois workers em corrida passariam os dois pela checagem, mas so
+ * um ganha o insert.
  */
 export async function discoverLead(input: DiscoverInput): Promise<DiscoverResult> {
   const handle = normalizeHandle(input.handle);
@@ -112,9 +113,9 @@ export async function recordEvent(
 }
 
 /**
- * Guarded stage change. The guard runs against the row we just read and the
- * UPDATE re-asserts that same stage in its WHERE, so a concurrent writer cannot
- * slip a different transition in between.
+ * Mudanca de etapa com guarda. A guarda roda sobre a linha que acabamos de ler e
+ * o UPDATE reafirma essa mesma etapa no WHERE, entao um escritor concorrente nao
+ * consegue enfiar outra transicao no meio.
  */
 export async function advanceStage(leadId: number, to: Stage, reason?: string): Promise<Lead> {
   const lead = await getLead(leadId);
@@ -161,8 +162,8 @@ export async function setChannelState(
 }
 
 /**
- * Opt-out. Permanent and cross-campaign: the handle goes on the block list, so
- * even a future discovery from another source comes back suppressed.
+ * Pedido de parar. Permanente e entre campanhas: o handle entra na lista de
+ * bloqueio, entao ate uma descoberta futura por outra origem volta suprimida.
  */
 export async function markDoNotContact(leadId: number, reason: string): Promise<Lead> {
   const lead = await getLead(leadId);

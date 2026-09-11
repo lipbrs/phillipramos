@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 /**
- * Fail fast and loudly: a missing token must stop the worker at boot, not at
- * the moment it is about to message a real person.
+ * Falhar cedo e alto: token faltando tem de parar o worker no boot, e nao na
+ * hora em que ele ja ia mandar mensagem para uma pessoa de verdade.
  */
 const schema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
@@ -19,7 +19,7 @@ const schema = z.object({
   INSTAGRAM_WEBHOOK_VERIFY_TOKEN: z.string().min(1).optional(),
   INSTAGRAM_BUSINESS_ACCOUNT_ID: z.string().min(1).optional(),
 
-  /** Private replies to comments are capped per day for account health. */
+  /** Teto diario de respostas privadas a comentario, por saude da conta. */
   MAX_DMS_PER_DAY: z.coerce.number().int().positive().default(30),
   MIN_SECONDS_BETWEEN_DMS: z.coerce.number().int().positive().default(90),
   MAX_SECONDS_BETWEEN_DMS: z.coerce.number().int().positive().default(240),
@@ -29,7 +29,7 @@ const schema = z.object({
     .default("09:00-20:00"),
   OPERATING_TIMEZONE: z.string().min(1).default("America/Sao_Paulo"),
 
-  /** Hard stop: nothing is ever sent while this is true. */
+  /** Trava dura: nada e enviado de verdade enquanto isto for true. */
   DRY_RUN: z
     .enum(["true", "false"])
     .default("true")
@@ -54,7 +54,7 @@ function load(): Env {
 
 export const env: Env = load();
 
-/** Which integrations are usable right now — the dashboard shows this. */
+/** Quais integracoes da para usar agora — o painel mostra isto. */
 export function integrationStatus() {
   return {
     openai: Boolean(env.OPENAI_API_KEY),

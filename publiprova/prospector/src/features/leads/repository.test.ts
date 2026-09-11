@@ -4,8 +4,8 @@ import { join } from "node:path";
 
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-// The env module reads process.env at import time, so the temp database has to
-// be set before anything touches it.
+// O modulo env le process.env no import, entao o banco temporario precisa
+// estar definido antes de qualquer coisa toca-lo.
 const dir = mkdtempSync(join(tmpdir(), "prospector-test-"));
 process.env.DATABASE_URL = `file:${join(dir, "test.db").replace(/\\/g, "/")}`;
 
@@ -19,9 +19,9 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  // Close the connection so the file is not left open. The directory itself is
-  // left to the OS: on Windows the handle lingers briefly and deleting here
-  // makes the suite fail for a reason that has nothing to do with the code.
+  // Fecha a conexao para nao deixar o arquivo aberto. A pasta fica para o SO:
+  // no Windows o handle demora a soltar e apagar aqui faz a suite falhar por um
+  // motivo que nao tem nada a ver com o codigo.
   const { closeDb } = await import("../../db/client.ts");
   closeDb();
 });

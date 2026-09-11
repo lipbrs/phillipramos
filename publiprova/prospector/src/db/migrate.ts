@@ -7,7 +7,7 @@ export async function runMigrations(folder = "./drizzle"): Promise<void> {
   await migrate(db, { migrationsFolder: folder });
 }
 
-// `node --experimental-strip-types src/db/migrate.ts`
+// Execucao direta: node --experimental-strip-types src/db/migrate.ts
 if (process.argv[1]?.endsWith("migrate.ts")) {
   runMigrations()
     .then(() => {
