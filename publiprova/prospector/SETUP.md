@@ -256,6 +256,32 @@ aparece na fila de exceções.
 O webhook é a **entrada única** do sistema: sem ele nenhum comentário chega e o
 resto não tem o que fazer.
 
+### App publicado e webhook registrado — 11/09/2026
+
+O app **publiprova** está **publicado** e o webhook está **registrado e
+validado pela Meta**. Estado final:
+
+| Item | Estado |
+|---|---|
+| App na Meta | Publicado |
+| Categoria | Negócio e Páginas |
+| Política de privacidade | <https://publiprova-plan-b1a5.vercel.app/privacidade> |
+| URL de exclusão de dados | a mesma página (seção 8) |
+| Permissões | as três, "Pronto para teste" |
+| Assinatura do webhook na conta | Ativada |
+| Campos assinados | `comments` e `messages` |
+
+A Meta validou o handshake (200 no nosso log) e entregou um evento de teste do
+campo `comments` pelo botão *Teste* do painel: chegou assinado, passou na
+verificação e o sistema registrou `comentario_sem_palavra_chave`, porque o
+texto de exemplo é "This is an example." e não tem palavra-chave. Comportamento
+certo.
+
+**Falta a Análise do App** (bloco 5 do painel): *"Para que seu app acesse dados
+ao vivo, o Instagram exige que o processo de análise do app seja realizado"*.
+Sem ela o acesso é padrão, o que na prática limita a conta e os testadores do
+app. Publicar não substitui a análise.
+
 ### Verificado em 11/09/2026
 
 Os três caminhos da rota `/api/webhook/instagram` foram testados com assinatura
@@ -317,8 +343,9 @@ Sendo direto, para você não procurar o que não existe:
   painel só mostra o que está valendo;
 - **endereço fixo para o webhook** — ver seção 8.5. É o que falta para o sistema
   colher comentário sem babá;
-- **app publicado na Meta.** Sem publicar, o webhook não recebe. O único
-  requisito que falta é a URL da política de privacidade estar no ar.
+- **Análise do App na Meta.** O app está publicado e o webhook registrado, mas
+  o acesso ainda é padrão. Para responder gente fora da lista de testadores,
+  precisa passar pela análise — inclui um vídeo do fluxo.
 
 O cliente da API da Meta **está escrito e testado contra um servidor de
 mentira**: formato da requisição, leitura do id da mensagem e classificação do
