@@ -57,10 +57,13 @@ export async function estadoOrcamento(): Promise<EstadoOrcamento> {
 }
 
 export class OrcamentoEstourado extends Error {
-  constructor(readonly estado: EstadoOrcamento) {
+  readonly estado: EstadoOrcamento;
+
+  constructor(estado: EstadoOrcamento) {
     super(
       `Orcamento do mes estourado: US$ ${estado.gastoUsd.toFixed(2)} de US$ ${estado.tetoUsd.toFixed(2)}`,
     );
+    this.estado = estado;
     this.name = "OrcamentoEstourado";
   }
 }

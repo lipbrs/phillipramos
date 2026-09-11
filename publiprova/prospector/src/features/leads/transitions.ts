@@ -45,7 +45,10 @@ const AFFILIATE_EDGES: Record<AffiliateStage, readonly AffiliateStage[]> = {
  * `do_not_contact` e `blocked` sao absorventes: nada sai deles, nunca.
  */
 const CHANNEL_EDGES: Record<ChannelState, readonly ChannelState[]> = {
-  inbound_pending: ["private_reply_sent", "human_review_required", "do_not_contact", "blocked"],
+  // `api_eligible` esta aqui porque DM recebida tambem e contato iniciado pela
+  // pessoa: abre a janela de 24 h igual o comentario abre a de 7 dias. Sem esta
+  // aresta, quem escreve sem ter comentado fica sem resposta para sempre.
+  inbound_pending: ["private_reply_sent", "api_eligible", "human_review_required", "do_not_contact", "blocked"],
   private_reply_sent: ["waiting_inbound_reply", "human_review_required", "do_not_contact", "blocked"],
   waiting_inbound_reply: ["api_eligible", "api_window_closed", "human_review_required", "do_not_contact", "blocked", "completed"],
   api_eligible: ["api_active", "api_window_closed", "human_review_required", "do_not_contact", "blocked"],
@@ -58,12 +61,13 @@ const CHANNEL_EDGES: Record<ChannelState, readonly ChannelState[]> = {
 };
 
 export class TransitionError extends Error {
-  constructor(
-    message: string,
-    readonly from: string,
-    readonly to: string,
-  ) {
+  readonly from: string;
+  readonly to: string;
+
+  constructor(message: string, from: string, to: string) {
     super(message);
+    this.from = from;
+    this.to = to;
     this.name = "TransitionError";
   }
 }

@@ -1,4 +1,4 @@
-import { and, eq, isNull, lt, or, sql } from "drizzle-orm";
+import { and, eq, isNull, lt, lte, or, sql } from "drizzle-orm";
 
 import { db } from "../db/client.ts";
 import { jobs } from "../db/schema.ts";
@@ -62,7 +62,10 @@ export async function pegarProxima(): Promise<Job | undefined> {
     .from(jobs)
     .where(
       and(
-        lt(jobs.runAt, agora()),
+        // `lte`: job marcada para exatamente agora esta vencida. Com `lt`, uma
+        // job enfileirada no mesmo milissegundo da consulta ficava invisivel
+        // ate a proxima volta do laco.
+        lte(jobs.runAt, agora()),
         or(
           eq(jobs.status, "pending"),
           // Job que ficou travada num worker que morreu volta para a fila.

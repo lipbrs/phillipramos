@@ -4,11 +4,11 @@ Sistema que transforma comentário com palavra-chave nos posts do
 `@publiprova.app` em conversa qualificada na própria DM, entregando o que cada
 post prometeu.
 
-> **Estado hoje (10/09/2026):** o núcleo está pronto e testado — banco, máquina
-> de estados, entrada de leads pelo webhook, motor de decisão, orçamento, pausa
-> geral e experimentos. **Ainda faltam** o cliente da API da Meta que de fato
-> envia a mensagem, o laço do worker, o painel e a tela de configuração. Este
-> manual cobre o que já dá para fazer e diz claramente onde termina.
+> **Estado hoje (10/09/2026):** o caminho inteiro do comentário até a resposta
+> **funciona em simulação** — webhook, lead, fila, worker, texto e registro.
+> **Ainda faltam** o painel, o classificador que responde quem escreve de volta
+> e o backup automático. Este manual cobre o que já dá para fazer e diz
+> claramente onde termina.
 
 ---
 
@@ -79,7 +79,7 @@ Confira que está tudo de pé:
 pnpm typecheck && pnpm test
 ```
 
-Tem de terminar com **111 testes passando**.
+Tem de terminar com **130 testes passando**.
 
 ---
 
@@ -139,13 +139,32 @@ filtro bloqueia, inclusive em texto que você mesmo escrever.
 
 ## 6. Rodar
 
+O worker sozinho, que é o que já funciona:
+
+```bash
+pnpm dev:worker
+```
+
+Ele imprime no boot em que modo está, quais funis estão ligados, para onde cada
+palavra manda e o que falta configurar. Se a configuração estiver incoerente,
+**ele não sobe** — e diz por quê.
+
+Em simulação a saída é assim:
+
+```
+[worker] modo: SIMULACAO (nada sai)
+[worker] palavras: RELATORIO→demo, PRINT→conteudo_na_dm, EU→pesquisa
+[worker] job 1: SIMULADO para lead 1 (simulado:459129bb61ea...)
+```
+
+Cada mensagem "simulada" fica gravada inteira no banco, com o texto exato que
+sairia. É isso que você lê antes de tirar o `DRY_RUN`.
+
 ```bash
 pnpm dev
 ```
 
-Sobe o painel e o worker juntos. O painel fica em <http://localhost:3100>.
-
-> Esta parte ainda não existe — ver seção 9.
+Sobe painel e worker juntos — o painel ainda não existe, ver seção 9.
 
 ---
 
@@ -185,12 +204,20 @@ aparece na fila de exceções.
 
 Sendo direto, para você não procurar o que não existe:
 
-- cliente da API da Meta que envia a resposta privada e a DM;
-- laço do worker que consome a fila (a fila em si está pronta e testada);
 - painel, kanban, timeline do lead e tela de configuração;
+- o classificador que lê a resposta do lead. **Hoje quem responde de volta cai
+  na fila de exceções e espera você** — é de propósito: melhor a conversa
+  esperar do que o sistema inventar resposta;
 - backup automático e o procedimento de restauração testado.
 
-O que **está** pronto e testado: banco e migrações, máquina de estados com
+O cliente da API da Meta **está escrito e testado contra um servidor de
+mentira**: formato da requisição, leitura do id da mensagem e classificação do
+erro (o que vale retentar e o que não vale). O que só a conta real prova é se o
+token tem as permissões certas — por isso o ensaio da seção 7 existe.
+
+O que **está** pronto e testado: o caminho inteiro do comentário à resposta
+privada (rodando em simulação, com o texto gravado), banco e migrações, máquina
+de estados com
 pipeline e canal separados, deduplicação, opt-out permanente entre campanhas,
 filtro de afirmações, verificação de assinatura do webhook, normalização dos
 eventos da Meta, entrada de leads por comentário e por DM, fila durável com

@@ -106,3 +106,38 @@ de subir.
 - Ligar afiliados depois é: preencher `links.affiliateGroup`, acrescentar
   `"affiliate"` em `funisAtivos` e dar destino a uma palavra. O código já
   aceita; o que falta é o programa existir.
+
+## ADR-006 — A primeira resposta é escrita, não gerada
+
+**Status:** decidido em 10/09/2026, ao construir o worker.
+
+Quem comenta RELATÓRIO pediu uma coisa só, e o post já disse qual. Passar isso
+por um modelo seria pagar token para introduzir variação onde variação só pode
+piorar, e abrir espaço para o modelo inventar. Então a primeira resposta sai de
+uma função pura em `redacao.ts`, e ainda assim passa pelo mesmo portão de
+afirmações — o texto não é confiável por ter sido escrito por nós.
+
+Isso não é teoria: ao escrever o convite da pesquisa, o portão **barrou meu
+próprio texto** ("posso mandar a primeira pergunta?" bateu na regra de
+superlativo). O texto foi reescrito, não a regra.
+
+A IA entra só onde a conversa deixa de ser previsível — na resposta do lead. Esse
+classificador ainda não existe, e enquanto não existir a resposta de um lead vai
+para a fila de exceções, não para um palpite.
+
+## ADR-007 — Node roda `.ts` em modo strip-only
+
+**Status:** aprendido do jeito caro em 10/09/2026.
+
+O worker roda com `node --experimental-strip-types`, que **apaga os tipos e não
+transforma nada**. `constructor(readonly x: string)` — campo declarado no
+parâmetro — é transformação, não tipo, e derruba o processo no boot com
+`ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`.
+
+Os 130 testes não pegavam isso porque o vitest passa pelo esbuild, que
+transforma. Ou seja: **a suíte verde não provava que o worker subia.** Quatro
+classes de erro usavam a forma proibida; foram reescritas com campo declarado no
+corpo.
+
+A lição vale além desse detalhe: enquanto o worker rodar por strip-only, rodar o
+processo de verdade é parte de terminar, não conferência opcional.

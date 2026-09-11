@@ -198,7 +198,12 @@ async function processarMensagem(
     .where(eq(leads.id, lead.id));
 
   const atual = await getLead(lead.id);
-  const elegivel: string[] = ["private_reply_sent", "waiting_inbound_reply", "api_window_closed"];
+  const elegivel: string[] = [
+    "inbound_pending",
+    "private_reply_sent",
+    "waiting_inbound_reply",
+    "api_window_closed",
+  ];
 
   if (elegivel.includes(atual.channelState)) {
     await setChannelState(lead.id, "api_eligible", "lead respondeu");

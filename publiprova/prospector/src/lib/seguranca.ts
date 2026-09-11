@@ -76,8 +76,11 @@ export async function retomar(): Promise<void> {
 }
 
 export class SistemaPausado extends Error {
-  constructor(readonly pausa: Pausa) {
+  readonly pausa: Pausa;
+
+  constructor(pausa: Pausa) {
     super(`Sistema pausado (${pausa.motivo ?? "sem motivo"}): ${pausa.detalhe ?? ""}`);
+    this.pausa = pausa;
     this.name = "SistemaPausado";
   }
 }
