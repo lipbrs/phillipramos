@@ -251,6 +251,61 @@ aparece na fila de exceções.
 
 ---
 
+## 8.5. O webhook — como ligar e o que ainda dói
+
+O webhook é a **entrada única** do sistema: sem ele nenhum comentário chega e o
+resto não tem o que fazer.
+
+### Verificado em 11/09/2026
+
+Os três caminhos da rota `/api/webhook/instagram` foram testados com assinatura
+HMAC de verdade, feita com o app secret real:
+
+| Teste | Resultado |
+|---|---|
+| Handshake com token de verificação correto | 200, devolve o `challenge` |
+| Handshake com token errado | 403 |
+| POST sem assinatura | 401 |
+| POST assinado, comentário com RELATÓRIO | 200, lead criado, job na fila |
+| Reenvio do mesmo evento | 200, `lead_existente` — sem duplicar |
+| Corpo adulterado, assinatura antiga | 401 |
+| Rota alcançada pela internet, via túnel | 403 no caso negativo, como esperado |
+
+Depois disso o worker entregou a resposta simulada ao lead criado. **O ciclo
+inteiro funciona, do webhook à mensagem.**
+
+### Como expor a rota
+
+A Meta precisa alcançar `https://SEU-ENDERECO/api/webhook/instagram`. Para
+testar da sua máquina:
+
+```bash
+npx cloudflared tunnel --url http://localhost:3100
+```
+
+Ele imprime uma URL `https://algo.trycloudflare.com`. Registre-a no painel do
+app, em *Configurar webhooks*, com o token de verificação do `.env`, e assine os
+campos **`comments`** e **`messages`**.
+
+### O problema que isso não resolve
+
+**A URL do túnel muda a cada reinício.** Toda vez que você reiniciar, tem de
+voltar ao painel da Meta e trocar a URL — e enquanto não trocar, os comentários
+somem sem aviso. Isso serve para testar, não para operar.
+
+As duas saídas de verdade:
+
+1. **Túnel nomeado do Cloudflare**, com endereço fixo. Exige um domínio seu
+   apontado para a Cloudflare (`publiprova.com.br`, por exemplo). É a opção
+   barata e funciona com o sistema rodando na sua máquina.
+2. **Hospedar o prospector** numa máquina com disco persistente. Não serve
+   função serverless: o banco é um arquivo SQLite e o worker precisa dele.
+
+Enquanto nenhuma das duas existir, o sistema colhe comentário só enquanto o
+túnel estiver de pé.
+
+---
+
 ## 9. O que ainda não está pronto
 
 Sendo direto, para você não procurar o que não existe:
@@ -259,7 +314,11 @@ Sendo direto, para você não procurar o que não existe:
   na fila de exceções e espera você** — é de propósito: melhor a conversa
   esperar do que o sistema inventar resposta;
 - edição da configuração pelo painel: hoje o `business.json` se edita à mão, e o
-  painel só mostra o que está valendo.
+  painel só mostra o que está valendo;
+- **endereço fixo para o webhook** — ver seção 8.5. É o que falta para o sistema
+  colher comentário sem babá;
+- **app publicado na Meta.** Sem publicar, o webhook não recebe. O único
+  requisito que falta é a URL da política de privacidade estar no ar.
 
 O cliente da API da Meta **está escrito e testado contra um servidor de
 mentira**: formato da requisição, leitura do id da mensagem e classificação do
