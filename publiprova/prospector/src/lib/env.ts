@@ -31,6 +31,8 @@ const schema = z.object({
   INSTAGRAM_PAGE_ACCESS_TOKEN: opcional(),
   INSTAGRAM_WEBHOOK_VERIFY_TOKEN: opcional(),
   INSTAGRAM_BUSINESS_ACCOUNT_ID: opcional(),
+  /** Data (AAAA-MM-DD) em que o token vence. Escrita pelo `pnpm doutor`. */
+  INSTAGRAM_TOKEN_VENCE_EM: opcional(),
 
   /** Teto diario de respostas privadas a comentario, por saude da conta. */
   MAX_DMS_PER_DAY: z.coerce.number().int().positive().default(30),
@@ -66,6 +68,19 @@ function load(): Env {
 }
 
 export const env: Env = load();
+
+/**
+ * Dias que faltam para o token da Meta vencer, ou null se nao sabemos.
+ *
+ * O token de longa duracao dura 60 dias. Sem este aviso, o sintoma no dia 61 e
+ * todo envio falhando com 400 — erro que parece bug de codigo e nao e.
+ */
+export function diasAteOTokenVencer(agora: Date = new Date()): number | null {
+  if (!env.INSTAGRAM_TOKEN_VENCE_EM) return null;
+  const vence = new Date(`${env.INSTAGRAM_TOKEN_VENCE_EM}T00:00:00Z`);
+  if (Number.isNaN(vence.getTime())) return null;
+  return Math.floor((vence.getTime() - agora.getTime()) / 86_400_000);
+}
 
 /** Quais integracoes da para usar agora — o painel mostra isto. */
 export function integrationStatus() {

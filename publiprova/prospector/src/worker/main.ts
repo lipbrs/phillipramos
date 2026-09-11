@@ -1,6 +1,6 @@
 import { closeDb } from "../db/client.ts";
 import { loadBusiness, oQueFalta } from "../lib/business.ts";
-import { env, integrationStatus } from "../lib/env.ts";
+import { diasAteOTokenVencer, env, integrationStatus } from "../lib/env.ts";
 import { remetenteDoAmbiente } from "../integrations/instagram/envio.ts";
 import { rodarLaco, type Rodada } from "./laco.ts";
 
@@ -31,6 +31,18 @@ console.log(
 );
 for (const falta of oQueFalta(negocio)) {
   console.log(`[worker] desligado por falta de: ${falta}`);
+}
+
+// Token vencido nao da erro claro: todo envio volta 400 e parece bug nosso.
+const diasDoToken = diasAteOTokenVencer();
+if (diasDoToken !== null) {
+  if (diasDoToken <= 0) {
+    console.log(`[worker] ATENCAO: o token da Meta venceu. Rode: pnpm doutor`);
+  } else if (diasDoToken <= 10) {
+    console.log(`[worker] ATENCAO: o token da Meta vence em ${diasDoToken} dia(s). Rode: pnpm doutor`);
+  } else {
+    console.log(`[worker] token da Meta vence em ${diasDoToken} dias`);
+  }
 }
 
 const remetente = remetenteDoAmbiente();

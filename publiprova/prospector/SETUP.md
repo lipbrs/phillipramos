@@ -42,28 +42,47 @@ sistema é a colheita.
 
 ---
 
-## 2. Antes de começar
+## 2. O app na Meta
 
-Você vai precisar de quatro coisas, nesta ordem:
+Feito em 11/09/2026. O que existe hoje:
 
-1. **Conta profissional no Instagram** vinculada a uma Página do Facebook (já
-   temos: `@publiprova.app` no portfólio `planflservices`).
-2. **App na Meta for Developers** com o produto *Instagram* adicionado e as
-   permissões `instagram_business_basic`, `instagram_business_manage_messages` e
-   `instagram_business_manage_comments`.
-3. **URL pública para o webhook**. A Meta precisa alcançar
-   `https://SEU-DOMINIO/api/webhook/instagram`. Para testar da sua máquina,
-   um túnel (`cloudflared tunnel --url http://localhost:3100`) resolve. O
-   `INSTAGRAM_WEBHOOK_VERIFY_TOKEN` é uma string que você inventa e repete nos
-   dois lados.
-4. **Chave da OpenAI**, criada em <https://platform.openai.com/api-keys>:
-   - crie num **projeto separado** só para este sistema;
-   - permissão **Restricted**;
-   - defina um **hard limit mensal** em *Settings → Limits*. O sistema também tem
-     o próprio corte por orçamento, mas o limite na plataforma é a rede de
-     segurança que não depende do nosso código estar certo.
+| Coisa | Valor |
+|---|---|
+| App | `publiprova`, id `1129328033092483` |
+| Caso de uso | Gerenciar mensagens e conteúdo no Instagram |
+| Caminho | **API com login do Instagram** (`graph.instagram.com`) |
+| App do Instagram | `publiprova-IG`, id `2228099657733612` |
+| Conta conectada | `@publiprova.app`, id `17841432884720391` |
+| Status | **Não publicado** — ver seção 9 |
 
----
+Se precisar refazer, a ordem que funciona e onde cada coisa se esconde:
+
+1. **Criar app** → *Casos de uso* → filtro **Business Messaging** → o do
+   Instagram. Não use "Outro": está sendo descontinuado e cria o app na
+   experiência antiga, sem produto nem permissões.
+2. *Personalizar o caso de uso* → **Configuração da API com login do
+   Instagram** → botão **Add all required permissions**. As três são
+   `instagram_business_basic`, `instagram_business_manage_comments` e
+   `instagram_business_manage_messages`.
+3. **Funções do app → Funções** — fica no **rodapé** da barra lateral, não como
+   aba no topo. Lá, no menu **Mais** → **Testadores do Instagram** →
+   *Adicionar pessoas* → o nome de usuário da conta.
+4. Aceitar o convite no Instagram, em *Configurações → Apps e sites → Convites
+   do testador*. Se a conta estiver no mesmo portfólio empresarial, **já vem
+   aceita** e não aparece convite nenhum.
+5. Voltar ao bloco 2 *Gerar tokens de acesso*. A conta aparece com o **id ao
+   lado do nome** — é esse o `INSTAGRAM_BUSINESS_ACCOUNT_ID`, e não o id do app
+   do Instagram que está no topo da página. Confundir os dois dá 400 sem
+   explicação.
+
+Também precisa de uma **chave da OpenAI**, criada em
+<https://platform.openai.com/api-keys>:
+
+- num **projeto separado** só para este sistema;
+- permissão **Restricted**;
+- com **hard limit mensal** em *Settings → Limits*. O sistema tem o próprio
+  corte por orçamento, mas o limite na plataforma é a rede de segurança que não
+  depende do nosso código estar certo.
 
 ## 3. Instalação
 
@@ -101,10 +120,29 @@ Abra o `.env` e preencha. Os campos e o que cada um faz:
 | `INSTAGRAM_APP_SECRET` | segredo do app, usado para validar a assinatura do webhook |
 | `INSTAGRAM_PAGE_ACCESS_TOKEN` | token de acesso da Página |
 | `INSTAGRAM_WEBHOOK_VERIFY_TOKEN` | string que você inventa e repete no painel da Meta |
-| `INSTAGRAM_BUSINESS_ACCOUNT_ID` | id da conta profissional |
+| `INSTAGRAM_BUSINESS_ACCOUNT_ID` | id da conta profissional (bloco 2 do painel) |
+| `INSTAGRAM_TOKEN_VENCE_EM` | escrito pelo `pnpm doutor`; o worker avisa antes |
 | `MAX_DMS_PER_DAY` | teto diário de respostas. Saúde da conta, não disfarce |
 | `OPERATING_HOURS` | fora dessa janela nada é enviado |
 | `DRY_RUN` | **deixe `true`**. Veja a seção 7 |
+
+### Conferir sem enviar nada
+
+```bash
+pnpm doutor
+```
+
+Bate nos quatro valores contra a API real: se o token vale, de qual conta ele é,
+se o id do `.env` é o mesmo do token, e quanto tempo de vida resta. **Nada é
+enviado** e nenhum segredo é impresso — a saída é conclusão, não valor.
+
+Ele também cuida do token. O botão *Gerar token* do painel já entrega um de
+**60 dias**, e o `doutor` renova a cada execução (voltando a 60). Se por outro
+caminho vier o token curto de 1 hora, ele faz a troca. **Rode uma vez por mês.**
+
+O `.env` guarda a data de vencimento, e o worker avisa no boot quando faltarem
+10 dias ou menos. Sem esse aviso o sintoma no dia 61 é todo envio voltando 400
+— erro que parece bug de código e não é.
 
 > **Se a chave vazar:** revogue em <https://platform.openai.com/api-keys> na
 > hora, crie outra, troque no `.env` e reinicie. Como a chave é de um projeto

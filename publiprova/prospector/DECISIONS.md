@@ -180,3 +180,31 @@ arquivo enquanto o processo existir** — `closeDb()` não solta. Por isso o pas
 da restauração é parar o sistema e conferir que nenhum `node` ficou rodando;
 sem isso a troca falha com "acesso negado". O teste restaura para um caminho
 novo em vez de por cima do banco vivo, e diz por quê.
+
+## ADR-010 — Segredo entra no arquivo, nunca na linha de comando
+
+**Status:** decidido em 11/09/2026, ao configurar os tokens de verdade.
+
+O `pnpm doutor` lê chave e token do `.env` e grava de volta no `.env`. Não
+aceita segredo por argumento, e não imprime nenhum: a saída diz "token válido,
+conta @publiprova.app", não o token.
+
+**Por quê.** Comando com segredo no argumento fica no histórico do shell, e daí
+em diante o token está vazado sem ninguém ter feito nada errado. Vale também
+para a conversa com o assistente: print de tela com a chave revelada gravaria o
+segredo no registro da sessão. Por isso os dois valores secretos foram colados à
+mão pelo Phillip, e os dois que não são segredo — id da conta e token de
+verificação do webhook — foram preenchidos por mim.
+
+**O que aprendemos no caminho**, e que o painel não diz:
+
+- O botão *Gerar token* já devolve um token de **60 dias**. Tentar `ig_exchange_token`
+  nele responde `Invalid Access Token` (código 452), o que parece chave errada e
+  não é. O `doutor` tenta `ig_refresh_token` primeiro justamente por isso, e a
+  recusa da renovação é o que prova que o token é curto.
+- A aba **Funções** fica no rodapé da barra lateral, e *Testadores do Instagram*
+  está escondido no menu **Mais**.
+- Conta no mesmo portfólio empresarial **já vem aceita** como testadora: não
+  aparece convite para aceitar.
+- O webhook **exige app publicado**. Sem publicar, o envio funciona e a entrada
+  não — e a entrada é o que alimenta o sistema todo.
