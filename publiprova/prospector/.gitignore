@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.env
+.env.local
+config/business.json
+.chrome-profile/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+data/
+backups/
+screenshots/
+traces/
