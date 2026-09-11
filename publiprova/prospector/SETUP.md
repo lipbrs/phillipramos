@@ -5,10 +5,10 @@ Sistema que transforma comentário com palavra-chave nos posts do
 post prometeu.
 
 > **Estado hoje (10/09/2026):** o caminho inteiro do comentário até a resposta
-> **funciona em simulação** — webhook, lead, fila, worker, texto e registro.
-> **Ainda faltam** o painel, o classificador que responde quem escreve de volta
-> e o backup automático. Este manual cobre o que já dá para fazer e diz
-> claramente onde termina.
+> **funciona em simulação**, com painel — webhook, lead, fila, worker, texto,
+> registro e a tela para acompanhar. **Ainda faltam** o classificador que
+> responde quem escreve de volta e o backup automático. Este manual cobre o que
+> já dá para fazer e diz claramente onde termina.
 
 ---
 
@@ -44,14 +44,19 @@ sistema é a colheita.
 
 ## 2. Antes de começar
 
-Você vai precisar de três coisas, nesta ordem:
+Você vai precisar de quatro coisas, nesta ordem:
 
 1. **Conta profissional no Instagram** vinculada a uma Página do Facebook (já
    temos: `@publiprova.app` no portfólio `planflservices`).
 2. **App na Meta for Developers** com o produto *Instagram* adicionado e as
    permissões `instagram_business_basic`, `instagram_business_manage_messages` e
    `instagram_business_manage_comments`.
-3. **Chave da OpenAI**, criada em <https://platform.openai.com/api-keys>:
+3. **URL pública para o webhook**. A Meta precisa alcançar
+   `https://SEU-DOMINIO/api/webhook/instagram`. Para testar da sua máquina,
+   um túnel (`cloudflared tunnel --url http://localhost:3100`) resolve. O
+   `INSTAGRAM_WEBHOOK_VERIFY_TOKEN` é uma string que você inventa e repete nos
+   dois lados.
+4. **Chave da OpenAI**, criada em <https://platform.openai.com/api-keys>:
    - crie num **projeto separado** só para este sistema;
    - permissão **Restricted**;
    - defina um **hard limit mensal** em *Settings → Limits*. O sistema também tem
@@ -160,11 +165,19 @@ Em simulação a saída é assim:
 Cada mensagem "simulada" fica gravada inteira no banco, com o texto exato que
 sairia. É isso que você lê antes de tirar o `DRY_RUN`.
 
+Os dois juntos, que é como você vai usar no dia a dia:
+
 ```bash
 pnpm dev
 ```
 
-Sobe painel e worker juntos — o painel ainda não existe, ver seção 9.
+O painel fica em <http://localhost:3100> e tem três telas:
+
+- **Painel** — se está rodando ou parado, leads por etapa, envios do dia contra
+  o teto, fila, gasto de IA no mês e o que falta configurar. O botão **Parar
+  tudo** para na hora.
+- **Precisa de você** — tudo que o sistema preferiu não decidir sozinho.
+- **Lead** — a conversa inteira, com as mensagens simuladas marcadas como tal.
 
 ---
 
@@ -204,11 +217,12 @@ aparece na fila de exceções.
 
 Sendo direto, para você não procurar o que não existe:
 
-- painel, kanban, timeline do lead e tela de configuração;
 - o classificador que lê a resposta do lead. **Hoje quem responde de volta cai
   na fila de exceções e espera você** — é de propósito: melhor a conversa
   esperar do que o sistema inventar resposta;
-- backup automático e o procedimento de restauração testado.
+- backup automático e o procedimento de restauração testado;
+- edição da configuração pelo painel: hoje o `business.json` se edita à mão, e o
+  painel só mostra o que está valendo.
 
 O cliente da API da Meta **está escrito e testado contra um servidor de
 mentira**: formato da requisição, leitura do id da mensagem e classificação do

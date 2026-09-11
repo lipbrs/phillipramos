@@ -141,3 +141,21 @@ corpo.
 
 A lição vale além desse detalhe: enquanto o worker rodar por strip-only, rodar o
 processo de verdade é parte de terminar, não conferência opcional.
+
+## ADR-008 — O painel lê e para; não escreve mensagem
+
+**Status:** decidido em 10/09/2026, ao construir o painel.
+
+O painel faz três coisas: mostra, para e marca exceção como tratada. Ele **não
+tem caixa de escrever mensagem**, e isso é escolha, não falta de tempo.
+
+Um campo de envio no painel seria um segundo caminho de saída — um que não passa
+pelo portão de afirmações, pela trava de canal, pelo teto diário nem pelo
+horário. Todas essas travas moram no worker. Quem precisa responder um lead
+responde no Instagram, onde a conversa já está.
+
+A configuração segue o mesmo princípio: o painel **mostra** o `business.json`
+(palavras, destinos, funis ligados, o que falta) e não edita. Editar por uma tela
+significaria validar a coerência em dois lugares, e `incoerencias()` é a
+verificação que derruba o boot justamente para não existir estado incoerente
+rodando.

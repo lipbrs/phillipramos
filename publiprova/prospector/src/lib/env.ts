@@ -4,20 +4,33 @@ import { z } from "zod";
  * Falhar cedo e alto: token faltando tem de parar o worker no boot, e nao na
  * hora em que ele ja ia mandar mensagem para uma pessoa de verdade.
  */
+/**
+ * Campo opcional que aceita vir vazio.
+ *
+ * O `.env.example` traz esses campos em branco de proposito — o operador copia
+ * o arquivo e roda em simulacao antes de ter qualquer token. Sem isto, string
+ * vazia nao e "ausente" para o zod e o sistema nao sobe nem para simular.
+ */
+const opcional = () =>
+  z
+    .string()
+    .optional()
+    .transform((v) => (v && v.trim() ? v : undefined));
+
 const schema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
   DATABASE_URL: z.string().min(1).default("file:./data/prospector.db"),
 
-  OPENAI_API_KEY: z.string().min(1).optional(),
+  OPENAI_API_KEY: opcional(),
   OPENAI_MODEL: z.string().min(1).default("gpt-5"),
   OPENAI_MODEL_FAST: z.string().min(1).default("gpt-5-mini"),
   OPENAI_MONTHLY_BUDGET_USD: z.coerce.number().positive().default(25),
 
-  INSTAGRAM_APP_SECRET: z.string().min(1).optional(),
-  INSTAGRAM_PAGE_ACCESS_TOKEN: z.string().min(1).optional(),
-  INSTAGRAM_WEBHOOK_VERIFY_TOKEN: z.string().min(1).optional(),
-  INSTAGRAM_BUSINESS_ACCOUNT_ID: z.string().min(1).optional(),
+  INSTAGRAM_APP_SECRET: opcional(),
+  INSTAGRAM_PAGE_ACCESS_TOKEN: opcional(),
+  INSTAGRAM_WEBHOOK_VERIFY_TOKEN: opcional(),
+  INSTAGRAM_BUSINESS_ACCOUNT_ID: opcional(),
 
   /** Teto diario de respostas privadas a comentario, por saude da conta. */
   MAX_DMS_PER_DAY: z.coerce.number().int().positive().default(30),
