@@ -1,0 +1,187 @@
+# Manual do operador — Prospector do PubliProva
+
+Sistema que transforma comentário com palavra-chave nos posts do
+`@publiprova.app` em conversa qualificada e, quando a pessoa quer, em conversa
+no WhatsApp.
+
+> **Estado hoje (10/09/2026):** o núcleo está pronto e testado — banco, máquina
+> de estados, entrada de leads pelo webhook, motor de decisão, orçamento, pausa
+> geral e experimentos. **Ainda faltam** o cliente da API da Meta que de fato
+> envia a mensagem, o laço do worker, o painel e a tela de configuração. Este
+> manual cobre o que já dá para fazer e diz claramente onde termina.
+
+---
+
+## 1. O que este sistema faz e o que ele não faz
+
+**Faz:** ouve os comentários dos nossos posts, reconhece a palavra-chave
+(RELATÓRIO, PRINT, EU), cria o lead sem duplicar, responde pela DM usando a
+**API oficial da Meta**, conduz a conversa até o encaminhamento e registra tudo.
+
+**Não faz, por decisão:** não manda DM para quem nunca falou com a gente. A API
+da Meta bloqueia isso de propósito e contornar pelo navegador põe a conta em
+risco. O raciocínio completo está em [`DECISIONS.md`](DECISIONS.md), ADR-001.
+
+Isso significa que **o volume depende do conteúdo**: quanto mais gente comenta a
+palavra-chave, mais leads entram. O calendário do Instagram é o motor; este
+sistema é a colheita.
+
+---
+
+## 2. Antes de começar
+
+Você vai precisar de três coisas, nesta ordem:
+
+1. **Conta profissional no Instagram** vinculada a uma Página do Facebook (já
+   temos: `@publiprova.app` no portfólio `planflservices`).
+2. **App na Meta for Developers** com o produto *Instagram* adicionado e as
+   permissões `instagram_business_basic`, `instagram_business_manage_messages` e
+   `instagram_business_manage_comments`.
+3. **Chave da OpenAI**, criada em <https://platform.openai.com/api-keys>:
+   - crie num **projeto separado** só para este sistema;
+   - permissão **Restricted**;
+   - defina um **hard limit mensal** em *Settings → Limits*. O sistema também tem
+     o próprio corte por orçamento, mas o limite na plataforma é a rede de
+     segurança que não depende do nosso código estar certo.
+
+---
+
+## 3. Instalação
+
+Requer **Node.js 24** ou mais novo.
+
+```bash
+cd publiprova/prospector
+npm i -g pnpm@10          # se ainda não tiver
+pnpm install
+cp .env.example .env
+cp config/business.example.json config/business.json   # já existe preenchido
+pnpm db:migrate
+```
+
+Confira que está tudo de pé:
+
+```bash
+pnpm typecheck && pnpm test
+```
+
+Tem de terminar com **106 testes passando**.
+
+---
+
+## 4. Preencher o `.env`
+
+Abra o `.env` e preencha. Os campos e o que cada um faz:
+
+| Campo | O que é |
+|---|---|
+| `OPENAI_API_KEY` | a chave do projeto separado |
+| `OPENAI_MODEL` | modelo que escreve as mensagens |
+| `OPENAI_MODEL_FAST` | modelo que classifica intenção (mais barato) |
+| `OPENAI_MONTHLY_BUDGET_USD` | teto do mês. Ao bater, **o sistema para sozinho** |
+| `INSTAGRAM_APP_SECRET` | segredo do app, usado para validar a assinatura do webhook |
+| `INSTAGRAM_PAGE_ACCESS_TOKEN` | token de acesso da Página |
+| `INSTAGRAM_WEBHOOK_VERIFY_TOKEN` | string que você inventa e repete no painel da Meta |
+| `INSTAGRAM_BUSINESS_ACCOUNT_ID` | id da conta profissional |
+| `MAX_DMS_PER_DAY` | teto diário de respostas. Saúde da conta, não disfarce |
+| `OPERATING_HOURS` | fora dessa janela nada é enviado |
+| `DRY_RUN` | **deixe `true`**. Veja a seção 7 |
+
+> **Se a chave vazar:** revogue em <https://platform.openai.com/api-keys> na
+> hora, crie outra, troque no `.env` e reinicie. Como a chave é de um projeto
+> separado com hard limit, o estrago fica contido nesse teto.
+
+---
+
+## 5. Preencher o `config/business.json`
+
+Já está preenchido com os dados reais do PubliProva. **Duas coisas faltam** e o
+sistema se recusa a enviá-las enquanto forem placeholder:
+
+- `links.whatsapp` — seu link `https://wa.me/55DDDNUMERO`
+- `links.affiliateGroup` — o grupo de afiliados, que ainda não existe
+
+A parte mais importante desse arquivo são as duas listas:
+
+- **`verifiedClaims`** — o que a IA *pode* dizer. Está tudo comprovado no
+  produto ou no site.
+- **`unverifiedClaims`** — o que fica **bloqueado**. Hoje inclui o preço de
+  R$ 247 (planejado, não publicado), o "8 a 15 horas por mês" (estimativa do
+  estudo, não medição nossa) e qualquer contagem de clientes (hoje é zero).
+
+Se você comprovar alguma dessas coisas — publicar o preço no site, por exemplo —
+mova a linha de `unverifiedClaims` para `verifiedClaims`. Enquanto não mover, o
+filtro bloqueia, inclusive em texto que você mesmo escrever.
+
+---
+
+## 6. Rodar
+
+```bash
+pnpm dev
+```
+
+Sobe o painel e o worker juntos. O painel fica em <http://localhost:3100>.
+
+> Esta parte ainda não existe — ver seção 9.
+
+---
+
+## 7. A ordem segura de ligar
+
+Não pule etapas. Cada uma existe porque a anterior pode esconder um erro.
+
+1. **Simulação** (`DRY_RUN=true`) — o sistema faz tudo, menos enviar. Toda
+   mensagem que ele mandaria fica registrada no CRM com a marca "simulado".
+   Deixe rodar até ver conversa inteira decidida do jeito que você faria.
+2. **Ensaio com envio bloqueado** — mesma coisa, mas contra a API real da Meta,
+   com o envio final desligado. Confirma token, permissão e janela.
+3. **Piloto** — `DRY_RUN=false` com `MAX_DMS_PER_DAY=5`. Leia **todas** as
+   conversas do primeiro dia, uma por uma.
+4. **Autonomia** — só depois de um piloto sem surpresa, suba o teto aos poucos.
+
+---
+
+## 8. Como pausar
+
+Três formas, da mais rápida para a mais definitiva:
+
+- **Botão de pausa geral no painel** — para tudo na hora, mantém o estado.
+- **`DRY_RUN=true` no `.env` e reiniciar** — o sistema continua pensando, mas
+  não envia.
+- **Parar o processo** — jobs em andamento voltam para a fila sozinhas no
+  próximo boot. Nada se perde.
+
+**O sistema também pausa sozinho** quando: o orçamento do mês estoura, acontecem
+5 erros seguidos, o Instagram sinaliza restrição, aparece envio duplicado ou o
+estado do lead diverge entre canal e pipeline. O motivo fica registrado e
+aparece na fila de exceções.
+
+---
+
+## 9. O que ainda não está pronto
+
+Sendo direto, para você não procurar o que não existe:
+
+- cliente da API da Meta que envia a resposta privada e a DM;
+- laço do worker que consome a fila (a fila em si está pronta e testada);
+- painel, kanban, timeline do lead e tela de configuração;
+- backup automático e o procedimento de restauração testado.
+
+O que **está** pronto e testado: banco e migrações, máquina de estados com
+pipeline e canal separados, deduplicação, opt-out permanente entre campanhas,
+filtro de afirmações, verificação de assinatura do webhook, normalização dos
+eventos da Meta, entrada de leads por comentário e por DM, fila durável com
+idempotência e recuperação após reinício, corte por orçamento com custo por
+lead, pausa geral, circuit breaker e experimentos com veredito conservador.
+
+---
+
+## 10. Backup
+
+O banco é um arquivo só: `data/prospector.db`. Backup é copiar o arquivo com o
+sistema parado (ou usar `VACUUM INTO` com ele rodando). Guarde fora da pasta do
+projeto — `data/` está no `.gitignore` e não vai para o Git.
+
+Para restaurar: pare o sistema, troque o arquivo, suba de novo. Teste isso uma
+vez **antes** de precisar.
