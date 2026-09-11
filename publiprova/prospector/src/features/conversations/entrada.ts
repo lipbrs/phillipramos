@@ -6,7 +6,7 @@ import {
   palavraChaveDo,
   type EventoNormalizado,
 } from "../../integrations/instagram/eventos.ts";
-import { loadBusiness } from "../../lib/business.ts";
+import { funilEstaAtivo, loadBusiness } from "../../lib/business.ts";
 import {
   discoverLead,
   getLead,
@@ -91,6 +91,18 @@ async function processarComentario(
   }
 
   const config = negocio.palavrasChave.find((p) => p.palavra === encontrada)!;
+
+  // Funil desligado nao recebe lead. Hoje isso vale para afiliados: nao existe
+  // programa nem grupo, entao nao ha para onde mandar a pessoa.
+  if (!funilEstaAtivo(negocio, config.funil)) {
+    await recordEvent(null, "palavra_de_funil_desligado", {
+      palavra: encontrada,
+      funil: config.funil,
+      idExterno: evento.idExterno,
+    });
+    return { acao: "ignorado", motivo: `funil ${config.funil} esta desligado` };
+  }
+
   const handle = evento.username ?? `ig_${evento.igUserId}`;
 
   const { lead, created, suppressed } = await discoverLead({

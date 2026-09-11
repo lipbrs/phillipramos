@@ -5,20 +5,19 @@ import { decidir, ehIntencao, revisarSaida, type Contexto } from "./decisao.ts";
 const base: Contexto = {
   intencao: "asked_info",
   confianca: 0.9,
-  jaApresentou: false,
+  destino: "demo",
+  jaEntregou: false,
   mensagensEnviadas: 1,
-  faltandoConfig: [],
+  whatsappConfigurado: false,
 };
 
 describe("decisao da proxima acao", () => {
   it("pedido de parar encerra, mesmo com confianca baixa", () => {
-    const d = decidir({ ...base, intencao: "opt_out", confianca: 0.1 });
-    expect(d.acao).toBe("encerrar");
+    expect(decidir({ ...base, intencao: "opt_out", confianca: 0.1 }).acao).toBe("encerrar");
   });
 
   it("preco vai para humano — o valor nao esta verificado", () => {
-    const d = decidir({ ...base, intencao: "asked_pricing" });
-    expect(d.acao).toBe("escalar_humano");
+    expect(decidir({ ...base, intencao: "asked_pricing" }).acao).toBe("escalar_humano");
   });
 
   it("confianca baixa nao vira resposta automatica", () => {
@@ -27,23 +26,9 @@ describe("decisao da proxima acao", () => {
     expect(d.motivo).toMatch(/confianca/);
   });
 
-  it("interessado leva apresentacao, mas so uma vez", () => {
-    expect(decidir({ ...base, intencao: "interested" }).acao).toBe("apresentar");
-    expect(decidir({ ...base, intencao: "interested", jaApresentou: true }).acao).toBe("responder");
-  });
-
-  it("nao encaminha para o WhatsApp sem link configurado", () => {
-    const d = decidir({
-      ...base,
-      intencao: "wants_whatsapp",
-      faltandoConfig: ["links.whatsapp"],
-    });
-    expect(d.acao).toBe("escalar_humano");
-    expect(d.motivo).toMatch(/WhatsApp/);
-  });
-
-  it("com link configurado, encaminha", () => {
-    expect(decidir({ ...base, intencao: "wants_whatsapp" }).acao).toBe("encaminhar_whatsapp");
+  it("interessado recebe o que o post prometeu, e so uma vez", () => {
+    expect(decidir({ ...base, intencao: "interested" }).acao).toBe("entregar_promessa");
+    expect(decidir({ ...base, intencao: "interested", jaEntregou: true }).acao).toBe("responder");
   });
 
   it("para de insistir depois do limite de mensagens", () => {
@@ -58,6 +43,42 @@ describe("decisao da proxima acao", () => {
   it("intencao inventada pelo modelo nao passa", () => {
     expect(ehIntencao("interested")).toBe(true);
     expect(ehIntencao("quer_comprar_agora")).toBe(false);
+  });
+});
+
+describe("roteamento pelo destino configurado", () => {
+  it("entrega a promessa qualquer que seja o destino real", () => {
+    for (const destino of ["demo", "conteudo_na_dm", "pesquisa"] as const) {
+      const d = decidir({ ...base, intencao: "interested", destino });
+      expect(d.acao, destino).toBe("entregar_promessa");
+    }
+  });
+
+  it("sem WhatsApp, quem pede outro canal vai para humano", () => {
+    const d = decidir({ ...base, intencao: "wants_whatsapp", destino: "demo" });
+    expect(d.acao).toBe("escalar_humano");
+    expect(d.motivo).toMatch(/nao temos WhatsApp/);
+  });
+
+  it("destino WhatsApp sem link configurado nunca envia", () => {
+    const d = decidir({
+      ...base,
+      intencao: "interested",
+      destino: "whatsapp",
+      whatsappConfigurado: false,
+    });
+    expect(d.acao).toBe("escalar_humano");
+    expect(d.motivo).toMatch(/link nao existe/);
+  });
+
+  it("quando o WhatsApp existir, o encaminhamento volta a funcionar", () => {
+    const d = decidir({
+      ...base,
+      intencao: "wants_whatsapp",
+      destino: "whatsapp",
+      whatsappConfigurado: true,
+    });
+    expect(d.acao).toBe("encaminhar_whatsapp");
   });
 });
 

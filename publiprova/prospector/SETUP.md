@@ -1,8 +1,8 @@
 # Manual do operador — Prospector do PubliProva
 
 Sistema que transforma comentário com palavra-chave nos posts do
-`@publiprova.app` em conversa qualificada e, quando a pessoa quer, em conversa
-no WhatsApp.
+`@publiprova.app` em conversa qualificada na própria DM, entregando o que cada
+post prometeu.
 
 > **Estado hoje (10/09/2026):** o núcleo está pronto e testado — banco, máquina
 > de estados, entrada de leads pelo webhook, motor de decisão, orçamento, pausa
@@ -14,9 +14,23 @@ no WhatsApp.
 
 ## 1. O que este sistema faz e o que ele não faz
 
-**Faz:** ouve os comentários dos nossos posts, reconhece a palavra-chave
-(RELATÓRIO, PRINT, EU), cria o lead sem duplicar, responde pela DM usando a
-**API oficial da Meta**, conduz a conversa até o encaminhamento e registra tudo.
+**Faz:** ouve os comentários dos nossos posts, reconhece a palavra-chave, cria o
+lead sem duplicar, responde pela DM usando a **API oficial da Meta**, entrega o
+que o post prometeu e registra tudo.
+
+Cada palavra tem um destino, e ele é o que o post prometeu — não o que seria
+conveniente vender:
+
+| Palavra | O post promete | Destino |
+|---|---|---|
+| RELATÓRIO | "te mostro por dentro" | link do modo demonstração do site |
+| PRINT | "te mando as três em texto" | as 3 mensagens, na própria DM |
+| EU | "eu te chamo" | convite para a pesquisa das 6 perguntas |
+
+**Nada disso passa por WhatsApp**, porque ainda não existe número e nenhum post
+prometeu isso. O funil de afiliados está **desligado** pelo mesmo motivo: não há
+programa nem grupo. Ligar é editar `funisAtivos` no `config/business.json` — e o
+sistema se recusa a subir se você ligar um funil sem o link correspondente.
 
 **Não faz, por decisão:** não manda DM para quem nunca falou com a gente. A API
 da Meta bloqueia isso de propósito e contornar pelo navegador põe a conta em
@@ -65,7 +79,7 @@ Confira que está tudo de pé:
 pnpm typecheck && pnpm test
 ```
 
-Tem de terminar com **106 testes passando**.
+Tem de terminar com **111 testes passando**.
 
 ---
 
@@ -95,11 +109,19 @@ Abra o `.env` e preencha. Os campos e o que cada um faz:
 
 ## 5. Preencher o `config/business.json`
 
-Já está preenchido com os dados reais do PubliProva. **Duas coisas faltam** e o
-sistema se recusa a enviá-las enquanto forem placeholder:
+Já está preenchido com os dados reais do PubliProva. Dois campos estão vazios de
+propósito, e **nada depende deles hoje**:
 
-- `links.whatsapp` — seu link `https://wa.me/55DDDNUMERO`
-- `links.affiliateGroup` — o grupo de afiliados, que ainda não existe
+- `links.whatsapp` — quando você tiver número, preencha e aí uma palavra-chave
+  pode passar a ter `destino: { "tipo": "whatsapp" }`
+- `links.affiliateGroup` — quando existir grupo, preencha e acrescente
+  `"affiliate"` em `funisAtivos`
+
+Enquanto estiverem vazios, o sistema simplesmente não oferece esses caminhos.
+
+**`funisAtivos`** diz quais funis podem receber lead. Hoje é só `["customer"]`.
+Se uma palavra-chave apontar para um funil desligado, o sistema **não sobe** — a
+incoerência falha no boot, não na hora de responder alguém.
 
 A parte mais importante desse arquivo são as duas listas:
 

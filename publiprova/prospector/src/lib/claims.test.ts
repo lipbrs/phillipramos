@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { checkClaims } from "./claims.ts";
-import { loadBusiness, pendingPlaceholders, resetBusinessCache } from "./business.ts";
+import { loadBusiness, oQueFalta, resetBusinessCache } from "./business.ts";
 
 describe("regra de afirmacoes", () => {
   it("aceita o que esta verificado", () => {
@@ -77,11 +77,33 @@ describe("config do negocio", () => {
     expect(b.icp.segments.length).toBeGreaterThan(0);
   });
 
-  it("aponta os placeholders que faltam preencher", () => {
+  it("aponta o que ainda falta para destravar recurso desligado", () => {
     resetBusinessCache();
-    const faltando = pendingPlaceholders(loadBusiness());
-    expect(faltando).toContain("links.whatsapp");
-    expect(faltando).toContain("links.affiliateGroup");
+    const faltando = oQueFalta(loadBusiness()).join(" | ");
+    expect(faltando).toMatch(/links\.whatsapp/);
+    expect(faltando).toMatch(/links\.affiliateGroup/);
+  });
+
+  it("hoje so o funil de clientes esta ligado", () => {
+    resetBusinessCache();
+    const b = loadBusiness();
+    expect(b.funisAtivos).toEqual(["customer"]);
+    expect(b.palavrasChave.every((p) => p.funil === "customer")).toBe(true);
+  });
+
+  it("nenhuma palavra manda para o WhatsApp, que nao existe", () => {
+    resetBusinessCache();
+    const b = loadBusiness();
+    expect(b.palavrasChave.some((p) => p.destino.tipo === "whatsapp")).toBe(false);
+  });
+
+  it("todo destino entrega o que o post prometeu", () => {
+    resetBusinessCache();
+    const b = loadBusiness();
+    const porPalavra = Object.fromEntries(b.palavrasChave.map((p) => [p.palavra, p.destino.tipo]));
+    expect(porPalavra.RELATORIO).toBe("demo");
+    expect(porPalavra.PRINT).toBe("conteudo_na_dm");
+    expect(porPalavra.EU).toBe("pesquisa");
   });
 
   it("toda claim verificada passa no proprio filtro", () => {

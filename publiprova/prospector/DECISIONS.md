@@ -45,8 +45,8 @@ está enchendo o funil de entrada; o sistema passa a colhê-lo.
   disparo. O `MAX_DMS_PER_DAY` continua como teto de saúde da conta.
 - Descoberta e score de ICP usam os endpoints de Instagram do vidIQ (API de
   terceiro legítima, já conectada a este workspace), não raspagem.
-- O funil B (afiliados) funciona igual, mais abordagem assistida em que o sistema
-  redige e o operador envia.
+- O funil B (afiliados) funcionaria igual, mas está desligado hoje — ver
+  ADR-005.
 
 ## ADR-002 — libsql no lugar de better-sqlite3
 
@@ -67,3 +67,42 @@ Resolvido pelo Phillip em 10/09: **tudo em português**. Isso alinha com o
 `phillipramos/CLAUDE.md`, que já mandava pt-BR em todo o repositório. A
 especificação deste subprojeto pedia código em inglês; ficou valendo o
 português, com a exceção dos valores internos de estado explicada no topo.
+
+## ADR-005 — O destino é o que o post prometeu, não WhatsApp presumido
+
+**Status:** decidido em 10/09/2026, depois de o Phillip avisar que ainda não
+existe número de WhatsApp nem programa de afiliados.
+
+**Contexto.** O desenho anterior terminava toda conversa boa no WhatsApp e tinha
+um funil B de afiliados. Nenhuma das duas coisas existe: não há número, não há
+grupo, e nenhum dos posts agendados promete WhatsApp. Mandar a IA oferecer um
+canal inexistente é inventar — o mesmo defeito que o filtro de afirmações
+existe para impedir, só que na camada de roteamento.
+
+**Decisão.** Cada palavra-chave carrega um `destino` explícito, e ele é o que o
+post prometeu:
+
+| Palavra | Promessa no post | `destino.tipo` |
+|---|---|---|
+| RELATÓRIO | "te mostro por dentro" | `demo` (link do modo demonstração) |
+| PRINT | "te mando as três em texto" | `conteudo_na_dm` (o texto, na DM) |
+| EU | "eu te chamo" | `pesquisa` (convite às 6 perguntas) |
+
+`whatsapp` continua no tipo, desligado por falta de link. Um `funisAtivos`
+declara quais funis podem receber lead; hoje é só `["customer"]`.
+
+**Por que falhar no boot e não na hora.** `incoerencias()` roda no
+carregamento: palavra apontando para funil desligado, ou para WhatsApp sem
+link, derruba o processo. Essa incoerência não pode virar uma mensagem
+estranha para uma pessoa real às duas da manhã — ela tem de impedir o sistema
+de subir.
+
+**Consequências.**
+
+- `interested` vira `entregar_promessa`, uma vez só por lead.
+- `wants_whatsapp` sem WhatsApp configurado vai para humano, com o motivo
+  registrado. A IA não improvisa um canal.
+- Comentário com palavra de funil desligado é registrado e ignorado, sem lead.
+- Ligar afiliados depois é: preencher `links.affiliateGroup`, acrescentar
+  `"affiliate"` em `funisAtivos` e dar destino a uma palavra. O código já
+  aceita; o que falta é o programa existir.

@@ -1,3 +1,4 @@
+import type { Destino } from "../../lib/business.ts";
 import { checkClaims, describeViolations } from "../../lib/claims.ts";
 
 /**
@@ -25,6 +26,8 @@ export const ACOES = [
   "perguntar",
   "apresentar",
   "tratar_objecao",
+  /** Entrega o que o post prometeu: demo, conteudo na DM ou convite da pesquisa. */
+  "entregar_promessa",
   "encaminhar_whatsapp",
   "aguardar",
   "agendar_follow_up",
@@ -39,16 +42,16 @@ export function ehIntencao(valor: string): valor is Intencao {
 }
 
 /**
- * De intencao para acao. E uma tabela e nao um prompt porque a decisao de o que
- * fazer com "asked_pricing" e regra de negocio: o preco esta bloqueado, entao a
- * resposta e humana, nao gerada.
+ * De intencao para acao. E tabela e nao prompt porque o que fazer com cada
+ * intencao e regra de negocio: preco esta bloqueado, entao quem responde e o
+ * Phillip, nao o modelo.
  */
 const POR_INTENCAO: Record<Intencao, Acao> = {
-  interested: "apresentar",
+  interested: "entregar_promessa",
   asked_info: "responder",
-  // O preco nao esta verificado; quem responde isso e o Phillip.
   asked_pricing: "escalar_humano",
-  wants_whatsapp: "encaminhar_whatsapp",
+  // Resolvida caso a caso em `decidir`, porque depende do destino configurado.
+  wants_whatsapp: "escalar_humano",
   not_the_owner: "perguntar",
   will_forward: "agendar_follow_up",
   objection: "tratar_objecao",
@@ -62,18 +65,17 @@ export type Contexto = {
   intencao: Intencao;
   /** Confianca do classificador, 0..1. */
   confianca: number;
-  /** Ja apresentamos a empresa para esse lead? */
-  jaApresentou: boolean;
+  /** O que o post prometeu a quem comentou aquela palavra. */
+  destino: Destino["tipo"];
+  /** Ja entregamos a promessa nessa conversa? */
+  jaEntregou: boolean;
   /** Quantas mensagens nossas ja foram nessa conversa. */
   mensagensEnviadas: number;
-  /** Placeholders de config ainda nao preenchidos (ex.: link do WhatsApp). */
-  faltandoConfig: string[];
+  /** So true quando `links.whatsapp` esta preenchido. */
+  whatsappConfigurado: boolean;
 };
 
-export type Decisao = {
-  acao: Acao;
-  motivo: string;
-};
+export type Decisao = { acao: Acao; motivo: string };
 
 /** Abaixo disso, nao confiamos na classificacao e mandamos para humano. */
 const CONFIANCA_MINIMA = 0.6;
@@ -94,21 +96,32 @@ export function decidir(ctx: Contexto): Decisao {
     return { acao: "encerrar", motivo: "limite de mensagens da conversa atingido" };
   }
 
+  // Pediu para falar noutro canal: so encaminha se esse canal existir.
+  if (ctx.intencao === "wants_whatsapp") {
+    if (ctx.destino === "whatsapp" && ctx.whatsappConfigurado) {
+      return { acao: "encaminhar_whatsapp", motivo: "destino configurado" };
+    }
+    return {
+      acao: "escalar_humano",
+      motivo: "lead quer outro canal e nao temos WhatsApp configurado",
+    };
+  }
+
   const acao = POR_INTENCAO[ctx.intencao];
 
-  // Encaminhar sem link configurado mandaria "{{PREENCHER}}" para o lead.
-  if (acao === "encaminhar_whatsapp" && ctx.faltandoConfig.includes("links.whatsapp")) {
-    return { acao: "escalar_humano", motivo: "link do WhatsApp nao configurado" };
+  if (acao === "entregar_promessa") {
+    if (ctx.jaEntregou) {
+      return { acao: "responder", motivo: "promessa ja entregue nessa conversa" };
+    }
+    if (ctx.destino === "whatsapp" && !ctx.whatsappConfigurado) {
+      return { acao: "escalar_humano", motivo: "destino e WhatsApp, mas o link nao existe" };
+    }
   }
-  if (acao === "apresentar" && ctx.jaApresentou) {
-    return { acao: "responder", motivo: "empresa ja apresentada nessa conversa" };
-  }
+
   return { acao, motivo: `intencao ${ctx.intencao}` };
 }
 
-export type Revisao =
-  | { liberado: true; texto: string }
-  | { liberado: false; motivo: string };
+export type Revisao = { liberado: true; texto: string } | { liberado: false; motivo: string };
 
 /**
  * Ultimo portao antes de qualquer envio. Nada sai daqui sem passar pelo filtro

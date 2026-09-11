@@ -12,3 +12,6 @@ data/
 backups/
 screenshots/
 traces/
+
+# Cache do TypeScript — muda a cada build, nao serve para revisao
+tsconfig.tsbuildinfo

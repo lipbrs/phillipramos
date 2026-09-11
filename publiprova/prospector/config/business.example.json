@@ -10,8 +10,9 @@
     "geography": "{{GEOGRAPHY}}"
   },
   "links": {
-    "whatsapp": "{{https://wa.me/55...}}",
-    "affiliateGroup": "{{link do grupo de afiliados}}"
+    "whatsapp": "",
+    "affiliateGroup": "",
+    "demo": "https://exemplo.com/demo"
   },
   "pitch": {
     "oneLine": "{{o que a empresa resolve, em uma frase}}",
@@ -51,7 +52,15 @@
     {
       "palavra": "{{PALAVRA}}",
       "funil": "customer",
-      "descricao": "{{o que essa palavra promete}}"
+      "descricao": "{{em que post essa palavra aparece}}",
+      "promessa": "{{o que o post promete a quem comentar}}",
+      "destino": {
+        "tipo": "conteudo_na_dm",
+        "conteudo": "{{o que entregar na propria DM}}"
+      }
     }
+  ],
+  "funisAtivos": [
+    "customer"
   ]
 }
