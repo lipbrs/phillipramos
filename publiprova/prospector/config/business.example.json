@@ -46,5 +46,12 @@
   "affiliateTopics": [
     "{{tema 1}}",
     "{{tema 2}}"
+  ],
+  "palavrasChave": [
+    {
+      "palavra": "{{PALAVRA}}",
+      "funil": "customer",
+      "descricao": "{{o que essa palavra promete}}"
+    }
   ]
 }

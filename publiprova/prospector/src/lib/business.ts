@@ -25,6 +25,16 @@ const schema = z.object({
     keywords: z.array(z.string().min(1)).min(1),
   }),
   affiliateTopics: z.array(z.string().min(1)).min(1),
+  /** Palavras que, comentadas num post nosso, viram lead. Sao dado de negocio. */
+  palavrasChave: z
+    .array(
+      z.object({
+        palavra: z.string().min(1),
+        funil: z.enum(["customer", "affiliate"]),
+        descricao: z.string().min(1),
+      }),
+    )
+    .min(1),
 });
 
 export type Business = z.infer<typeof schema>;
