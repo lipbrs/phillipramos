@@ -61,3 +61,23 @@ npm i -D playwright-core && node e2e/fluxo-completo.mjs
 
 Verifica o caminho que é o produto: link mágico → envio do creator → painel atualizado → relatório
 consolidado → régua que para de cobrar quem entregou.
+
+## Deploy (Vercel)
+
+Configurado em 11/09/2026. O projeto **publiprova** no time `plan-b1a5` está
+ligado ao repositório `lipbrs/phillipramos`, e antes disso era deploy manual —
+push não publicava nada.
+
+| Configuração | Valor | Por quê |
+|---|---|---|
+| Repositório | `lipbrs/phillipramos` | push passa a publicar |
+| Root Directory | `publiprova/web` | o app não está na raiz do repositório |
+| Framework Preset | Next.js | estava em "Other", e aí o build não roda |
+| Branch de produção | `claude/pain-analysis-ideation-o1mvb4` | é a branch de trabalho do projeto |
+
+O site roda em **modo demonstração**: o projeto não tem nenhuma variável de
+ambiente. Sem `SUPABASE_*` o `lib/store.ts` usa o driver de memória, e sem
+`RESEND_API_KEY` o e-mail vira log. Ao configurar Supabase, lembrar que os dados
+em memória não sobrevivem a um novo deploy.
+
+Domínios de produção: `publiprova.vercel.app` e `publiprova-plan-b1a5.vercel.app`.
