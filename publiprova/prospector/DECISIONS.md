@@ -159,3 +159,24 @@ A configuração segue o mesmo princípio: o painel **mostra** o `business.json`
 significaria validar a coerência em dois lugares, e `incoerencias()` é a
 verificação que derruba o boot justamente para não existir estado incoerente
 rodando.
+
+## ADR-009 — Backup por `VACUUM INTO`, restauração à mão
+
+**Status:** decidido em 10/09/2026.
+
+`pnpm backup` usa `VACUUM INTO`, que roda com o sistema de pé e sai com um
+arquivo consistente. Copiar o `.db` com `cp` enquanto o worker escreve produz um
+arquivo que *parece* certo e falha no dia em que for usado, porque o WAL fica
+para trás.
+
+**Restaurar não tem comando.** É um procedimento escrito no SETUP, seção 10, e
+isso é escolha: um `pnpm restore` é como se apaga um dia inteiro de conversas
+por engano, e ele seria usado exatamente no momento de maior pressão. O que o
+código faz é provar que o backup presta — o teste abre um backup e confere que o
+que existia antes está lá, que o posterior não está e que o banco veio inteiro.
+
+Um detalhe que só apareceu ao escrever o teste: no Windows o libsql **segura o
+arquivo enquanto o processo existir** — `closeDb()` não solta. Por isso o passo 1
+da restauração é parar o sistema e conferir que nenhum `node` ficou rodando;
+sem isso a troca falha com "acesso negado". O teste restaura para um caminho
+novo em vez de por cima do banco vivo, e diz por quê.

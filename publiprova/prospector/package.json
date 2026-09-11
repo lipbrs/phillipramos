@@ -16,7 +16,8 @@
     "lint": "next lint",
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "node --env-file=.env --experimental-strip-types src/db/migrate.ts"
+    "db:migrate": "node --env-file=.env --experimental-strip-types src/db/migrate.ts",
+    "backup": "node scripts/backup.mjs"
   },
   "dependencies": {
     "drizzle-orm": "^0.44.2",

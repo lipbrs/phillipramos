@@ -5,10 +5,10 @@ Sistema que transforma comentário com palavra-chave nos posts do
 post prometeu.
 
 > **Estado hoje (10/09/2026):** o caminho inteiro do comentário até a resposta
-> **funciona em simulação**, com painel — webhook, lead, fila, worker, texto,
-> registro e a tela para acompanhar. **Ainda faltam** o classificador que
-> responde quem escreve de volta e o backup automático. Este manual cobre o que
-> já dá para fazer e diz claramente onde termina.
+> **funciona em simulação**, com painel e backup — webhook, lead, fila, worker,
+> texto, registro, a tela para acompanhar e a restauração testada. **Falta** o
+> classificador que responde quem escreve de volta. Este manual cobre o que já
+> dá para fazer e diz claramente onde termina.
 
 ---
 
@@ -84,7 +84,7 @@ Confira que está tudo de pé:
 pnpm typecheck && pnpm test
 ```
 
-Tem de terminar com **130 testes passando**.
+Tem de terminar com **135 testes passando**.
 
 ---
 
@@ -220,7 +220,6 @@ Sendo direto, para você não procurar o que não existe:
 - o classificador que lê a resposta do lead. **Hoje quem responde de volta cai
   na fila de exceções e espera você** — é de propósito: melhor a conversa
   esperar do que o sistema inventar resposta;
-- backup automático e o procedimento de restauração testado;
 - edição da configuração pelo painel: hoje o `business.json` se edita à mão, e o
   painel só mostra o que está valendo.
 
@@ -240,11 +239,40 @@ lead, pausa geral, circuit breaker e experimentos com veredito conservador.
 
 ---
 
-## 10. Backup
+## 10. Backup e restauração
 
-O banco é um arquivo só: `data/prospector.db`. Backup é copiar o arquivo com o
-sistema parado (ou usar `VACUUM INTO` com ele rodando). Guarde fora da pasta do
-projeto — `data/` está no `.gitignore` e não vai para o Git.
+O banco é um arquivo só: `data/prospector.db`. Para fazer backup:
 
-Para restaurar: pare o sistema, troque o arquivo, suba de novo. Teste isso uma
-vez **antes** de precisar.
+```bash
+pnpm backup
+```
+
+Sai um arquivo datado em `backups/`, e os 14 mais recentes ficam. Ele usa
+`VACUUM INTO`, que pode rodar **com o sistema de pé** e sai consistente — copiar
+o `.db` com o worker escrevendo produz um arquivo que *parece* certo e falha
+quando você mais precisa, porque o WAL fica para trás.
+
+Agende uma vez por dia no Agendador de Tarefas do Windows, apontando para a
+pasta do projeto. E **guarde uma cópia fora deste disco**: backup ao lado do
+banco não é backup.
+
+### Restaurar
+
+Nesta ordem, sem pular a primeira:
+
+1. **Pare o sistema** (Ctrl+C no `pnpm dev`) e confirme que nenhum `node` ficou
+   rodando. O arquivo continua preso enquanto o processo existir — no Windows
+   isso aparece como "acesso negado" ao tentar trocá-lo.
+2. Apague `data/prospector.db`, `data/prospector.db-wal` e
+   `data/prospector.db-shm`. Os dois últimos são do banco antigo e, se ficarem,
+   corrompem o restaurado.
+3. Copie o backup escolhido para `data/prospector.db`.
+4. Suba de novo com `pnpm dev`.
+
+O que você perde é o que entrou depois daquele backup — o arquivo é um retrato
+do instante em que foi feito. O teste `src/db/backup.test.ts` abre um backup e
+confere que os dados anteriores estão lá, que o posterior não está e que o banco
+veio inteiro.
+
+> **Teste isso uma vez agora**, com dados de mentira, e não no dia em que
+> precisar.
