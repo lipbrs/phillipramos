@@ -313,6 +313,28 @@ Ele imprime uma URL `https://algo.trycloudflare.com`. Registre-a no painel do
 app, em *Configurar webhooks*, com o token de verificação do `.env`, e assine os
 campos **`comments`** e **`messages`**.
 
+### Sem domínio próprio: o que sobra
+
+Confirmado em 11/09: **não existe domínio próprio**. O site é o endereço da
+Vercel, e o link da bio do Instagram aponta para ele. Isso elimina o túnel
+nomeado da Cloudflare, que exige uma zona DNS sua.
+
+O que resta, em ordem de esforço:
+
+1. **Domínio estático de túnel gratuito** (o ngrok dá um no plano grátis).
+   Endereço fixo, cinco minutos de configuração. Exige conta e um authtoken,
+   e **a máquina tem de estar ligada** quando alguém comenta.
+2. **Receptor na Vercel + fila durável.** Uma rota na Vercel confere a
+   assinatura e grava o evento cru num banco que ela alcança; o worker aqui
+   busca de lá quando sobe. Mais peças, mas **sobrevive à máquina desligada** —
+   que é a diferença que importa quando o conteúdo começa a render comentário
+   de madrugada.
+3. **Comprar um domínio** e usar o túnel nomeado da Cloudflare.
+
+Nota sobre perda de evento: a Meta reentrega webhook que não recebeu 200,
+durante um tempo. Máquina desligada por minutos é recuperável; por uma noite,
+não conte com isso.
+
 ### O problema que isso não resolve
 
 **A URL do túnel muda a cada reinício.** Toda vez que você reiniciar, tem de
