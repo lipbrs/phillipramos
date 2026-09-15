@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R9 — "POV: é dia 30". Lista de conversas do WhatsApp (modo escuro): as 6
+     cobranças enviadas às 18:02 vão virando resposta, uma a uma. Esquete — nomes
+     inventados, nada aqui é conversa real de cliente. -->
+<style>
+  .wa { position: absolute; inset: 0; background: #0b141a; color: #e9edef; }
+  .status { height: 34px; display: flex; justify-content: space-between; align-items: center; padding: 0 22px; font-size: 15px; font-weight: 600; color: #fff; }
+  .topo { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px 6px; }
+  .topo h1 { font-size: 27px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
+  .icones { display: flex; gap: 22px; font-size: 19px; color: #e9edef; }
+  .busca { margin: 8px 16px 10px; height: 40px; border-radius: 22px; background: #202c33; color: #8696a0; display: flex; align-items: center; padding: 0 16px; font-size: 15px; }
+  .chips { display: flex; gap: 8px; padding: 0 16px 8px; }
+  .chip { padding: 6px 13px; border-radius: 16px; background: #202c33; color: #8696a0; font-size: 14px; font-weight: 500; }
+  .chip.on { background: #103529; color: #25d366; }
+  .linha { display: flex; align-items: center; gap: 13px; height: 78px; padding: 0 16px; }
+  .av { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 19px; color: #fff; flex: none; }
+  .meio { flex: 1; min-width: 0; border-bottom: 1px solid #1f2c33; height: 78px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+  .l1, .l2 { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .nome { font-size: 17px; font-weight: 600; color: #e9edef; }
+  .hora { font-size: 12.5px; color: #8696a0; }
+  .hora.nova { color: #25d366; font-weight: 600; }
+  .prev { font-size: 15px; color: #8696a0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .prev.nova { color: #d1d7db; }
+  .badge { min-width: 22px; height: 22px; border-radius: 11px; background: #25d366; color: #0b141a; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 6px; }
+  .tick { color: #8696a0; letter-spacing: -3px; margin-right: 6px; }
+  .tick.lido { color: #53bdeb; }
+  .gancho { top: 92px; }
+  /* A pílula do gancho cobre a busca e os filtros, mas as bordas deles escapavam
+     pelos lados (pego na folha de prova). Some com eles e mantém o espaço. */
+  .busca, .chips { visibility: hidden; }
+  #aviso { position: absolute; left: 30px; right: 30px; top: 690px; display: flex; justify-content: center; z-index: 50; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="wa">
+    <div class="status"><span>23:47</span><span>▮▮▮ 5G ▭</span></div>
+    <div class="topo"><h1>WhatsApp</h1><div class="icones"><span>⌾</span><span>⋮</span></div></div>
+    <div class="busca">Pesquisar</div>
+    <div class="chips"><span class="chip on">Tudo</span><span class="chip">Não lidas</span><span class="chip">Favoritas</span><span class="chip">Grupos</span></div>
+    <div id="lista"></div>
+  </div>
+  <div class="gancho"><div class="pilula grande">POV: é dia 30 e o cliente pediu o relatório 🙂</div></div>
+  <div id="aviso"><div class="pilula">faltam 7 de 12 · o cliente quer às 9h ⏰</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.0;
+  const dados = [
+    { n: "Bia Lima",   cor: "#d97757", r: "amanhã eu mando, prometo 🙏", q: 1, h: "23:41", t: 1.0 },
+    { n: "Rafa Nunes", cor: "#5b8def", r: "me manda o link de novo?",   q: 2, h: "23:42", t: 1.7 },
+    { n: "Duda Reis",  cor: "#9b59b6", r: "qual campanha mesmo? 😅",     q: 1, h: "23:43", t: 2.4 },
+    { n: "Leo Prado",  cor: "#16a085", lido: true,                        t: 3.1 },
+    { n: "Carol Mota", cor: "#e67e22", r: "🎤 Áudio (2:47)",              q: 3, h: "23:45", t: 3.8 },
+    { n: "Juju Alves", cor: "#c0392b", r: "tá no meu outro celular kkk", q: 1, h: "23:46", t: 4.5 },
+  ];
+  const lista = document.getElementById("lista");
+  const cobranca = "oi! consegue mandar o print hoje? 🙏";
+  const linhas = dados.map((d) => {
+    const el = document.createElement("div");
+    el.className = "linha";
+    const ini = d.n.split(" ").map((p) => p[0]).join("");
+    el.innerHTML = `<div class="av" style="background:${d.cor}">${ini}</div>
+      <div class="meio"><div class="l1"><span class="nome">${d.n}</span><span class="hora">18:02</span></div>
+      <div class="l2"><span class="prev"><span class="tick">✓✓</span>${cobranca}</span><span class="badge" style="display:none"></span></div></div>`;
+    lista.appendChild(el);
+    return { el, hora: el.querySelector(".hora"), prev: el.querySelector(".prev"), badge: el.querySelector(".badge"), d };
+  });
+
+  window.setT = (t) => {
+    for (const L of linhas) {
+      const chegou = t >= L.d.t;
+      const flash = chegou ? 1 - prog(t, L.d.t, 0.55) : 0;
+      L.el.style.background = `rgba(37,211,102,${0.12 * flash})`;
+      if (L.d.lido) {
+        L.prev.innerHTML = `<span class="tick${chegou ? " lido" : ""}">✓✓</span>${cobranca}`;
+        continue;
+      }
+      if (chegou) {
+        L.prev.className = "prev nova";
+        L.prev.textContent = L.d.r;
+        L.hora.className = "hora nova";
+        L.hora.textContent = L.d.h;
+        L.badge.style.display = "flex";
+        L.badge.textContent = L.d.q;
+        const pop = eo(prog(t, L.d.t, 0.22));
+        L.badge.style.transform = `scale(${0.4 + 0.6 * pop})`;
+      } else {
+        L.prev.className = "prev";
+        L.prev.innerHTML = `<span class="tick">✓✓</span>${cobranca}`;
+        L.hora.className = "hora";
+        L.hora.textContent = "18:02";
+        L.badge.style.display = "none";
+      }
+    }
+    entra(document.getElementById("aviso"), t, 5.6);
+  };
+  setT(0);
+</script></body></html>

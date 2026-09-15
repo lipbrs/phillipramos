@@ -1,0 +1,23 @@
+/* Lote 04 — base comum. Quadro de 540x960 renderizado a 2x = 1080x1920.
+   Zonas seguras do Reels: nada importante nos 200 px de baixo (legenda e botões)
+   nem nos 70 px da direita (ícones). O gancho mora no terço de cima. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 540px; height: 960px; overflow: hidden; background: #000;
+  font-family: Inter, "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.quadro { position: relative; width: 540px; height: 960px; overflow: hidden; }
+
+/* Texto nativo do Instagram: pílula branca, letra preta pesada. */
+.gancho {
+  position: absolute; left: 30px; right: 30px; z-index: 50;
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+}
+.pilula {
+  background: #fff; color: #0a0a0a; font-weight: 800; font-size: 24px;
+  line-height: 1.22; padding: 8px 14px; border-radius: 12px; text-align: center;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, .38);
+}
+.pilula.grande { font-size: 29px; padding: 10px 16px; }
+.pilula.fina { font-size: 19px; font-weight: 700; }

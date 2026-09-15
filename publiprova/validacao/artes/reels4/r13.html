@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R13 — "como perder o creator na segunda campanha 💀". Isca de pausa: cada item
+     fica 0,8 s — dá para ver que é uma lista, não dá para ler inteira sem pausar. -->
+<style>
+  .preto { position: absolute; inset: 0; background: #0c0c0c; }
+  .gancho { top: 118px; }
+  .item { position: absolute; left: 38px; right: 38px; top: 388px; text-align: center; color: #fff; font-weight: 800; font-size: 42px; line-height: 1.14; letter-spacing: -.6px; opacity: 0; }
+  .item .k { display: block; font-size: 17px; font-weight: 600; color: #9aa0a6; margin-bottom: 14px; letter-spacing: 1px; }
+  #fecho { position: absolute; left: 30px; right: 30px; top: 420px; display: flex; justify-content: center; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="preto"></div>
+  <div class="gancho"><div class="pilula grande">como perder o creator na segunda campanha 💀</div></div>
+  <div class="item" id="i0"><span class="k">1 / 4</span>pagar 60 dias depois da entrega</div>
+  <div class="item" id="i1"><span class="k">2 / 4</span>mudar o briefing depois do post</div>
+  <div class="item" id="i2"><span class="k">3 / 4</span>cobrar o print domingo às 23h</div>
+  <div class="item" id="i3"><span class="k">4 / 4</span>pedir “só mais um ajuste rapidinho”</div>
+  <div id="fecho"><div class="pilula grande">manda pra agência que precisa ver 👀</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 6.0;
+  const INI = 0.9, CADA = 0.8;
+  window.setT = (t) => {
+    for (let k = 0; k < 4; k++) janela(document.getElementById(`i${k}`), t, INI + k * CADA, INI + (k + 1) * CADA);
+    entra(document.getElementById("fecho"), t, INI + 4 * CADA + 0.1);
+  };
+  setT(0);
+</script></body></html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R11 — 23h47 na planilha. Janela de planilha, cursor digitando o alcance de
+     uma creator enquanto o relógio anda. Números e nomes inventados. -->
+<style>
+  .noite { position: absolute; inset: 0; background: #101114; }
+  .janela { position: absolute; left: 0; right: 0; top: 186px; bottom: 0; background: #f8f9fa; color: #202124; }
+  .barra { height: 56px; background: #fff; border-bottom: 1px solid #dadce0; display: flex; align-items: center; gap: 10px; padding: 0 14px; }
+  .logo { width: 24px; height: 32px; background: #0f9d58; border-radius: 3px; position: relative; }
+  .logo::after { content: ""; position: absolute; left: 5px; right: 5px; top: 11px; height: 12px; border: 2px solid #fff; border-radius: 1px; }
+  .titulo { font-size: 15.5px; font-weight: 600; }
+  .sub { font-size: 12px; color: #5f6368; }
+  .hora { margin-left: auto; font-weight: 700; font-size: 15px; background: #202124; color: #fff; border-radius: 8px; padding: 5px 10px; font-variant-numeric: tabular-nums; }
+  .fx { height: 34px; background: #fff; border-bottom: 1px solid #dadce0; display: flex; align-items: center; font-size: 14px; }
+  .fx .ref { width: 62px; color: #5f6368; border-right: 1px solid #dadce0; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .fx .fxi { color: #5f6368; padding: 0 10px; font-style: italic; border-right: 1px solid #dadce0; height: 100%; display: flex; align-items: center; }
+  .fx .val { padding-left: 10px; font-variant-numeric: tabular-nums; }
+  table { border-collapse: collapse; background: #fff; font-size: 14.5px; margin-left: 0; }
+  td, th { border: 1px solid #e2e3e3; height: 41px; padding: 0 7px; white-space: nowrap; }
+  th { background: #f1f3f4; color: #5f6368; font-weight: 500; font-size: 12px; height: 24px; }
+  td.n { background: #f1f3f4; color: #5f6368; font-size: 12px; text-align: center; width: 30px; padding: 0; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.cab td:not(.n) { font-weight: 700; background: #e8f0fe; }
+  .sel { outline: 2.5px solid #1a73e8; outline-offset: -2px; background: #e8f0fe !important; }
+  .cur::after { content: "|"; color: #1a73e8; font-weight: 400; margin-left: 1px; }
+  .gancho { top: 26px; }
+  #fecho { position: absolute; left: 30px; right: 30px; top: 690px; display: flex; justify-content: center; z-index: 50; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="noite"></div>
+  <div class="janela">
+    <div class="barra"><div class="logo"></div><div><div class="titulo">Relatório Verão — FINAL (v3)</div><div class="sub">Arquivo  Editar  Ver  Inserir</div></div><div class="hora" id="hora">23:47</div></div>
+    <div class="fx"><span class="ref" id="ref">C6</span><span class="fxi">fx</span><span class="val" id="val"></span></div>
+    <table id="grade">
+      <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+    </table>
+  </div>
+  <div class="gancho"><div class="pilula grande">POV: 23h47 e você ainda tá copiando o alcance de cada story na planilha 🫠</div></div>
+  <div id="fecho"><div class="pilula grande">faltam 5. o cliente quer às 9h.</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 7.0;
+  const linhas = [
+    ["Creator", "Alcance", "Impressões", "Salvos", "Status"],
+    ["Bia Lima", "12.480", "16.902", "311", "✅"],
+    ["Rafa Nunes", "8.215", "10.044", "187", "✅"],
+    ["Duda Reis", "", "", "", "❓ sem print"],
+    ["Leo Prado", "", "", "", "👀 visualizou"],
+    ["Carol Mota", "", "", "", ""],
+    ["Juju Alves", "", "", "", "⏳ pediu prazo"],
+    ["Nina Paz", "21.337", "30.118", "902", "✅"],
+    ["Theo Lins", "", "", "", "🎤 mandou áudio"],
+    ["Mari Gomes", "", "", "", "❓ sem print"],
+    ["Caio Brito", "5.902", "7.410", "96", "✅"],
+  ];
+  const grade = document.getElementById("grade");
+  const cel = {};
+  linhas.forEach((l, i) => {
+    const tr = document.createElement("tr");
+    if (i === 0) tr.className = "cab";
+    tr.innerHTML = `<td class="n">${i + 1}</td>` + l.map((v, j) => `<td class="${j >= 1 && j <= 3 ? "num" : ""}" style="${j === 0 ? "width:122px" : j === 4 ? "width:132px" : "width:88px"}">${v}</td>`).join("");
+    grade.appendChild(tr);
+    [...tr.children].slice(1).forEach((td, j) => (cel[`${"ABCDE"[j]}${i + 1}`] = td));
+  });
+
+  // A linha 6 é a da Carol: o cursor digita alcance, impressões, salvos e o check.
+  const digita = [
+    { c: "B6", v: "14.027", ini: 1.0 },
+    { c: "C6", v: "19.550", ini: 2.2 },
+    { c: "D6", v: "288",    ini: 3.4 },
+    { c: "E6", v: "✅",     ini: 4.2 },
+  ];
+  const relogio = [[0, "23:47"], [1.6, "23:48"], [3.2, "23:49"], [4.8, "23:51"], [6.0, "23:52"]];
+  const POR_LETRA = 0.12;
+
+  window.setT = (t) => {
+    let ativa = digita[0];
+    for (const d of digita) {
+      const n = Math.floor(clamp((t - d.ini) / POR_LETRA, 0, d.v.length));
+      const chars = [...d.v];
+      const parcial = t < d.ini ? "" : chars.slice(0, Math.max(n, d.c === "E6" ? chars.length : n)).join("");
+      cel[d.c].textContent = parcial;
+      cel[d.c].classList.remove("sel", "cur");
+      if (t >= d.ini) ativa = d;
+    }
+    const alvo = cel[ativa.c];
+    alvo.classList.add("sel");
+    const digitando = t >= ativa.ini && t < ativa.ini + ativa.v.length * POR_LETRA;
+    if (digitando) alvo.classList.add("cur");
+    document.getElementById("ref").textContent = ativa.c;
+    document.getElementById("val").textContent = t >= ativa.ini ? alvo.textContent : "";
+    document.getElementById("hora").textContent = relogio.filter(([ts]) => t >= ts).pop()[1];
+    entra(document.getElementById("fecho"), t, 5.0);
+  };
+  setT(0);
+</script></body></html>

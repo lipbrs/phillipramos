@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R10 — o lado do creator. Tela de bloqueio num domingo à noite, as
+     notificações da agência empilhando. Esquete, nomes inventados. -->
+<style>
+  .fundo { position: absolute; inset: 0;
+    background: radial-gradient(120% 80% at 18% 8%, #5b4b8a 0%, transparent 60%),
+                radial-gradient(100% 70% at 92% 92%, #f08a5d 0%, transparent 55%),
+                linear-gradient(170deg, #1d1a33, #4a2f55 55%, #b8674f); }
+  .data { position: absolute; top: 172px; width: 100%; text-align: center; color: #fff; font-size: 19px; font-weight: 600; opacity: .92; }
+  .relogio { position: absolute; top: 198px; width: 100%; text-align: center; color: #fff; font-size: 100px; font-weight: 700; letter-spacing: -4px; line-height: 1; }
+  .notifs { position: absolute; top: 332px; left: 14px; right: 14px; display: flex; flex-direction: column; gap: 9px; }
+  .nt { background: rgba(250, 250, 250, .8); backdrop-filter: blur(18px); border-radius: 22px; padding: 12px 14px; display: flex; gap: 11px; align-items: flex-start; color: #111; opacity: 0; }
+  .ic { width: 38px; height: 38px; border-radius: 10px; background: #25d366; flex: none; display: flex; align-items: center; justify-content: center; }
+  .ic svg { width: 22px; height: 22px; }
+  .txt { flex: 1; min-width: 0; }
+  .tt { display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; }
+  .tt span { font-weight: 400; color: #555; font-size: 13px; }
+  .bd { font-size: 16px; line-height: 1.3; margin-top: 2px; }
+  .gancho { top: 58px; }
+  #fecho { position: absolute; left: 30px; right: 30px; top: 704px; display: flex; justify-content: center; z-index: 50; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="fundo"></div>
+  <div class="data">domingo, 20 de setembro</div>
+  <div class="relogio">22:14</div>
+  <div class="notifs" id="notifs"></div>
+  <div class="gancho"><div class="pilula">eu (creator) vendo a 4ª mensagem da agência pedindo o print:</div></div>
+  <div id="fecho"><div class="pilula grande">e eu tentando lembrar qual das 9 marcas é essa 🫠</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 6.8;
+  const icone = `<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>`;
+  const msgs = [
+    { b: "oii, tudo bem? conseguiu mandar o print? 🙏", h: "há 3 h", t: 0.5 },
+    { b: "só falta o seu pra fechar o relatório 🥺",   h: "há 1 h", t: 1.5 },
+    { b: "consegue até as 18h de amanhã?",             h: "há 20 min", t: 2.5 },
+    { b: "????",                                      h: "agora", t: 3.4 },
+  ];
+  const caixa = document.getElementById("notifs");
+  const cards = msgs.map((m) => {
+    const el = document.createElement("div");
+    el.className = "nt";
+    el.innerHTML = `<div class="ic">${icone}</div><div class="txt"><div class="tt">Luana · Agência<span>${m.h}</span></div><div class="bd">${m.b}</div></div>`;
+    caixa.appendChild(el);
+    return { el, m };
+  });
+  window.setT = (t) => {
+    for (const c of cards) entra(c.el, t, c.m.t, 0.3, 22);
+    entra(document.getElementById("fecho"), t, 4.4);
+  };
+  setT(0);
+</script></body></html>

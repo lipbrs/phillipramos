@@ -1,0 +1,4 @@
+# Quadros PNG do render (265 MB) e captura regerada a cada render
+out/
+relatorio-demo.png
+render.log

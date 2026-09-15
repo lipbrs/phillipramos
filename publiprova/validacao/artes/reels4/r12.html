@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R12 — portão de palavra-chave. A página REAL do relatório de demonstração
+     (publiprova-plan-b1a5.vercel.app/r/verao-hidrata-demo), capturada pelo render,
+     rolando devagar. É a campanha fictícia do modo demo, e a legenda diz isso. -->
+<style>
+  .quadro { background: #0b0b10; }
+  #shot { position: absolute; left: 0; top: 0; width: 540px; will-change: transform; }
+  .sombra { position: absolute; left: 0; right: 0; top: 0; height: 360px; z-index: 40;
+    background: linear-gradient(180deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.45) 55%, rgba(0,0,0,0) 100%); }
+  .gancho { top: 86px; }
+</style></head>
+<body><div class="quadro">
+  <img id="shot" src="relatorio-demo.png" alt="">
+  <div class="gancho">
+    <div class="pilula grande">esse relatório de campanha se montou sozinho 👀</div>
+    <div class="pilula fina">comenta RELATÓRIO que eu te mando o link pra ver por dentro</div>
+  </div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 9.0;
+  const img = document.getElementById("shot");
+  window.setT = (t) => {
+    const alturaNaTela = img.naturalHeight * (540 / (img.naturalWidth || 540));
+    const max = Math.max(0, alturaNaTela - 960);
+    // Parado 0,8 s para o gancho ser lido, depois desce até o fim do documento.
+    const y = max * eio(prog(t, 0.8, 7.6));
+    img.style.transform = `translateY(${-y}px)`;
+  };
+  setT(0);
+</script></body></html>
