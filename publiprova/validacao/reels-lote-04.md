@@ -65,9 +65,10 @@ pílula (R9) e um degradê escuro que virava névoa cinza sobre o relatório bra
 
 ## Pendências (dependem do Phillip)
 
-1. **R7 e R8 agendados (17 e 19/09) têm a capa vazia.** `video/r7-ig-capa.mp4` já existe
-   com o texto no quadro 0. A troca exige apagar o agendado à mão no Business Suite — a
-   automação não consegue apagar (ver memória do pipeline).
+1. ~~R7 e R8 agendados (17 e 19/09) têm a capa vazia.~~ **Apagados do Business Suite em
+   15/09** (a fila de programados ficou vazia). Apagar funciona: hover em "Manage post",
+   "Delete reel" pela ref — mover o mouse em diagonal fecha o submenu, que era o que
+   falhava em 07/09. `video/r7-ig-capa.mp4` está pronto para voltar à fila; o R8 não volta.
 2. **R8 e o C06 dizem "Stories somem em 24h… o dado morreu e não volta".** Não verifiquei
    isso, e desconfio que o painel profissional mantém métricas de story depois das 24 h.
    O C06 já publicou; recomendo **não republicar no R8** e trocar o slot de 19/09 por um
