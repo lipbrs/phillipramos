@@ -148,14 +148,16 @@ construindo o PubliProva · Instagram @publiprova.app
 
 | Agência | 1º e-mail | Follow-up | Toque 02 | Resposta |
 |---|---|---|---|---|
-| Holofotte | 02/09 | 07/09 | a enviar | — |
-| Brunch | 02/09 | 07/09 | a enviar | — |
-| Mosaico | 02/09 | 07/09 | a enviar | — |
-| CoCreators | 02/09 | 07/09 | a enviar | — |
-| MID | 02/09 | 07/09 | a enviar | — |
-| In Code (Gilberto) | 02/09 | 07/09 | a enviar | — |
+| Holofotte | 02/09 | 07/09 | **ENVIADO 19/09** | — |
+| Brunch | 02/09 | 07/09 | **ENVIADO 19/09** | — |
+| Mosaico | 02/09 | 07/09 | **ENVIADO 19/09** | — |
+| CoCreators | 02/09 | 07/09 | **ENVIADO 19/09** | — |
+| MID | 02/09 | 07/09 | **ENVIADO 19/09** | — |
+| In Code (Gilberto) | 02/09 | 07/09 | **ENVIADO 19/09** | — |
 
-**Regra de encerramento:** sem resposta em 7 dias (até 23/09), o lote 01 está morto e
+**Enviados em 19/09**, os 6, do gmail pessoal via conector.
+
+**Regra de encerramento:** sem resposta em 7 dias (até 26/09), o lote 01 está morto e
 nenhuma destas 6 recebe outro e-mail. O esforço passa para o lote 02 (as "sementes" do
 `lista-alvos.csv` que ainda precisam de e-mail confirmado: Cigarra Buzz, Agência FG,
 Creators LLC, Player1, Celebryts…).

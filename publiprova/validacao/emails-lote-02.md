@@ -1,5 +1,17 @@
 # Lote 02 de e-mails — 7 agências novas (19/09/2026)
 
+> ✅ **ENVIADOS em 19/09**, os 7, do gmail pessoal via conector, com autorização
+> explícita do Phillip. Os 6 do `emails-toque-02.md` saíram no mesmo lote — 13 no total.
+>
+> ⚠️ **Saíram no sábado à noite BRT**, e não na janela de 10h–17h de terça a quinta que
+> eu mesmo defini abaixo. Foi decisão consciente: esperar 3 dias custava mais do que o
+> ganho marginal de horário. Se o lote der 0/13, o horário é um confundidor a considerar
+> antes de culpar o texto.
+>
+> **Prazo de leitura: 26/09.** Sem resposta até lá, a hipótese "o texto curto converte
+> melhor" cai junto com a do texto longo, e o problema passa a ser o canal — e-mail frio
+> para `contato@` — não a redação.
+
 > **Por que existe:** o lote 01 falou com 6 agências, 2 toques cada, e teve **0 resposta**.
 > Seis alvos é amostra que não decide nada: a uma taxa típica de 5–15%, o resultado
 > esperado de 6 contatos é menos de uma resposta. O gargalo das 15 conversas é volume de
