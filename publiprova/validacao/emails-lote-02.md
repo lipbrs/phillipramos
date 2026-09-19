@@ -1,4 +1,4 @@
-# Lote 02 de e-mails — 5 agências novas (19/09/2026)
+# Lote 02 de e-mails — 7 agências novas (19/09/2026)
 
 > **Por que existe:** o lote 01 falou com 6 agências, 2 toques cada, e teve **0 resposta**.
 > Seis alvos é amostra que não decide nada: a uma taxa típica de 5–15%, o resultado
@@ -22,11 +22,16 @@ Da lista da Interney ("78 empresas do marketing de influência no Brasil"), cruz
 lista das maiores agências do 140 Online. Das ~40 empresas citadas, separei as que
 **fecham campanha com creators** (é quem sente a dor) e busquei o contato no site de cada
 uma. 6 tinham e-mail público, mas a **BR Media Group já estava na lista desde agosto,
-marcada como "grande demais"** — fica de fora, e sobram 5 para abordar. Outras 6 só têm
-formulário, 1 está com o site vazio, e as demais são plataforma ou monitoramento, não ICP.
+marcada como "grande demais"** — fica de fora. Outras 7 só têm formulário ou telefone, 1
+está com o site vazio, e as demais são plataforma ou monitoramento, não ICP.
 
-Todas entraram em `lista-alvos.csv` com o status. A lista foi de 31 para 43 linhas, e de
-6 para 11 agências com e-mail — 5 delas ainda não abordadas.
+Depois disso, uma segunda rodada de busca (agências fora do eixo, que é onde mora o ICP
+real) trouxe mais duas com e-mail: **ADR**, de Londrina, e a unidade de influência do
+**Grupo Contatto**, de São Caetano. A InfluBrasília entrou na lista sem e-mail — só
+WhatsApp publicado no site.
+
+Todas entraram em `lista-alvos.csv` com o status. A lista foi de 31 para 47 linhas, e de
+6 para 13 agências com e-mail — **7 ainda não abordadas**.
 
 ---
 
@@ -134,6 +139,50 @@ construindo o PubliProva · Instagram @publiprova.app
 
 ---
 
+## 6. ADR — comercial@adragencia.com.br
+**Assunto:** uma pergunta sobre o fechamento das campanhas
+
+Oi, time da ADR!
+
+Sou o Phillip. Estou ouvindo agências de influência antes de abrir a ferramenta que estou
+construindo, e procurei de propósito quem trabalha fora do eixo São Paulo — a rotina de
+campanha costuma ser bem diferente e quase ninguém pergunta.
+
+Uma pergunta só, e eu sumo:
+
+**Juntar link e print de cada creator no fim da campanha dói aí — ou já está resolvido?**
+
+Se for "resolvido", eu risco a ADR da lista e não escrevo de novo. Se doer, eu volto com 5
+perguntas curtas, no tempo de vocês.
+
+Phillip Ramos
+construindo o PubliProva · Instagram @publiprova.app
+
+---
+
+## 7. Contatto Creator — pauta@agenciacontatto.com.br
+**Assunto:** uma pergunta sobre o fechamento das campanhas (pode repassar)
+
+> ⚠️ `pauta@` é caixa de imprensa, não comercial. A chance de chegar em quem fecha campanha
+> é menor; por isso o assunto já pede o repasse e o texto é ainda mais curto.
+
+Oi!
+
+Sou o Phillip. Escrevo para a unidade de influência da Contatto, e sei que este endereço é
+de pauta — se puderem repassar para quem cuida das campanhas com creators, já ajuda muito.
+
+Uma pergunta só, e eu sumo:
+
+**Juntar link e print de cada creator no fim da campanha dói aí — ou já está resolvido?**
+
+Estou construindo uma ferramenta para isso e ouvindo agências antes de abrir. Sem pitch,
+sem venda: se a resposta for "resolvido", eu risco vocês da lista.
+
+Phillip Ramos
+construindo o PubliProva · Instagram @publiprova.app
+
+---
+
 ## Também pendente: o toque 02 do lote 01
 
 O terceiro e último contato com as 6 primeiras agências está escrito desde 16/09 em
@@ -142,12 +191,13 @@ pergunta binária. Vale enviar junto: é o mesmo teste, com o mesmo texto curto.
 
 ## O que falta para chegar a 150
 
-Com 11 agências contatáveis, ainda não dá para concluir nada sobre o mercado. Os caminhos,
+Com 13 agências contatáveis, ainda não dá para concluir nada sobre o mercado. Os caminhos,
 em ordem de esforço:
 
-1. **6 agências que só têm formulário** (Digital Influencers, NOÁ, NetCos, Gombo, Digital
-   Favela, Tambor) mais a Black Influence, cujo site está no ar só com o nome. Preencher
-   formulário é contato igual — só é mais lento e não dá para acompanhar a resposta.
+1. **7 agências sem e-mail** — Digital Influencers, NOÁ, NetCos, Gombo, Digital Favela,
+   Tambor e Spark só têm formulário; a InfluBrasília só publica WhatsApp; a Black Influence
+   está com o site vazio. Preencher formulário é contato igual — só é mais lento e não dá
+   para acompanhar a resposta.
 2. **Busca por cidade.** "agência de marketing de influência" + São Paulo, Rio, BH,
    Curitiba, Porto Alegre, Recife, Floripa. É onde mora a agência pequena, que é o ICP
    real — as listas de "maiores" só trazem as grandes, que respondem menos.
