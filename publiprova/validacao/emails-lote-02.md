@@ -1,7 +1,13 @@
 # Lote 02 de e-mails — 7 agências novas (19/09/2026)
 
-> ✅ **ENVIADOS em 19/09**, os 7, do gmail pessoal via conector, com autorização
-> explícita do Phillip. Os 6 do `emails-toque-02.md` saíram no mesmo lote — 13 no total.
+> ✅ **ENVIADOS em 19/09**, os 7, com autorização explícita do Phillip. Os 6 do
+> `emails-toque-02.md` saíram no mesmo lote — 13 no total.
+>
+> ❌ **Saíram do endereço errado:** `phillip.prs@gmail.com`, o pessoal, e não
+> `publiprova@gmail.com`, que é o e-mail da marca desde 29/08. Segui o precedente dos
+> disparos de 01 e 07/09 em vez da decisão da marca. **Não reenviar** — e-mail idêntico
+> de outro remetente é spam. As respostas caem na caixa pessoal até a conta da marca
+> ser conectada; a busca que cobre os 13 domínios está em `rotina/COMO-RODAR.md`.
 >
 > ⚠️ **Saíram no sábado à noite BRT**, e não na janela de 10h–17h de terça a quinta que
 > eu mesmo defini abaixo. Foi decisão consciente: esperar 3 dias custava mais do que o
