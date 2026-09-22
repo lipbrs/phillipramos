@@ -1,9 +1,15 @@
 # Lote 03 de e-mails — 6 agências (21/09/2026)
 
-> ⏸️ **ESCRITOS, NÃO ENVIADOS.** Ficam parados até o `publiprova@gmail.com` virar conector.
-> O conector do Gmail hoje só autentica `phillip.prs@gmail.com`, e o `send_message` não
-> tem campo de remetente — nem alias "Enviar e-mail como" resolve. Mandar estes seis do
-> endereço pessoal seria repetir o erro de 19/09. Regra em `rotina/COMO-RODAR.md`.
+> ✅ **ENVIADOS em 22/09**, os 6, sem bounce.
+>
+> **Do `phillip.prs@gmail.com`, por decisão do Phillip.** Eu tinha deixado parado
+> esperando o `publiprova@gmail.com` virar conector; ele preferiu não mexer nos conectores
+> agora e mandar do pessoal mesmo. **Isso não é mais um erro — é a decisão em vigor**, e a
+> regra em `rotina/COMO-RODAR.md` foi atualizada para não travar os próximos lotes.
+>
+> O que continua verdade: o conector só autentica uma conta Google, o `send_message` não
+> tem campo de remetente, e as respostas caem na caixa pessoal. Quando o endereço da marca
+> for conectado, o caminho está descrito no COMO-RODAR.
 
 ## De onde vieram
 

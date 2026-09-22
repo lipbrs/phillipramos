@@ -4,14 +4,22 @@ Duas checagens, todo dia. O resultado vira `rotina/AAAA-MM-DD.md`.
 
 ## 0. De qual e-mail sai a abordagem
 
-**`publiprova@gmail.com`** — é o e-mail da marca, decidido em 29/08/2026. Toda abordagem
-a agência sai daí, e é nessa caixa que a resposta chega.
+**`phillip.prs@gmail.com`, o pessoal** — decisão do Phillip em 22/09/2026. **Não perguntar
+de novo a cada lote.**
 
-**Erro cometido em 19/09:** os 13 e-mails do dia saíram de `phillip.prs@gmail.com`, o
-endereço pessoal, porque era a única conta conectada ao conector do Gmail e porque os
-disparos de 01/09 e 07/09 tinham ido por ali. A decisão da marca é mais antiga que o
-precedente e devia ter valido. **Não reenviar** — segundo e-mail idêntico de outro
-endereço é spam. Vale para daqui em diante, e depende de conectar a conta da marca.
+O e-mail da marca é o `publiprova@gmail.com` (decidido 29/08) e continua sendo o destino
+certo, mas o conector do Gmail autentica **uma** conta Google e o `send_message` não tem
+campo de remetente — alias "Enviar e-mail como" não resolve. Trocar o conector para a
+marca custaria a caixa onde caem as respostas dos lotes já enviados. Diante disso, o
+Phillip preferiu não mexer nos conectores e seguir pelo pessoal.
+
+**Se um dia valer a pena trocar**, a ordem é esta, e não pode ser invertida:
+1. Em `phillip.prs@gmail.com`, criar filtro que encaminhe os domínios já abordados para
+   `publiprova@gmail.com` (o Gmail pede um código de confirmação que chega lá).
+2. Só então trocar o conector para a conta da marca.
+
+**O que nunca muda:** não reenviar o mesmo texto de outro remetente — e-mail idêntico
+vindo de endereço diferente é spam, e queima a agência.
 
 ## 1. Respostas de agência
 
@@ -19,8 +27,14 @@ Enquanto as respostas do lote 01, do toque 02 e do lote 02 caem na caixa **pesso
 a busca tem de cobrir os 13 domínios. No Gmail:
 
 ```
-{holofotte.com brunch.ag sigamosaico.com cocreators.com.br agenciamid.com.br incodemkt.com.br fhits.com.br mfield.com.br sharpit.co talismadigital.com.br warpmedia.com.br adragencia.com.br agenciacontatto.com.br} newer_than:2d
+{holofotte.com brunch.ag sigamosaico.com cocreators.com.br agenciamid.com.br incodemkt.com.br fhits.com.br mfield.com.br sharpit.co talismadigital.com.br adragencia.com.br agenciacontatto.com.br souin.com.br agenciadiretiva.com.br brasilinfluencers.com.br netcos.art.br gombo.com.br priory.com.br} -label:sent newer_than:2d
 ```
+
+O `-label:sent` é o que importa: sem ele a busca devolve os próprios disparos e parece que
+há resposta quando não há. `warpmedia.com.br` saiu da lista — o endereço não existe.
+
+Conferir **também** `from:mailer-daemon newer_than:2d`. Endereço publicado no site não
+quer dizer endereço que existe: o da Warp Media voltou com 550 dois segundos depois.
 
 Qualquer resposta: registrar na `lista-alvos.csv` (coluna `status`) e avisar o Phillip
 **no mesmo dia** — uma conversa marcada é o objetivo da Fase 0, não pode esperar.
