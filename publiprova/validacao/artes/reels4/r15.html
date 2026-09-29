@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R15 — a pasta dos prints. O print chegou; o problema é achar de quem é.
+     Lista de arquivos com nome de celular, rolando. Nomes inventados. -->
+<style>
+  .drv { position: absolute; inset: 0; background: #fff; color: #202124; }
+  .barra { height: 54px; border-bottom: 1px solid #dadce0; display: flex; align-items: center; gap: 11px; padding: 0 16px; }
+  .tri { width: 26px; height: 23px; background: linear-gradient(135deg, #fbbc04 55%, #f9ab00 55%); border-radius: 3px; }
+  .cam { font-size: 16px; font-weight: 600; }
+  .qtd { margin-left: auto; font-size: 13px; color: #5f6368; font-weight: 600; }
+  .cab { display: flex; padding: 8px 16px; font-size: 12px; color: #5f6368; border-bottom: 1px solid #e8eaed; font-weight: 500; }
+  .cab span:first-child { flex: 1; }
+  .lista { position: absolute; left: 0; right: 0; top: 120px; bottom: 0; overflow: hidden; }
+  #rolo { position: absolute; left: 0; right: 0; top: 0; }
+  .arq { display: flex; align-items: center; gap: 11px; height: 47px; padding: 0 16px; border-bottom: 1px solid #f1f3f4; font-size: 14px; }
+  .ico { width: 19px; height: 24px; background: #34a853; border-radius: 2px; flex: none; position: relative; }
+  .ico::after { content: ""; position: absolute; inset: 4px 3px auto 3px; height: 7px; background: rgba(255,255,255,.75); border-radius: 1px; }
+  .nm { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dt { font-size: 12.5px; color: #5f6368; font-variant-numeric: tabular-nums; }
+  .gancho { top: 250px; }
+  #fecho { position: absolute; left: 30px; right: 30px; top: 690px; display: flex; justify-content: center; z-index: 50; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="drv">
+    <div class="barra"><div class="tri"></div><div class="cam">Verão Hidrata / prints</div><div class="qtd" id="qtd">47 itens</div></div>
+    <div class="cab"><span>Nome</span><span>Modificado</span></div>
+    <div class="lista"><div id="rolo"></div></div>
+  </div>
+  <div class="gancho">
+    <div class="pilula grande">o print chegou 🎉 agora descobre de quem é</div>
+  </div>
+  <div id="fecho"><div class="pilula grande">47 arquivos. 12 creators. boa sorte.</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 7.5;
+  // Nome de arquivo que o celular gera: nada aqui diz de qual creator veio.
+  const modelos = [
+    "WhatsApp Image 2026-09-1{d} at 23.4{n}.jpeg",
+    "IMG_{a}{b}{c}{d}.PNG",
+    "Captura de tela 2026-09-1{d} 23{n}{d}.png",
+    "Screenshot_2026091{d}-2347{n}.jpg",
+    "image000000{d}.jpg",
+    "photo_2026-09-1{d}_23-4{n}-0{d}.jpg",
+    "WhatsApp Image 2026-09-2{d} at 00.1{n}.jpeg",
+    "IMG-2026091{d}-WA00{n}{d}.jpg",
+  ];
+  const rolo = document.getElementById("rolo");
+  const N = 26;
+  for (let i = 0; i < N; i++) {
+    const m = modelos[i % modelos.length];
+    const nome = m.replace(/\{d\}/g, () => i % 9).replace(/\{n\}/g, () => (i * 3) % 9)
+                  .replace("{a}", 2).replace("{b}", (i % 7) + 1).replace("{c}", (i * 2) % 9);
+    const el = document.createElement("div");
+    el.className = "arq";
+    el.innerHTML = `<div class="ico"></div><div class="nm">${nome}</div><div class="dt">23:${40 + (i % 20)}</div>`;
+    rolo.appendChild(el);
+  }
+  window.setT = (t) => {
+    // Parado 1,1 s para o gancho ser lido; depois rola e não acaba nunca.
+    const max = N * 47 - 700;
+    document.getElementById("rolo").style.transform = `translateY(${-max * eio(prog(t, 1.1, 5.2))}px)`;
+    entra(document.getElementById("fecho"), t, 5.9);
+  };
+  setT(0);
+</script></body></html>

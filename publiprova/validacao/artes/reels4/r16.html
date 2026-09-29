@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R16 — as versões do relatório. A pasta em que o arquivo "FINAL" tem cinco
+     finais. Nomes de arquivo inventados; a piada é universal. -->
+<style>
+  .drv { position: absolute; inset: 0; background: #fff; color: #202124; }
+  .barra { height: 54px; border-bottom: 1px solid #dadce0; display: flex; align-items: center; gap: 11px; padding: 0 16px; }
+  .tri { width: 26px; height: 23px; background: linear-gradient(135deg, #fbbc04 55%, #f9ab00 55%); border-radius: 3px; }
+  .cam { font-size: 16px; font-weight: 600; }
+  .lista { position: absolute; left: 0; right: 0; top: 330px; }
+  .arq { display: flex; align-items: center; gap: 11px; height: 52px; padding: 0 16px; border-bottom: 1px solid #f1f3f4; font-size: 14.5px; opacity: 0; }
+  .ico { width: 19px; height: 24px; background: #0f9d58; border-radius: 2px; flex: none; }
+  .nm { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dt { font-size: 12.5px; color: #5f6368; font-variant-numeric: tabular-nums; }
+  .gancho { top: 66px; }
+  #fecho { position: absolute; left: 30px; right: 30px; top: 700px; display: flex; justify-content: center; z-index: 50; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="drv">
+    <div class="barra"><div class="tri"></div><div class="cam">Verão Hidrata / relatório</div></div>
+    <div class="lista" id="lista"></div>
+  </div>
+  <div class="gancho"><div class="pilula grande">qual desses é o relatório que foi pro cliente? 🙃</div></div>
+  <div id="fecho"><div class="pilula grande">nenhum. o certo tá no e-mail da Manu.</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 7.0;
+  const arqs = [
+    ["Relatório Verão.xlsx",                    "12 set", 0.9],
+    ["Relatório Verão FINAL.xlsx",              "18 set", 1.7],
+    ["Relatório Verão FINAL v2.xlsx",           "23 set", 2.5],
+    ["Relatório Verão FINAL v2 (revisado).xlsx","24 set", 3.3],
+    ["Relatório Verão FINAL_AGORA VAI.xlsx",    "24 set", 4.1],
+    ["Cópia de Relatório Verão FINAL v2.xlsx",  "25 set", 4.9],
+  ];
+  const lista = document.getElementById("lista");
+  const els = arqs.map(([n, d]) => {
+    const el = document.createElement("div");
+    el.className = "arq";
+    el.innerHTML = `<div class="ico"></div><div class="nm">${n}</div><div class="dt">${d}</div>`;
+    lista.appendChild(el);
+    return el;
+  });
+  window.setT = (t) => {
+    els.forEach((el, i) => entra(el, t, arqs[i][2], 0.22, 12));
+    entra(document.getElementById("fecho"), t, 5.6);
+  };
+  setT(0);
+</script></body></html>

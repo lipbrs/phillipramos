@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R18 — treze dias de 🙏. A mesma conversa, com data mudando no topo: você
+     cobra, ele responde com a mesma promessa, e o calendário anda. Esquete. -->
+<style>
+  .wa { position: absolute; inset: 0; background: #0b141a; color: #e9edef; display: flex; flex-direction: column; }
+  .status { height: 32px; display: flex; justify-content: space-between; align-items: center; padding: 0 22px; font-size: 14px; font-weight: 600; color: #fff; flex: none; }
+  .topo { display: flex; align-items: center; gap: 12px; padding: 8px 16px 10px; background: #202c33; flex: none; }
+  .av { width: 42px; height: 42px; border-radius: 50%; background: #9b59b6; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; color: #fff; }
+  .nm { font-size: 16.5px; font-weight: 600; }
+  .sub { font-size: 12.5px; color: #8696a0; margin-top: 2px; }
+  .fluxo { flex: 1; padding: 196px 12px 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
+  .dia { align-self: center; background: #182229; color: #8696a0; font-size: 11.5px; font-weight: 600; padding: 4px 11px; border-radius: 8px; margin: 5px 0 2px; opacity: 0; }
+  .bal { max-width: 76%; border-radius: 9px; padding: 7px 10px 5px; font-size: 15.5px; line-height: 1.3; opacity: 0; }
+  .bal .hr { font-size: 11px; color: #8696a0; float: right; margin: 5px 0 0 8px; }
+  .esq { background: #202c33; align-self: flex-start; }
+  .dir { background: #005c4b; align-self: flex-end; }
+  .gancho { top: 28px; }
+</style></head>
+<body><div class="quadro">
+  <div class="wa">
+    <div class="status"><span>19:02</span><span>▮▮▮ 5G ▭</span></div>
+    <div class="topo"><div class="av">DR</div><div><div class="nm">Duda Reis</div><div class="sub">online</div></div></div>
+    <div class="fluxo" id="fluxo"></div>
+  </div>
+  <div class="gancho"><div class="pilula grande">13 dias cobrando o mesmo print 🙏</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.0;
+  // O texto dele quase não muda. Quem muda é a data no meio.
+  const itens = [
+    { dia: "12 DE SETEMBRO", ini: 0.8 },
+    { eu: true,  t: "oi Duda! consegue mandar o print dos stories? 🙏", h: "18:02", ini: 1.1 },
+    { eu: false, t: "claro! mando hoje à noite",                        h: "18:40", ini: 1.7 },
+    { dia: "17 DE SETEMBRO", ini: 2.4 },
+    { eu: true,  t: "oi! lembra do print? 🙏",                          h: "11:15", ini: 2.7 },
+    { eu: false, t: "aaah desculpa, mando hoje sem falta 🙏",           h: "16:02", ini: 3.3 },
+    { dia: "23 DE SETEMBRO", ini: 4.0 },
+    { eu: true,  t: "Duda, o cliente tá pedindo 🙏",                    h: "09:30", ini: 4.3 },
+    { eu: false, t: "hoje eu mando!! 🙏",                               h: "21:48", ini: 4.9 },
+    { dia: "HOJE", ini: 5.6 },
+    { eu: true,  t: "oi Duda",                                          h: "19:01", ini: 5.9 },
+    { eu: false, t: "🙏",                                               h: "19:02", ini: 6.5 },
+  ];
+  const fluxo = document.getElementById("fluxo");
+  const els = itens.map((it) => {
+    const el = document.createElement("div");
+    if (it.dia) { el.className = "dia"; el.textContent = it.dia; }
+    else {
+      el.className = "bal " + (it.eu ? "dir" : "esq");
+      el.innerHTML = `<span>${it.t}</span><span class="hr">${it.h}${it.eu ? " ✓✓" : ""}</span>`;
+    }
+    fluxo.appendChild(el);
+    return el;
+  });
+  window.setT = (t) => { els.forEach((el, i) => entra(el, t, itens[i].ini, 0.2, 10)); };
+  setT(0);
+</script></body></html>

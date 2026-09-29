@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R14 — o grupo da campanha. Quatro pessoas da agência falando por cima uma da
+     outra sobre quem já cobrou o creator, e ninguém cobrou. Esquete: nomes e
+     agência inventados, nada aqui é conversa real de cliente. -->
+<style>
+  .wa { position: absolute; inset: 0; background: #0b141a; color: #e9edef; display: flex; flex-direction: column; }
+  .status { height: 32px; display: flex; justify-content: space-between; align-items: center; padding: 0 22px; font-size: 14px; font-weight: 600; color: #fff; flex: none; }
+  .topo { display: flex; align-items: center; gap: 12px; padding: 8px 16px 10px; background: #202c33; flex: none; }
+  .gav { width: 42px; height: 42px; border-radius: 50%; background: #d97757; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; color: #fff; }
+  .gnome { font-size: 16.5px; font-weight: 600; }
+  .gsub { font-size: 12.5px; color: #8696a0; margin-top: 2px; }
+  .fluxo { flex: 1; padding: 190px 12px 14px; display: flex; flex-direction: column; justify-content: flex-end; gap: 7px; }
+  .bal { max-width: 78%; border-radius: 9px; padding: 7px 10px 5px; font-size: 15.5px; line-height: 1.32; position: relative; opacity: 0; }
+  .bal .aut { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .bal .hr { font-size: 11px; color: #8696a0; float: right; margin: 4px 0 0 8px; }
+  .esq { background: #202c33; align-self: flex-start; }
+  .dir { background: #005c4b; align-self: flex-end; }
+  .gancho { top: 28px; }
+</style></head>
+<body><div class="quadro">
+  <div class="wa">
+    <div class="status"><span>23:58</span><span>▮▮▮ 5G ▭</span></div>
+    <div class="topo">
+      <div class="gav">VH</div>
+      <div><div class="gnome">Campanha Verão Hidrata</div><div class="gsub">Você, Manu, Téo, Duda</div></div>
+    </div>
+    <div class="fluxo" id="fluxo"></div>
+  </div>
+  <div class="gancho"><div class="pilula grande">POV: o cliente pediu o relatório e o grupo da campanha acorda 💀</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.0;
+  // A piada é a ordem: todo mundo acha que outro cobrou, e ninguém cobrou.
+  const fala = [
+    { a: "Manu",  c: "#53bdeb", t: "gente, cadê os prints da Verão Hidrata? 😅", h: "23:52", ini: 0.9 },
+    { a: "Téo",   c: "#a78bfa", t: "achei que a Duda tinha cobrado", h: "23:53", ini: 1.9 },
+    { a: "Duda",  c: "#f0a05a", t: "eu cobrei os de agosto 🙃", h: "23:54", ini: 2.8 },
+    { a: "Manu",  c: "#53bdeb", t: "então ninguém cobrou os de setembro", h: "23:56", ini: 3.8 },
+    { a: null,    eu: true,     t: "cobro agora", h: "23:57", ini: 4.8 },
+    { a: "Téo",   c: "#a78bfa", t: "são 23h57", h: "23:57", ini: 5.7 },
+    { a: null,    eu: true,     t: "eu sei", h: "23:58", ini: 6.5 },
+  ];
+  const fluxo = document.getElementById("fluxo");
+  const els = fala.map((f) => {
+    const el = document.createElement("div");
+    el.className = "bal " + (f.eu ? "dir" : "esq");
+    el.innerHTML = (f.eu ? "" : `<div class="aut" style="color:${f.c}">${f.a}</div>`) +
+      `<span>${f.t}</span><span class="hr">${f.h}${f.eu ? " ✓✓" : ""}</span>`;
+    fluxo.appendChild(el);
+    return el;
+  });
+  window.setT = (t) => { els.forEach((el, i) => entra(el, t, fala[i].ini, 0.2, 10)); };
+  setT(0);
+</script></body></html>

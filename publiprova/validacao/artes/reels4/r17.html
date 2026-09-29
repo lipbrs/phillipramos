@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R17 — o e-mail das 8h59. Caixa de entrada do Gmail no celular: o cliente
+     cobra o relatório uma hora antes da reunião. Nomes e marca inventados. -->
+<style>
+  .gm { position: absolute; inset: 0; background: #fff; color: #202124; }
+  .topo { height: 58px; display: flex; align-items: center; gap: 13px; padding: 0 16px; }
+  .busca { flex: 1; height: 42px; background: #f1f3f4; border-radius: 21px; display: flex; align-items: center; padding: 0 16px; color: #5f6368; font-size: 14.5px; }
+  .rel { font-weight: 700; font-size: 15px; background: #202124; color: #fff; border-radius: 8px; padding: 5px 10px; font-variant-numeric: tabular-nums; }
+  .cx { padding: 4px 0 0; }
+  .em { display: flex; gap: 13px; padding: 12px 16px; border-bottom: 1px solid #f1f3f4; opacity: 0; }
+  .av { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 16px; flex: none; }
+  .cp { flex: 1; min-width: 0; }
+  .l1 { display: flex; justify-content: space-between; gap: 10px; }
+  .de { font-size: 14.5px; font-weight: 700; }
+  .hr { font-size: 12px; color: #5f6368; font-weight: 600; flex: none; }
+  .as { font-size: 14px; font-weight: 700; margin-top: 1px; }
+  .pv { font-size: 13.5px; color: #5f6368; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
+  .gancho { top: 500px; }
+</style></head>
+<body><div class="quadro">
+  <div class="gm">
+    <div class="topo"><div class="busca">Pesquisar e-mail</div><div class="rel" id="rel">08:59</div></div>
+    <div class="cx" id="cx"></div>
+  </div>
+  <div class="gancho"><div class="pilula grande">a reunião é 9h. faltam 5 prints. são 8h59. 🫠</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 7.5;
+  const ems = [
+    { d: "Camila (Verão Hidrata)", c: "#d93025", a: "e o relatório da campanha?", p: "Oi! A reunião com a diretoria é às 9h, consigo os números antes?", h: "08:59", ini: 0.8 },
+    { d: "Téo Martins",            c: "#1a73e8", a: "Re: prints pendentes",       p: "cobrei os 5 de novo ontem à noite, ninguém respondeu ainda",        h: "08:41", ini: 1.8 },
+    { d: "Duda Reis",              c: "#9334e6", a: "print",                      p: "oi! mando ainda hoje sem falta 🙏",                                  h: "07:12", ini: 2.7 },
+    { d: "Manu Alves",             c: "#188038", a: "planilha atualizada",        p: "subi a v2 no drive — mas faltam a Carol, o Leo e a Nina",            h: "01:04", ini: 3.6 },
+    { d: "Camila (Verão Hidrata)", c: "#d93025", a: "confirmação de reunião",     p: "Confirmado 9h. Já adianto que a diretoria vai perguntar do CPM.",    h: "ontem", ini: 4.5 },
+  ];
+  const cx = document.getElementById("cx");
+  const els = ems.map((e) => {
+    const el = document.createElement("div");
+    el.className = "em";
+    el.innerHTML = `<div class="av" style="background:${e.c}">${e.d[0]}</div>
+      <div class="cp"><div class="l1"><span class="de">${e.d}</span><span class="hr">${e.h}</span></div>
+      <div class="as">${e.a}</div><div class="pv">${e.p}</div></div>`;
+    cx.appendChild(el);
+    return el;
+  });
+  const relogio = [[0, "08:59"], [5.4, "09:00"], [6.4, "09:01"]];
+  window.setT = (t) => {
+    els.forEach((el, i) => entra(el, t, ems[i].ini, 0.22, 12));
+    document.getElementById("rel").textContent = relogio.filter(([ts]) => t >= ts).pop()[1];
+  };
+  setT(0);
+</script></body></html>
