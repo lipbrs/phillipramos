@@ -21,6 +21,18 @@ Phillip preferiu não mexer nos conectores e seguir pelo pessoal.
 **O que nunca muda:** não reenviar o mesmo texto de outro remetente — e-mail idêntico
 vindo de endereço diferente é spam, e queima a agência.
 
+## 0.1 Assinatura
+
+```
+Phillip Ramos
+construindo o PubliProva
+Instagram: instagram.com/publiprova.app
+```
+
+**A URL inteira do perfil, sempre.** `publiprova.app` e `@publiprova.app` viram link para
+um domínio que não é nosso e não resolve — aconteceu nos 24 primeiros e-mails, e só
+apareceu quando alguém respondeu citando a mensagem.
+
 ## 1. Respostas de agência
 
 Enquanto as respostas do lote 01, do toque 02 e do lote 02 caem na caixa **pessoal**,
