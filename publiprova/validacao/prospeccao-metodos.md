@@ -73,3 +73,20 @@ Dois obstáculos técnicos que também apareceram, para quem tentar de novo:
 problema pode não ser volume: **e-mail frio para `contato@` pode simplesmente não ser o
 canal**. Texto longo e texto curto deram o mesmo zero. Se o LinkedIn render 30 contatos e
 o resultado continuar zero, a conclusão é do canal, não da lista.
+
+## LinkedIn (testado em 30/09) — FUNCIONA para achar gente, não para achar e-mail
+
+Busca de empresas: `linkedin.com/search/results/companies/?companyHqGeo=%5B%22106057199%22%5D&keywords=marketing%20de%20influ%C3%AAncia` → 864 resultados.
+Por empresa, a aba **Sobre** dá site/telefone/porte/sede e a aba **Pessoas** dá nome e cargo.
+
+- 32 agências novas de 2 a 10 pessoas em 8 páginas.
+- Só 6 com e-mail público. Metade não tem site; contato é WhatsApp ou Instagram.
+- 22 com fundador ou responsável por influência identificado por nome.
+
+Uso certo: **descobrir a pessoa** e endereçar o `contato@` a ela. Extratores (JS no
+console): Sobre = `innerText` + regex `/Site\s*
+\s*(\S+)/`; Pessoas = linhas no
+padrão `[nome, "· 3º", cargo]` (os cartões não são `<li>`).
+
+Armadilhas: slug com acento precisa de percent-encoding; empresa com "0 a 1 funcionário"
+costuma ser freelancer; o "site" muitas vezes é linktree ou Instagram.
