@@ -218,3 +218,16 @@ th { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color:
     @keyframes surge { from { transform: translateY(14px); } to { transform: none; } }
   }
 }
+
+/* Vídeo do fluxo no herói. */
+.demo { position: relative; }
+.demo .moldura { position: relative; }
+.demo video { display: block; width: 100%; height: auto; background: var(--bg-soft); }
+.demo-play {
+  position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+  background: var(--brand); color: var(--brand-fg); border: 0; border-radius: 999px;
+  padding: 10px 20px; font: inherit; font-size: .85rem; font-weight: 650; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0,0,0,.28);
+}
+.demo-play:hover { filter: brightness(1.08); }
+.demo-play:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }

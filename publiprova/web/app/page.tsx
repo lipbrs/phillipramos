@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Cabecalho, Rodape } from './_site/cabecalho';
+import { DemoFluxo } from './_site/demo';
 
 // Home. Regra desta página: toda seção que afirma alguma coisa mostra a tela
 // que prova a afirmação. As capturas em /public são do produto rodando, não
@@ -40,20 +41,7 @@ export default function Home() {
               <Link href="/r/verao-hidrata-demo" className="btn btn-ghost">Ver relatório de exemplo</Link>
             </div>
           </div>
-          <div>
-            <div className="moldura">
-              <div className="barra"><i /><i /><i /></div>
-              <Image
-                src="/tela-campanha.jpg"
-                alt="Painel de uma campanha no PubliProva: quatro creators em linhas, dois com status comprovado em verde e dois pendentes em amarelo, com alcance, engajamento e cachê de cada um."
-                width={1360}
-                height={902}
-                priority
-                sizes="(max-width: 900px) 100vw, 620px"
-              />
-            </div>
-            <p className="legenda">Uma campanha aberta no painel, com dados de demonstração.</p>
-          </div>
+          <DemoFluxo />
         </div>
       </section>
 
@@ -92,14 +80,14 @@ export default function Home() {
             <div className="moldura">
               <div className="barra"><i /><i /><i /></div>
               <Image
-                src="/tela-painel.jpg"
-                alt="Lista de campanhas do PubliProva, cada uma com o cliente, o prazo e quantas entregas já foram comprovadas."
+                src="/tela-campanha.jpg"
+                alt="Campanha aberta no painel: creators em linhas com status comprovado em verde ou pendente em amarelo, alcance, engajamento e cachê, e a régua de cobrança automática no rodapé."
                 width={1360}
-                height={1150}
+                height={902}
                 sizes="(max-width: 900px) 100vw, 620px"
               />
             </div>
-            <p className="legenda">Suas campanhas, com o placar de comprovação de cada uma.</p>
+            <p className="legenda">A campanha por dentro, com a régua de cobrança no rodapé.</p>
           </div>
         </div>
       </section>
