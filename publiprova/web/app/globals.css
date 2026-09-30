@@ -40,20 +40,21 @@ html, body { padding: 0; margin: 0; }
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+  font-family: var(--fonte), ui-sans-serif, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 a { color: inherit; }
 h1, h2, h3 { line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 .5em; }
-h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; }
-h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; }
+h1 { font-size: clamp(2.1rem, 4.6vw, 3.25rem); font-weight: 800; letter-spacing: -.035em; }
+h2 { font-size: clamp(1.45rem, 2.6vw, 1.95rem); font-weight: 700; letter-spacing: -.025em; max-width: 22ch; }
 h3 { font-size: 1.05rem; font-weight: 650; }
 p { margin: 0 0 1em; }
 
 .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
 .narrow { max-width: 640px; }
-.section { padding: 72px 0; }
+.section { padding: 88px 0; }
+@media (max-width: 720px) { .section { padding: 56px 0; } }
 .muted { color: var(--fg-muted); }
 .small { font-size: .875rem; }
 .tiny { font-size: .78rem; }
@@ -116,7 +117,33 @@ th { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color:
 .stat-value { font-size: 1.6rem; font-weight: 750; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .stat-label { font-size: .76rem; color: var(--fg-muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 650; }
 
-.hero { padding: 84px 0 56px; }
+.hero { padding: 72px 0 64px; }
+@media (max-width: 720px) { .hero { padding: 44px 0 40px; } }
+
+/* Split do hero: texto a esquerda, print real do painel a direita.
+   Abaixo de 900px empilha e a imagem vem depois do CTA. */
+.hero-split { display: grid; gap: 40px; align-items: center; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .hero-split { grid-template-columns: 1.05fr 1fr; gap: 52px; } }
+
+.moldura {
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+  background: var(--bg-soft); box-shadow: var(--shadow);
+}
+.moldura .barra { display: flex; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.moldura .barra i { width: 9px; height: 9px; border-radius: 50%; background: var(--border); }
+.moldura img { display: block; width: 100%; height: auto; }
+.legenda { font-size: .8rem; color: var(--fg-muted); margin: 10px 2px 0; }
+
+/* Lista de dois por linha: quebra a repeticao do grid-3 na secao "Por que funciona". */
+.duplas { display: grid; gap: 28px 40px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 720px) { .duplas { grid-template-columns: 1fr 1fr; } }
+.dupla { border-top: 2px solid var(--brand); padding-top: 14px; }
+.dupla h3 { margin-bottom: .35em; }
+
+/* Preco unico: sem quatro cartoes e sem selo de "mais escolhido" que ninguem escolheu. */
+.preco-linha { display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 720px) { .preco-linha { grid-template-columns: auto 1fr; gap: 36px; } }
+.preco-grande { font-size: 2.6rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
 .eyebrow { display: inline-block; font-size: .8rem; font-weight: 650; color: var(--brand); background: var(--brand-soft); padding: 6px 12px; border-radius: 999px; margin-bottom: 20px; }
 .lead { font-size: 1.15rem; color: var(--fg-muted); max-width: 46ch; }
 .rule { border: 0; border-top: 1px solid var(--border); margin: 0; }
