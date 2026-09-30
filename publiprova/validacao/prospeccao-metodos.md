@@ -84,8 +84,7 @@ Por empresa, a aba **Sobre** dá site/telefone/porte/sede e a aba **Pessoas** d�
 - 22 com fundador ou responsável por influência identificado por nome.
 
 Uso certo: **descobrir a pessoa** e endereçar o `contato@` a ela. Extratores (JS no
-console): Sobre = `innerText` + regex `/Site\s*
-\s*(\S+)/`; Pessoas = linhas no
+console): Sobre = `innerText` + regex `/\bSite\s*\n\s*(\S+)/`; Pessoas = linhas no
 padrão `[nome, "· 3º", cargo]` (os cartões não são `<li>`).
 
 Armadilhas: slug com acento precisa de percent-encoding; empresa com "0 a 1 funcionário"
