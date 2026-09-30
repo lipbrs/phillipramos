@@ -165,3 +165,56 @@ th { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color:
   body { background: #fff; color: #000; }
   .card, .stat, .card-soft { break-inside: avoid; }
 }
+
+/* ---------------------------------------------------------------------------
+   Site (não mais página única). Navegação, seções com tela real, rodapé de
+   empresa e revelação discreta no scroll.
+   --------------------------------------------------------------------------- */
+
+/* Navegação: uma linha, altura 62px, estado do item atual visível. */
+.nav { display: flex; gap: 22px; align-items: center; }
+.nav a { font-size: .9rem; font-weight: 550; color: var(--fg-muted); text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
+.nav a:hover { color: var(--fg); }
+.nav a[aria-current="page"] { color: var(--fg); border-bottom-color: var(--brand); }
+@media (max-width: 780px) { .nav { display: none; } }
+
+/* Seção com tela do produto ao lado. Alterna o lado sem virar zigue-zague
+   infinito: no máximo duas seguidas, depois muda a família de layout. */
+.duo { display: grid; gap: 36px; align-items: center; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .duo { grid-template-columns: 1fr 1.15fr; gap: 56px; } }
+@media (min-width: 900px) { .duo.espelhado > :first-child { order: 2; } }
+.duo h2 { margin-bottom: .45em; }
+
+/* Barra do navegador em volta da captura: deixa claro que é tela de produto. */
+.moldura { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--bg-soft); box-shadow: var(--shadow); }
+.moldura .barra { display: flex; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.moldura .barra i { width: 9px; height: 9px; border-radius: 50%; background: var(--border); }
+.moldura img { display: block; width: 100%; height: auto; }
+.legenda { font-size: .8rem; color: var(--fg-muted); margin: 10px 2px 0; }
+
+/* Rodapé de empresa: colunas, não uma linha solta. */
+.rodape { border-top: 1px solid var(--border); background: var(--bg-soft); }
+.rodape-grade { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); padding: 44px 0 20px; }
+@media (min-width: 720px) { .rodape-grade { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; } }
+.rodape h4 { font-size: .74rem; text-transform: uppercase; letter-spacing: .07em; color: var(--fg-muted); font-weight: 700; margin: 0 0 12px; }
+.rodape ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 9px; }
+.rodape a { font-size: .875rem; color: var(--fg-muted); text-decoration: none; }
+.rodape a:hover { color: var(--fg); text-decoration: underline; }
+.rodape-base { border-top: 1px solid var(--border); padding: 18px 0 40px; font-size: .8rem; color: var(--fg-muted); }
+
+/* Revelação no scroll: sem biblioteca, sem JS, usando scroll-driven animation
+   nativa.
+
+   IMPORTANTE: NÃO animamos opacidade. Com animation-timeline: view(), um
+   elemento fora da faixa da animação fica preso no quadro inicial — e com
+   opacity:0 isso deixa a seção INVISÍVEL de verdade, não só no screenshot.
+   Aconteceu aqui: duas seções de /produto sumiram. Animando só o transform,
+   o pior caso possível é a seção aparecer 14px deslocada, o que ninguém nota.
+   O conteúdo nunca deixa de ser legível, nem para leitor de tela, nem para
+   robô de busca, nem em navegador sem suporte. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .revela { animation: surge linear both; animation-timeline: view(); animation-range: entry 5% cover 20%; }
+    @keyframes surge { from { transform: translateY(14px); } to { transform: none; } }
+  }
+}

@@ -1,58 +1,30 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Cabecalho, Rodape } from './_site/cabecalho';
 
-const steps = [
-  {
-    n: 1,
-    title: 'Cole sua lista de creators',
-    body: 'Nome, contato, entregáveis e cachê, direto da sua planilha. Trinta segundos.',
-  },
-  {
-    n: 2,
-    title: 'Cada creator recebe um link pessoal',
-    body: 'Sem cadastro, sem app. Ele cola o link do post, sobe o print e a IA transforma em números. Quem não entregou é cobrado automaticamente até entregar.',
-  },
-  {
-    n: 3,
-    title: 'O relatório do cliente sai pronto',
-    body: 'Com a sua marca, print por creator, totais, CPM e custo por engajamento. Link para compartilhar e PDF para anexar.',
-  },
-];
-
-const reasons = [
-  ['O creator não cria conta.', 'Zero atrito é o que faz ele responder. Link no celular, 90 segundos, pronto.'],
-  ['A cobrança é do sistema, não sua.', 'Deixa de ser uma relação pessoal desconfortável e vira processo.'],
-  ['A IA lê o print por você.', 'Alcance, impressões, salvos, compartilhamentos, todos preenchidos e editáveis.'],
-  ['Nada depende de API do Instagram.', 'Não trava, não pede permissão e não some quando a Meta muda alguma coisa.'],
-];
-
-const plans = [
-  { name: 'Grátis', price: 'R$ 0', note: '1 campanha, 5 creators' },
-  { name: 'Solo', price: 'R$ 97', note: '3 campanhas, 30 creators/mês' },
-  { name: 'Agência', price: 'R$ 247', note: 'campanhas ilimitadas, 150 creators/mês' },
-  { name: 'Studio', price: 'R$ 597', note: '500 creators/mês' },
-];
+// Home. Regra desta página: toda seção que afirma alguma coisa mostra a tela
+// que prova a afirmação. As capturas em /public são do produto rodando, não
+// mockup: geradas pelo app local com os dados de demonstração.
 
 const faq = [
   ['O creator precisa criar conta?', 'Não. Ele abre um link, envia e acabou. É justamente por isso que ele responde.'],
   ['E se o creator mandar um print errado ou editado?', 'O sistema guarda a imagem original, a data e hora do envio e valida o link do post. Divergências ficam sinalizadas no painel. Não é perícia. É registro e rastreabilidade, que é o que falta hoje.'],
   ['Funciona com Instagram, TikTok e YouTube?', 'Sim. Como a comprovação é print + link, funciona em qualquer plataforma, inclusive nas que não abrem API para terceiros.'],
   ['Preciso da senha ou do acesso do creator?', 'Nunca. Você não pede acesso a nada.'],
-  ['E a LGPD?', 'Você é o controlador dos dados dos seus creators e o PubliProva é o operador. Já existem exclusão sob demanda, retenção configurável por campanha e política de privacidade publicada. O contrato de tratamento ainda está sendo escrito. Se for condição para a sua agência assinar, me diga que eu priorizo.'],
+  ['Quanto tempo leva para montar a primeira campanha?', 'O tempo de colar a sua lista de creators. Os links saem na hora e a régua de cobrança começa no mesmo dia.'],
 ];
 
-export default function Landing() {
+const planos = [
+  { nome: 'Grátis', preco: 'R$ 0', nota: '1 campanha, 5 creators' },
+  { nome: 'Solo', preco: 'R$ 97', nota: '3 campanhas, 30 creators/mês' },
+  { nome: 'Agência', preco: 'R$ 247', nota: 'campanhas ilimitadas, 150 creators/mês' },
+  { nome: 'Studio', preco: 'R$ 597', nota: '500 creators/mês' },
+];
+
+export default function Home() {
   return (
     <>
-      <header className="topbar">
-        <div className="wrap">
-          <Link href="/" className="logo">Publi<span>Prova</span></Link>
-          <div className="row">
-            <Link href="/r/verao-hidrata-demo" className="btn btn-ghost btn-sm">Ver relatório de exemplo</Link>
-            <Link href="/app" className="btn btn-sm">Começar grátis</Link>
-          </div>
-        </div>
-      </header>
+      <Cabecalho />
 
       <section className="hero">
         <div className="wrap hero-split">
@@ -72,20 +44,21 @@ export default function Landing() {
             <div className="moldura">
               <div className="barra"><i /><i /><i /></div>
               <Image
-                src="/painel.jpg"
-                alt="Painel do PubliProva com uma campanha aberta: cada creator numa linha, quem entregou em verde e quem está sendo cobrado em amarelo."
-                width={1200}
-                height={760}
+                src="/tela-campanha.jpg"
+                alt="Painel de uma campanha no PubliProva: quatro creators em linhas, dois com status comprovado em verde e dois pendentes em amarelo, com alcance, engajamento e cachê de cada um."
+                width={1360}
+                height={902}
                 priority
+                sizes="(max-width: 900px) 100vw, 620px"
               />
             </div>
-            <p className="legenda">O painel de hoje, com dados de demonstração. Quem entregou fica verde sozinho.</p>
+            <p className="legenda">Uma campanha aberta no painel, com dados de demonstração.</p>
           </div>
         </div>
       </section>
 
       <section className="section" style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-        <div className="wrap">
+        <div className="wrap revela">
           <h2>Toda campanha termina do mesmo jeito</h2>
           <ul className="list-clean" style={{ maxWidth: 640 }}>
             <li>Você manda mensagem para 30 creators pedindo o link do post.</li>
@@ -100,36 +73,94 @@ export default function Landing() {
       </section>
 
       <section className="section">
-        <div className="wrap">
-          <h2>Três passos. O resto acontece sem você.</h2>
-          <div className="grid grid-3" style={{ marginTop: 32 }}>
-            {steps.map((s) => (
-              <div className="card" key={s.n}>
-                <span className="step-n">{s.n}</span>
-                <h3 style={{ marginTop: 14 }}>{s.title}</h3>
-                <p className="muted small" style={{ margin: 0 }}>{s.body}</p>
-              </div>
-            ))}
+        <div className="wrap duo revela">
+          <div>
+            <h2>A cobrança deixa de ser sua</h2>
+            <p className="muted">
+              Cada creator recebe um link pessoal. Sem cadastro, sem senha, sem aplicativo: ele cola
+              o link do post, sobe o print dos insights e a IA transforma em números.
+            </p>
+            <p className="muted">
+              Quem não entregou é cobrado por e-mail todo dia, em etapas relativas ao prazo. A régua
+              para sozinha no instante em que o print chega, então ninguém cobra quem já entregou.
+            </p>
+            <Link href="/produto" className="btn btn-ghost btn-sm" style={{ marginTop: 6 }}>
+              Ver o fluxo completo
+            </Link>
+          </div>
+          <div>
+            <div className="moldura">
+              <div className="barra"><i /><i /><i /></div>
+              <Image
+                src="/tela-painel.jpg"
+                alt="Lista de campanhas do PubliProva, cada uma com o cliente, o prazo e quantas entregas já foram comprovadas."
+                width={1360}
+                height={1150}
+                sizes="(max-width: 900px) 100vw, 620px"
+              />
+            </div>
+            <p className="legenda">Suas campanhas, com o placar de comprovação de cada uma.</p>
           </div>
         </div>
       </section>
 
       <section className="section" style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--border)' }}>
-        <div className="wrap">
-          <h2>Por que funciona</h2>
-          <div className="duplas" style={{ marginTop: 32 }}>
-            {reasons.map(([t, b]) => (
-              <div className="dupla" key={t}>
-                <h3>{t}</h3>
-                <p className="muted small" style={{ margin: 0 }}>{b}</p>
-              </div>
-            ))}
+        <div className="wrap duo espelhado revela">
+          <div>
+            <h2>O relatório do cliente monta sozinho</h2>
+            <p className="muted">
+              Cada entrega que chega vira uma linha. No fim, o documento sai com a marca da agência:
+              alcance, engajamento, CPM, custo por engajamento e o link de cada post publicado.
+            </p>
+            <p className="muted">
+              O cliente abre por link, sem login. Você exporta em PDF ou CSV quando precisar anexar.
+            </p>
+            <Link href="/r/verao-hidrata-demo" className="btn btn-ghost btn-sm" style={{ marginTop: 6 }}>
+              Abrir um relatório de verdade
+            </Link>
+          </div>
+          <div>
+            <div className="moldura">
+              <div className="barra"><i /><i /><i /></div>
+              <Image
+                src="/tela-relatorio.jpg"
+                alt="Relatório de campanha do PubliProva: impressões, alcance, engajamento, CPM e custo por engajamento em destaque, e abaixo as entregas comprovadas de cada creator."
+                width={1360}
+                height={952}
+                sizes="(max-width: 900px) 100vw, 620px"
+              />
+            </div>
+            <p className="legenda">O relatório que o seu cliente recebe, com a sua marca.</p>
           </div>
         </div>
       </section>
 
       <section className="section">
-        <div className="wrap">
+        <div className="wrap revela">
+          <h2>Por que funciona</h2>
+          <div className="duplas" style={{ marginTop: 32 }}>
+            <div className="dupla">
+              <h3>O creator não cria conta.</h3>
+              <p className="muted small" style={{ margin: 0 }}>Zero atrito é o que faz ele responder. Link no celular, 90 segundos, pronto.</p>
+            </div>
+            <div className="dupla">
+              <h3>A cobrança é do sistema, não sua.</h3>
+              <p className="muted small" style={{ margin: 0 }}>Deixa de ser uma relação pessoal desconfortável e vira processo.</p>
+            </div>
+            <div className="dupla">
+              <h3>A IA lê o print por você.</h3>
+              <p className="muted small" style={{ margin: 0 }}>Alcance, impressões, salvos, compartilhamentos, todos preenchidos e editáveis.</p>
+            </div>
+            <div className="dupla">
+              <h3>Nada depende de API do Instagram.</h3>
+              <p className="muted small" style={{ margin: 0 }}>Não trava, não pede permissão e não some quando a Meta muda alguma coisa.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section" id="precos" style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--border)' }}>
+        <div className="wrap revela">
           <h2>Quanto custa</h2>
           <div className="preco-linha" style={{ marginTop: 28 }}>
             <div>
@@ -142,27 +173,26 @@ export default function Landing() {
                 trava campanha em andamento. No anual, dois meses saem de graça.
               </p>
               <ul className="list-clean small" style={{ marginTop: 4 }}>
-                {plans.map((pl) => (
-                  <li key={pl.name} className="spread" style={{ gap: 12 }}>
-                    <span><strong>{pl.name}</strong> <span className="muted">{pl.note}</span></span>
+                {planos.map((pl) => (
+                  <li key={pl.nome} className="spread" style={{ gap: 12 }}>
+                    <span><strong>{pl.nome}</strong> <span className="muted">{pl.nota}</span></span>
                     <span className="num" style={{ fontWeight: 700, whiteSpace: 'nowrap' }}>
-                      {pl.price}{pl.price === 'R$ 0' ? '' : '/mês'}
+                      {pl.preco}{pl.preco === 'R$ 0' ? '' : '/mês'}
                     </span>
                   </li>
                 ))}
               </ul>
               <p className="small muted" style={{ marginTop: 18, marginBottom: 0 }}>
-                Sendo honesto sobre o estágio: o PubliProva está sendo construído em público e ainda
-                não tem cliente pagante. Esses são os preços planejados. Se a sua agência quiser ser
-                uma das primeiras, o preço de entrada fica travado enquanto você for cliente.
+                As primeiras agências entram com o preço travado enquanto forem clientes.{' '}
+                <Link href="/sobre">Como isso funciona</Link>.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section" style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--border)' }}>
-        <div className="wrap narrow">
+      <section className="section">
+        <div className="wrap narrow revela">
           <h2>Perguntas frequentes</h2>
           <div className="stack" style={{ marginTop: 24 }}>
             {faq.map(([q, a]) => (
@@ -172,21 +202,20 @@ export default function Landing() {
               </div>
             ))}
           </div>
+          <p className="small muted" style={{ marginTop: 20 }}>
+            Dúvida sobre dados e LGPD? Está tudo em <Link href="/seguranca">segurança</Link>.
+          </p>
         </div>
       </section>
 
-      <section className="section center">
-        <div className="wrap">
-          <h2>Sua próxima campanha pode fechar sozinha.</h2>
+      <section className="section center" style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--border)' }}>
+        <div className="wrap revela">
+          <h2 style={{ margin: '0 auto .5em' }}>Sua próxima campanha pode fechar sozinha.</h2>
           <Link href="/app" className="btn" style={{ marginTop: 12 }}>Começar grátis</Link>
         </div>
       </section>
 
-      <footer className="wrap small muted" style={{ padding: '32px 20px 48px', borderTop: '1px solid var(--border)' }}>
-        PubliProva · comprovação de campanhas com creators · feito para agências pequenas do Brasil
-        {' · '}
-        <Link href="/privacidade">Política de Privacidade</Link>
-      </footer>
+      <Rodape />
     </>
   );
 }

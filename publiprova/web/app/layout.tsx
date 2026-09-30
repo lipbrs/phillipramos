@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     siteName: 'PubliProva',
     locale: 'pt_BR',
     type: 'website',
-    images: ['/painel.jpg'],
+    images: ['/tela-relatorio.jpg'],
   },
 };
 
