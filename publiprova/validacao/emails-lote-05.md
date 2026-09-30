@@ -15,7 +15,7 @@ Remetente: `phillip.prs@gmail.com` (decisão de 22/09, não reabrir).
 | 3 | Hubli | contato@hubli.digital | Lucas Diniz (Diretor Comercial) | 14:08 | **VOLTOU** (servidor deles mal configurado) |
 | 4 | Fizz | contato@agenciafizz.com.br | Mariana Marmo Zanelatto (Curadoria e Produção) | 14:2x | entregue |
 | 5 | Gotcha! | oi@gotcha.com.br | Gustavo Cruz de Oliveira (Mkt Influência/Account) | 14:2x | entregue |
-| 6 | Nhaí! | contato@nhai360.com | Bruno Francisco de Oliveira (Gestão Comercial) | 14:2x | entregue |
+| 6 | Nhaí! | contato@nhai360.com | Bruno Francisco de Oliveira (Gestão Comercial) | 14:2x | **VOLTOU** (endereço não existe) |
 
 ## Texto (modelo, variando só nome, agência e uma frase de contexto)
 
@@ -47,7 +47,7 @@ publiprova.com.br
 
 - 864 empresas na busca "marketing de influência" com sede no Brasil.
 - 80 coletadas (8 páginas), 32 novas no perfil (2 a 10 pessoas).
-- Dessas 32, **só 6 tinham e-mail público**. Metade não tem nem site: o "site" no
+- Dessas 32, **só 6 tinham e-mail público**, e 2 desses voltaram (Hubli, Nhaí): 4 entregues. Metade não tem nem site: o "site" no
   LinkedIn é o Instagram, e o contato é WhatsApp.
 - Em compensação, 22 têm **fundador ou responsável por influência com nome e cargo**.
 
