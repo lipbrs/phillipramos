@@ -37,7 +37,7 @@ const faq = [
   ['E se o creator mandar um print errado ou editado?', 'O sistema guarda a imagem original, a data e hora do envio e valida o link do post. Divergências ficam sinalizadas no painel. Não é perícia — é registro e rastreabilidade, que é o que falta hoje.'],
   ['Funciona com Instagram, TikTok e YouTube?', 'Sim. Como a comprovação é print + link, funciona em qualquer plataforma, inclusive nas que não abrem API para terceiros.'],
   ['Preciso da senha ou do acesso do creator?', 'Nunca. Você não pede acesso a nada.'],
-  ['E a LGPD?', 'Você é o controlador dos dados dos seus creators e o PubliProva é operador, com contrato de tratamento, exclusão sob demanda e retenção configurável por campanha.'],
+  ['E a LGPD?', 'Você é o controlador dos dados dos seus creators e o PubliProva é o operador. Já existem exclusão sob demanda, retenção configurável por campanha e política de privacidade publicada. O contrato de tratamento ainda está sendo escrito — se for condição para a sua agência assinar, me diga que eu priorizo.'],
 ];
 
 export default function Landing() {
