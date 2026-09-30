@@ -10,6 +10,10 @@ do cliente pronto.
 2. `publiprova/docs/00-estudo-da-dor.md` — a pesquisa que originou a ideia
 3. `publiprova/docs/04-kit-de-validacao.md` — a fase ATUAL (validação com agências)
 4. `publiprova/validacao/` — lista de alvos e conteúdo de lançamento do Instagram
+5. `publiprova/DESIGN-SYSTEM.md` — **antes de tocar em qualquer tela.** Cor, tipografia,
+   movimento, escrita, e o que já foi rejeitado com o motivo. Evita refazer decisão.
+6. `publiprova/validacao/prospeccao-metodos.md` — antes de procurar agência nova. Diz o
+   que já esgotou e o que já provou não funcionar.
 
 ## Estado atual (atualizar conforme avança)
 - Código: MVP funcional multi-tenant em `publiprova/web` (Next.js 15 + TS). Build,
