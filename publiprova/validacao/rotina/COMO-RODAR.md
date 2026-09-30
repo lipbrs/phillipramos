@@ -26,12 +26,14 @@ vindo de endereço diferente é spam, e queima a agência.
 ```
 Phillip Ramos
 construindo o PubliProva
+publiprova.com.br
 Instagram: instagram.com/publiprova.app
 ```
 
 **A URL inteira do perfil, sempre.** `publiprova.app` e `@publiprova.app` viram link para
 um domínio que não é nosso e não resolve — aconteceu nos 24 primeiros e-mails, e só
-apareceu quando alguém respondeu citando a mensagem.
+apareceu quando alguém respondeu citando a mensagem. `publiprova.com.br` agora é nosso e
+está no ar, então esse pode ir solto.
 
 ## 1. Respostas de agência
 

@@ -1,5 +1,9 @@
 # Domínio próprio — publiprova.com.br (29/09/2026)
 
+> ✅ **NO AR em 29/09**, ~40 min depois da compra.
+> `https://publiprova.com.br` e `https://www.publiprova.com.br` respondendo HTTP 200 com
+> certificado válido.
+
 **Registrado e pago.** registro.br, usuário `PHRBA31`, **R$ 184,00 por 5 anos**
 (29/09/2026 → 2031). Confirmação de cadastro às 20:49 e de pagamento às 20:53.
 *"Seu domínio entrará em operação na próxima publicação DNS"* — o registro existe, a
@@ -42,3 +46,44 @@ logado na Vercel.
 recriados do lado novo antes, ou o e-mail para de chegar. Como ainda não existe caixa em
 `publiprova.com.br`, **agora é o momento sem risco de fazer a rota B** — não há e-mail
 para quebrar.
+
+
+## Como ficou, para quando precisar repetir
+
+**Na Vercel:** o apex foi mudado de *Redirect to Another Domain* para *Connect to an
+environment → Production*. Isso foi o que simplificou tudo — com o apex servindo, o CNAME
+do `www` deixou de ser obrigatório, e a gente parou de depender do valor
+`f6d62b89fd0e2960.vercel-dns-0XX.com` que a tela do celular cortava.
+
+**No registro.br**, zona editada no modo avançado (DNS → zona DNS):
+
+| Tipo | Nome | Dados |
+|---|---|---|
+| `A` | `publiprova.com.br` | `216.198.79.1` |
+| `CNAME` | `www.publiprova.com.br` | `cname.vercel-dns.com` |
+
+O `cname.vercel-dns.com` é o registro legado, e a própria tela da Vercel avisa que ele
+continua funcionando. Usar ele evitou depender do host único por projeto.
+
+### Cinco armadilhas que custaram tempo
+
+1. **O sufixo do CNAME não se descobre por DNS.** Tentei resolver
+   `f6d62b89fd0e2960.vercel-dns-0NN.com` para NN de 0 a 39: **doze variantes resolvem**,
+   porque as zonas da Vercel são curinga. O método não distingue nada. Só o painel mostra
+   o valor certo — ou se usa o legado.
+2. **O `@` não é aceito** no registro.br: "Não são aceitos os caracteres @ e *". Nome
+   vazio é o apex.
+3. **A sessão do registro.br cai rápido.** Caiu enquanto eu estava do lado da Vercel;
+   voltou para `login/?session=required` no meio do trabalho.
+4. **Entrar no modo avançado tranca o modo básico por ~27 min.** Só entre se for terminar
+   ali.
+5. **DNS propagado não quer dizer site no ar.** Os dois nomes resolveram antes de o
+   certificado existir, e o HTTPS deu `UNEXPECTED_EOF_WHILE_READING` por alguns minutos.
+   Não é erro de configuração: é a Vercel emitindo o certificado depois que o DNS aponta.
+
+## Agora dá para
+
+- Trocar a assinatura dos e-mails para `publiprova.com.br` (a atual manda para um link
+  quebrado — ver `emails-lote-04.md`).
+- Montar `phillip@publiprova.com.br` (Zoho Mail no plano gratuito).
+- Dar um endereço fixo ao webhook da Meta, que é o que trava a revisão do app.
