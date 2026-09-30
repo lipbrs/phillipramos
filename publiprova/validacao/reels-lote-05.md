@@ -1,8 +1,16 @@
 # Lote 05 de Reels — cinco telas que a pessoa reconhece (29/09/2026)
 
-> Pedido do Phillip: "precisamos de mais publicações, atrair mais pessoas, não estamos
-> tendo respostas". Os cinco estão renderizados. **Não foram agendados** — ver o bloqueio
-> no fim.
+> ✅ **AGENDADOS em 29/09**, os cinco, um por dia às 10h:
+>
+> | Reel | Data | Legenda conferida na fila |
+> |---|---|---|
+> | R14 grupo da campanha | qua 30/09 | ✅ |
+> | R15 pasta com 47 prints | qui 01/10 | ✅ |
+> | R16 as seis versões do FINAL | sex 02/10 | ✅ |
+> | R17 a reunião é 9h | sáb 03/10 | ✅ |
+> | R18 treze dias de 🙏 | dom 04/10 | ✅ |
+>
+> O bloqueio do login do Facebook foi resolvido pelo Phillip.
 
 ## O que os números do lote 04 disseram
 
@@ -75,3 +83,25 @@ desconhecido. O que muda alcance para uma conta de 11 seguidores não é publica
    perfis. É o único mecanismo do Instagram que empresta audiência de verdade.
 
 Nada disso substitui o lote 05 — mas o lote 05 sozinho repete a semana passada.
+
+
+## O que aprendi agendando (para a próxima vez ser rápida)
+
+O compositor de Reels funciona, mas tem quatro armadilhas. Nenhuma é óbvia.
+
+1. **As coordenadas do mouse não são as do CSS.** O viewport é 1706 px e o quadro de
+   coordenadas da ferramenta é 1279: fator **0,75**. Clicar com o valor lido do
+   `getBoundingClientRect()` erra 33% para a direita. Multiplicar por
+   `1279 / window.innerWidth` resolve.
+2. **O menu de hashtag engole cliques.** Depois de colar uma legenda que termina em
+   `#tag`, o autocompletar abre e come o clique no "Next". Clicar em área vazia antes.
+3. **A aba "Schedule" não responde a clique por coordenada.** Só funciona disparando
+   `.click()` no elemento pai que tem `role="button"` — a folha de texto tem 32 px e o
+   alvo real é outro. Depois do clique, os campos de data **aparecem**, então as
+   coordenadas têm de ser lidas de novo, nunca reaproveitadas.
+4. **A fila demora a indexar.** Depois de agendar, a lista mostra "No scheduled posts"
+   por 10 a 20 segundos. Não é falha: é recarregar e esperar.
+
+Nenhum dos cinco leva música. As faixas oferecidas no compositor são de aniversário e
+motivação, e nenhuma combina com Reel de dor operacional de agência. Silêncio é melhor
+que trilha errada, e o R11 do lote 04, que foi o melhor até agora, também era mudo.
