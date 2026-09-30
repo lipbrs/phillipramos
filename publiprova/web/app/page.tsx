@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Cabecalho, Rodape } from './_site/cabecalho';
 import { DemoFluxo } from './_site/demo';
+import { Revelar } from './_site/revelar';
 
 // Home. Regra desta página: toda seção que afirma alguma coisa mostra a tela
 // que prova a afirmação. As capturas em /public são do produto rodando, não
@@ -25,18 +26,20 @@ const planos = [
 export default function Home() {
   return (
     <>
-      <Cabecalho />
+      <Cabecalho sobreCinema />
 
-      <section className="hero">
+      <section className="hero cine">
         <div className="wrap hero-split">
           <div>
-            <span className="eyebrow">Para agências que rodam campanhas com creators</span>
-            <h1>Cadê o print?</h1>
-            <p className="lead">
+            <span className="eyebrow entra" style={{ ['--i' as string]: 0 }}>
+              Para agências que rodam campanhas com creators
+            </span>
+            <h1 className="entra" style={{ ['--i' as string]: 1 }}>Cadê o print?</h1>
+            <p className="lead entra" style={{ ['--i' as string]: 2 }}>
               Você não precisa mais cobrar link e print de 30 creators no WhatsApp. O PubliProva
               cobra sozinho e entrega o relatório do cliente pronto.
             </p>
-            <div className="row" style={{ marginTop: 28 }}>
+            <div className="row entra" style={{ marginTop: 28, ['--i' as string]: 3 }}>
               <Link href="/app" className="btn">Começar grátis</Link>
               <Link href="/r/verao-hidrata-demo" className="btn btn-ghost">Ver relatório de exemplo</Link>
             </div>
@@ -204,6 +207,7 @@ export default function Home() {
       </section>
 
       <Rodape />
+      <Revelar />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Cabecalho, Rodape } from '../_site/cabecalho';
+import { Revelar } from '../_site/revelar';
 
 // /sobre — para onde foi a história de "construído em público". Na home ela
 // lia como aviso de risco; aqui ela é o argumento: acesso direto a quem
@@ -105,6 +106,7 @@ export default function Sobre() {
       </section>
 
       <Rodape />
+      <Revelar />
     </>
   );
 }

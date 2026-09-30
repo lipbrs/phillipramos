@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Cabecalho, Rodape } from '../_site/cabecalho';
+import { Revelar } from '../_site/revelar';
 
 // /produto — o fluxo completo, com a tela de cada etapa. Existe para tirar da
 // home a explicação longa e para dar à agência uma página que ela consegue
@@ -142,6 +143,7 @@ export default function Produto() {
       </section>
 
       <Rodape />
+      <Revelar />
     </>
   );
 }

@@ -7,11 +7,19 @@ primeira pessoa que discordar vai simplesmente desfazer.
 ## A leitura que define tudo
 
 **Landing B2B para agências brasileiras de marketing de influência.** O público está
-decidindo se confia software desconhecido com o dado de creator, que é pessoa física. Isso
-é *trust-first*, não portfólio de agência criativa.
+decidindo se confia software desconhecido com o dado de creator, que é pessoa física.
 
-Consequência prática: variância baixa, movimento baixo, densidade média. Nada de efeito
-que chame atenção para si.
+**Revisão de 30/09:** a primeira versão disto dizia "movimento baixo, nada de efeito". O
+Phillip pediu um site cinematográfico e estava certo — a regra estava confundindo duas
+coisas. Linear, Stripe e Vercel são B2B, são cinematográficos e passam credibilidade.
+
+A regra correta é sobre **o que entra em cena**:
+
+> Se o espetáculo for efeito, vira enfeite e queima confiança.
+> Se o espetáculo for **o produto**, impressiona e prova ao mesmo tempo.
+
+Por isso o herói é um bloco escuro imersivo com o **vídeo do produto real** como clímax, e
+não um degradê animado com partículas. Toda a dramaticidade serve para olhar o produto.
 
 ## Cor
 
@@ -56,25 +64,44 @@ Uma escala de raio só. Cartão quadrado com botão redondo é design quebrado.
 
 ## Movimento
 
-**Discreto de verdade, e sem biblioteca.** Scroll-driven animation nativa, zero
-dependência.
+Pesagem pela skill `design-motion-principles`: landing de marketing → **Jakub principal**
+(polimento de produção), **Jhey secundário**, Emil só em navegação e formulário.
 
-```css
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .revela { animation: surge linear both; animation-timeline: view(); animation-range: entry 5% cover 20%; }
-    @keyframes surge { from { transform: translateY(14px); } to { transform: none; } }
-  }
-}
-```
+**Receita de entrada (Jakub):** opacidade + `translateY` + **blur**. O blur é o que faz o
+elemento *materializar* em vez de só aparecer. Curvas próprias
+(`cubic-bezier(.16,1,.3,1)`), nunca `ease` nativo, que não tem força.
 
-🔴 **NUNCA animar opacidade nessa revelação.** Com `animation-timeline: view()`, elemento
-fora da faixa fica preso no primeiro quadro — e com `opacity: 0` isso deixa a seção
-**invisível de verdade**, não só no screenshot. Aconteceu: duas seções do `/produto`
-sumiram. Animando só `transform`, o pior caso é a seção aparecer 14px deslocada.
+**Durações:** 520 a 760ms. É a faixa de polimento do Jakub, não os 180ms do Emil — aqui o
+movimento é raro (acontece uma vez, na chegada), e pela régua de frequência movimento raro
+pode ser expressivo.
 
-O vídeo do herói é o único componente cliente do site, porque respeitar
-`prefers-reduced-motion` em `<video autoplay>` exige JS.
+**Animar só `transform`, `opacity` e `filter`.** Nunca `width`, `height`, `top`, `left`.
+
+### Por que NÃO é `animation-timeline: view()`
+
+Duas razões, as duas aprendidas doendo:
+
+1. **Animação presa à timeline do scroll fica refém da velocidade de rolagem.** Quem rola
+   devagar vê tudo em câmera lenta e parece defeito. Gatilho por posição + duração fixa
+   resolve.
+2. 🔴 **Elemento fora da faixa fica preso no primeiro quadro.** Com `opacity: 0` isso deixa
+   a seção **invisível de verdade**. Aconteceu: duas seções do `/produto` sumiram.
+
+### A garantia de que nada some
+
+Agora é estrutural, não é disciplina. O estado inicial escondido **só existe** quando o
+`<html>` ganha `data-anima="pronto"`, e isso só acontece depois que o
+`app/_site/revelar.tsx` montou e confirmou que tem `IntersectionObserver`. Sem JS, com JS
+quebrado, em navegador velho ou para robô de busca: **tudo visível, sempre.**
+
+Tem ainda uma rede de segurança: se depois de 3 segundos algum alvo visível continuar
+escondido, o atributo é removido da página inteira.
+
+Isso é testado, não suposto — a verificação roda com JS, sem JS e com movimento reduzido.
+
+Dois componentes cliente no site, os dois por necessidade: `revelar.tsx` (o
+`IntersectionObserver`) e `demo.tsx` (respeitar `prefers-reduced-motion` em
+`<video autoplay>` exige JS).
 
 ## Imagem e vídeo
 
@@ -111,6 +138,10 @@ continua entregue até o servidor reiniciar. Reinicie antes de regravar.
   funciona" usa duas colunas com regra superior na cor da marca.
 - Rodapé com quatro colunas (produto, confiança, contato), não uma linha.
 - Navegação numa linha só, altura ≤ 80px, item atual com `aria-current="page"`.
+- **Na home, a navegação entra no bloco escuro** (`.topbar-cine`). Barra clara em cima de
+  herói escuro é uma costura que quebra o efeito inteiro.
+- Profundidade por **sombra em camadas**, não por borda chapada. Sombra se adapta a
+  qualquer fundo porque usa transparência; borda é cor sólida e briga.
 
 ## Rejeitado, com motivo
 
@@ -120,7 +151,8 @@ continua entregue até o servidor reiniciar. Reinicie antes de regravar.
 | `ui-ux-pro-max` | Azul `#2563EB` + CTA laranja | A marca já é roxa. Redesenho preserva cor de marca. |
 | `ui-ux-pro-max` | Plus Jakarta Sans | Geist acabou de entrar. Trocar de novo é rodízio sem ganho. |
 | geral | Banco de imagem com "equipe sorrindo" | Denuncia site feito às pressas. Se quiser presença humana, foto real do Phillip na `/sobre`. |
-| geral | GSAP / Motion | Nenhuma animação aqui justifica dependência. CSS nativo dá conta. |
+| geral | GSAP / Motion | Nenhuma animação aqui justifica dependência. CSS nativo mais um `IntersectionObserver` dão conta. |
+| Phillip autorizou | Higgsfield (vídeo por IA) no site | O argumento da página é que **tudo ali é real**. Footage gerada por IA contradiz isso. Continua autorizado e faz sentido para os Reels. |
 
 ## Onde mora o quê
 

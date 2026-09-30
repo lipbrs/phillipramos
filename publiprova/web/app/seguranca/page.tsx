@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Cabecalho, Rodape } from '../_site/cabecalho';
+import { Revelar } from '../_site/revelar';
 
 // Página de segurança. Regra: só entra o que existe no código hoje. O que
 // ainda não existe fica na lista "o que ainda não temos", que é justamente o
@@ -122,6 +123,7 @@ export default function Seguranca() {
       </section>
 
       <Rodape />
+      <Revelar />
     </>
   );
 }

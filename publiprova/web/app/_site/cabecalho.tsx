@@ -11,9 +11,9 @@ const paginas = [
   { href: '/sobre', rotulo: 'Sobre' },
 ];
 
-export function Cabecalho({ atual }: { atual?: string }) {
+export function Cabecalho({ atual, sobreCinema }: { atual?: string; sobreCinema?: boolean }) {
   return (
-    <header className="topbar">
+    <header className={sobreCinema ? 'topbar topbar-cine' : 'topbar'}>
       <div className="wrap">
         <div className="row" style={{ gap: 28 }}>
           <Link href="/" className="logo">Publi<span>Prova</span></Link>
