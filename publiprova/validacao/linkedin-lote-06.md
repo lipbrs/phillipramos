@@ -1,6 +1,17 @@
 # Lote 06 — LinkedIn (post + conexão com nota)
 
-**Status: NADA ENVIADO.** Tudo abaixo espera aprovação do Phillip.
+**Status em 10/10/2026: POST NO AR, notas de conexão ainda não enviadas.**
+
+O Phillip respondeu "você decide" e eu escolhi a **opção B**. A A abre falando do e-mail
+ignorado, ou seja, de mim; a B abre dentro da dor que o leitor vive e usa o número 29/1
+só depois, como prova de honestidade. Para quem trabalha em agência, a primeira linha da
+B é um espelho.
+
+- Publicado no perfil pessoal (`/in/phillipramos89/`, **127 seguidores**, contra 7 do
+  `@publiprova.app`). Visibilidade: qualquer pessoa.
+- Primeiro comentário com `publiprova.com.br` publicado logo em seguida.
+- A oferta de impulsionamento pago do LinkedIn (R$ 200 de crédito) foi **recusada**.
+- **As 17 notas de conexão seguem pendentes**, por decisão de esperar 24 h depois do post.
 
 Decisão de 09/10/2026: o e-mail para `contato@` deu 1 resposta em 29 tentativas (3,4%),
 e a única resposta foi uma recepcionista repassando. O lote 05, nominal e vindo do
