@@ -11,14 +11,44 @@ O diálogo de convite informou duas coisas que eu não sabia e que derrubam o pl
 2. **O contador é "0 de 200", não 300.** As 17 notas escritas têm de 250 a 294
    caracteres. **Nenhuma delas caberia**: seriam cortadas ou recusadas.
 
-**Enviado (1 de 3):** Lucas Diniz, Diretor Comercial da Hubli
-(`/in/lucas-diniz-cf/`), em 15/10. Nota reescrita para 172 caracteres:
+## Enviados em 15/10: os 3 do mês, cota esgotada
 
-> Oi, Lucas. Sou o Phillip. Escrevi para a Hubli e o e-mail voltou. Uma pergunta só, sem
-> venda: juntar link e print de cada creator no fim da campanha dói aí, ou já está
-> resolvido?
+Critério: fundador ou quem decide, em agência do ICP, **sem nenhum outro canal**. Os
+quatro que receberam e-mail e ignoraram (WBMD, Follow Up, Fizz, Gotcha!) perderam a vez,
+porque têm canal aberto. A Nhaí! perdeu apesar do e-mail morto, porque está marcada
+"talvez" no ICP: pode nem fechar campanha com creator.
 
-Confirmado por tela: "Convite enviado a Lucas", botão virou Pendente. **Restam 2.**
+| # | Pessoa | Perfil | Nota (chars) | Confirmação |
+|---|---|---|---|---|
+| 1 | Lucas Diniz, Diretor Comercial, Hubli | `/in/lucas-diniz-cf/` | 172 | "Convite enviado a Lucas", botão Pendente |
+| 2 | Monique Persike, CEO e fundadora, Fenomena | `/in/moniquepersike/` | 181 | "Convite enviado a Monique." |
+| 3 | João Ormond, CEO e Fundador, Monumental Vision | `/in/eujoaoormond/` | 186 | "Convite enviado a João." |
+
+Textos efetivamente enviados:
+
+> **Lucas:** Oi, Lucas. Sou o Phillip. Escrevi para a Hubli e o e-mail voltou. Uma
+> pergunta só, sem venda: juntar link e print de cada creator no fim da campanha dói aí,
+> ou já está resolvido?
+>
+> **Monique:** Oi, Monique. Sou o Phillip, construindo uma ferramenta para o fim da
+> campanha. Uma pergunta só, sem venda: juntar link e print de cada creator dói na
+> Fenomena, ou já está resolvido?
+>
+> **João:** Oi, João. Sou o Phillip, construindo uma ferramenta para a semana depois do
+> post. Uma pergunta só, sem venda: cobrar link e print de cada creator dói na
+> Monumental, ou já está resolvido?
+
+**Restam 0 convites personalizados até novembro.**
+
+## O que fazer com os outros 13
+
+Convite **sem nota** não entra na cota de 3. A pergunta vai depois, em mensagem gratuita,
+quando a pessoa aceitar. Ordem sugerida, por ICP e por ausência de canal: Tatiany Sousa
+(CRIA), Petherson (Liame), Bruno Lopes (Murano), Isabella Lago (Comunica Digital), Luisa
+Ferrari (Folks), Lissandra Siqueira (4 Pillars), Alexon Bilhoto (Teamz), Bruno R.
+(Keepgo), Bruno de Oliveira (Nhaí!), e por último os quatro que já ignoraram e-mail.
+
+Espaçar, não disparar em bloco: a conta é a profissional do Phillip.
 
 **A saída para os outros 13:** convite **sem nota** não tem esse teto de 3. E conexão
 aceita vira **mensagem gratuita**, sem limite de caracteres. Ou seja, o caminho passa a
