@@ -1,6 +1,32 @@
 # Lote 06 — LinkedIn (post + conexão com nota)
 
-**Status em 10/10/2026: POST NO AR, notas de conexão ainda não enviadas.**
+**Status em 15/10/2026: POST NO AR, 1 nota enviada, e o plano das 17 MORREU.**
+
+## O que o LinkedIn impôs, descoberto na hora de enviar
+
+O diálogo de convite informou duas coisas que eu não sabia e que derrubam o plano:
+
+1. **"Você ainda tem 3 convites personalizados este mês."** Conta gratuita não manda 17
+   notas. Manda 3.
+2. **O contador é "0 de 200", não 300.** As 17 notas escritas têm de 250 a 294
+   caracteres. **Nenhuma delas caberia**: seriam cortadas ou recusadas.
+
+**Enviado (1 de 3):** Lucas Diniz, Diretor Comercial da Hubli
+(`/in/lucas-diniz-cf/`), em 15/10. Nota reescrita para 172 caracteres:
+
+> Oi, Lucas. Sou o Phillip. Escrevi para a Hubli e o e-mail voltou. Uma pergunta só, sem
+> venda: juntar link e print de cada creator no fim da campanha dói aí, ou já está
+> resolvido?
+
+Confirmado por tela: "Convite enviado a Lucas", botão virou Pendente. **Restam 2.**
+
+**A saída para os outros 13:** convite **sem nota** não tem esse teto de 3. E conexão
+aceita vira **mensagem gratuita**, sem limite de caracteres. Ou seja, o caminho passa a
+ser: convidar sem nota, e fazer a pergunta depois que a pessoa aceitar.
+
+---
+
+**Status anterior (10/10/2026): POST NO AR, notas de conexão ainda não enviadas.**
 
 O Phillip respondeu "você decide" e eu escolhi a **opção B**. A A abre falando do e-mail
 ignorado, ou seja, de mim; a B abre dentro da dor que o leitor vive e usa o número 29/1
@@ -70,7 +96,8 @@ link no primeiro comentário, porque o LinkedIn entrega menos post com link exte
 
 ## 2. Pedido de conexão com nota, 17 pessoas
 
-Limite da nota no LinkedIn: 300 caracteres. Todas abaixo cabem.
+⚠️ **As notas abaixo estão ERRADAS: foram escritas para 300 caracteres e o limite real é 200.**
+Servem de rascunho, mas precisam ser cortadas antes de usar.
 Nenhuma vende nada e todas oferecem a saída ("risco da lista").
 
 ### Prioridade 1: o e-mail VOLTOU, LinkedIn é o único caminho
