@@ -65,3 +65,15 @@ Follow de volta é manual e limitado a 3–5/dia — conta nova toma bloqueio si
 - Número de respostas e de comentários (mesmo que zero — o zero é o dado).
 - Etapas puladas, e por quê. Etapa pulada sem motivo escrito é etapa que não rodou.
 - Recomendação, marcada como **não executada** se depende do Phillip.
+
+## Thread da Cigarra, o único warm que existe (17/10/2026)
+
+A Erika Martins (`erika.martins@umauma.com.br`) é a ÚNICA pessoa que respondeu em 29
+e-mails, e respondeu em 39 minutos. Ela indicou a Hadassah Zucoloto
+(`hadassah.zucoloto@umauma.com.br`), que não respondeu em 18 dias.
+
+Em 17/10 foi enviado o 2º toque, **na Erika e dentro do thread original**, pedindo uma
+de duas coisas: cutucar a Hadassah, ou dizer que não é hora. Dar um "não" fácil é de
+propósito: encerra o alvo em vez de deixá-lo apodrecendo na lista.
+
+**Não insistir uma terceira vez.** Se a Erika não voltar, a Cigarra sai da lista.
