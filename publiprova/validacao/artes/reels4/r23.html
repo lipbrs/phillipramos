@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R23 — três semanas depois, o creator não lembra qual campanha era. Direct
+     do Instagram (claro) para não repetir a cara do WhatsApp dos outros Reels. -->
+<style>
+  .ig { position: absolute; inset: 0; background: #fff; color: #000; display: flex; flex-direction: column; }
+  .status { height: 30px; display: flex; justify-content: space-between; align-items: center; padding: 9px 20px 0; font-size: 13px; font-weight: 700; flex: none; }
+  .topo { display: flex; align-items: center; gap: 11px; padding: 9px 15px 10px; border-bottom: 1px solid #dbdbdb; flex: none; }
+  .av { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(45deg,#f09433,#dc2743,#bc1888); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: #fff; flex: none; }
+  .nm { font-size: 15px; font-weight: 700; }
+  .sub { font-size: 12px; color: #8e8e8e; margin-top: 1px; }
+  .fluxo { flex: 1; padding: 14px 14px 18px; display: flex; flex-direction: column; justify-content: flex-end; gap: 9px; overflow: hidden; }
+  .sep { align-self: center; color: #8e8e8e; font-size: 11.5px; font-weight: 600; margin: 6px 0 2px; opacity: 0; }
+  .bal { max-width: 74%; border-radius: 20px; padding: 9px 14px; font-size: 14.5px; line-height: 1.34; opacity: 0; }
+  .esq { background: #efefef; color: #000; align-self: flex-start; }
+  .dir { background: #3797f0; color: #fff; align-self: flex-end; }
+  .vis { align-self: flex-end; font-size: 10.5px; color: #8e8e8e; margin-top: -4px; opacity: 0; }
+
+  .gancho { top: 120px; }
+  #fecho { position: absolute; left: 28px; right: 28px; top: 716px; display: flex; justify-content: center; z-index: 60; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="ig">
+    <div class="status"><span>10:41</span><span>▮▮▮ 5G ▭</span></div>
+    <div class="topo"><div class="av">GT</div><div><div class="nm">gabi.trend</div><div class="sub">Ativo há 2 h</div></div></div>
+    <div class="fluxo" id="fluxo"></div>
+  </div>
+  <div class="gancho"><div class="pilula grande">3 semanas depois:<br>"qual campanha mesmo?"</div></div>
+  <div id="fecho"><div class="pilula grande">agora explica a campanha de novo</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.5;
+
+  const itens = [
+    { sep: "7 DE SETEMBRO", ini: 0.5 },
+    { eu: true,  t: "oi Gabi! fechamos tudo pra campanha da Dermalis 🧡", ini: 0.8 },
+    { eu: false, t: "amei! posto quinta", ini: 1.4 },
+    { sep: "14 DE SETEMBRO", ini: 2.0 },
+    { eu: true,  t: "ficou lindo o post! quando der, me manda o print dos insights", ini: 2.3 },
+    { eu: false, t: "mando sim!!", ini: 2.9 },
+    { sep: "28 DE SETEMBRO", ini: 3.5 },
+    { eu: true,  t: "oi Gabi, tudo bem? ainda preciso daquele print 🙏", ini: 3.8 },
+    { vis: "Visualizado", ini: 4.4 },
+    { eu: false, t: "oi!! desculpa", ini: 5.1 },
+    { eu: false, t: "qual campanha mesmo?", ini: 5.8 },
+  ];
+
+  const fluxo = document.getElementById("fluxo");
+  const els = itens.map((it) => {
+    const el = document.createElement("div");
+    if (it.sep) { el.className = "sep"; el.textContent = it.sep; }
+    else if (it.vis) { el.className = "vis"; el.textContent = it.vis; }
+    else { el.className = "bal " + (it.eu ? "dir" : "esq"); el.textContent = it.t; }
+    fluxo.appendChild(el);
+    return el;
+  });
+
+  const fecho = document.getElementById("fecho");
+  window.setT = (t) => {
+    els.forEach((el, i) => entra(el, t, itens[i].ini, 0.22, 12));
+    entra(fecho, t, 7.3, 0.3, 14);
+  };
+  setT(0);
+</script></body></html>

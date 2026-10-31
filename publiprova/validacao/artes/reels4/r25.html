@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R25 — o grupo da campanha. Todas as mensagens são suas: uma parede verde
+     encostada na direita, sem um único balão cinza. A imagem é o argumento. -->
+<style>
+  .wa { position: absolute; inset: 0; background: #0b141a; color: #e9edef; display: flex; flex-direction: column; }
+  .status { height: 30px; display: flex; justify-content: space-between; align-items: center; padding: 8px 20px 0; font-size: 13px; font-weight: 600; color: #fff; flex: none; }
+  .topo { display: flex; align-items: center; gap: 11px; padding: 8px 15px 9px; background: #202c33; flex: none; }
+  .av { width: 40px; height: 40px; border-radius: 50%; background: #16a085; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; color: #fff; flex: none; }
+  .nm { font-size: 15.5px; font-weight: 600; }
+  .sub { font-size: 11.5px; color: #8696a0; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 330px; }
+  .fluxo { flex: 1; padding: 12px 12px 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
+  .dia { align-self: center; background: #182229; color: #8696a0; font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 8px; margin: 3px 0 1px; opacity: 0; }
+  .bal { max-width: 80%; border-radius: 9px; padding: 7px 10px 5px; font-size: 14.5px; line-height: 1.32; opacity: 0; background: #005c4b; align-self: flex-end; }
+  .bal .hr { font-size: 10.5px; color: #8696a0; float: right; margin: 5px 0 0 8px; }
+
+  /* O carimbo que aparece no fim, por cima da parede verde. */
+  .carimbo { position: absolute; left: 44px; right: 44px; top: 372px; z-index: 55; background: #ff3b30; color: #fff; border-radius: 14px; padding: 15px 10px; text-align: center; opacity: 0; box-shadow: 0 12px 38px rgba(0,0,0,.5); }
+  .carimbo .n { font-size: 47px; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+  .carimbo .l { font-size: 15px; font-weight: 700; margin-top: 5px; opacity: .94; }
+
+  .gancho { top: 118px; }
+  #fecho { position: absolute; left: 28px; right: 28px; top: 706px; display: flex; justify-content: center; z-index: 60; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="wa">
+    <div class="status"><span>18:33</span><span>▮▮▮ 5G ▭</span></div>
+    <div class="topo"><div class="av">VH</div><div><div class="nm">Verão Hidrata · creators</div><div class="sub">Você, Lara, Pedro, Bia, Ju, Rafa, Duda, Theo, Line, Gabi, +22</div></div></div>
+    <div class="fluxo" id="fluxo"></div>
+  </div>
+  <div class="carimbo" id="carimbo"><div class="n">0</div><div class="l">responderam</div></div>
+  <div class="gancho"><div class="pilula grande">31 creators no grupo</div></div>
+  <div id="fecho"><div class="pilula grande">só a sua cor na tela</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.5;
+
+  // Toda mensagem é sua. Nenhuma é cinza. É esse o ponto.
+  const itens = [
+    { dia: "12 DE SETEMBRO", ini: 0.5 },
+    { t: "pessoal, campanha no ar! 🎉 obrigado a todo mundo", h: "10:02", ini: 0.8 },
+    { t: "quando postarem, me mandem o link aqui 🙏", h: "10:02", ini: 1.4 },
+    { dia: "19 DE SETEMBRO", ini: 2.0 },
+    { t: "oi gente! faltam os prints dos insights 🙏", h: "09:14", ini: 2.3 },
+    { t: "é só o printzinho da telinha de insights mesmo", h: "09:15", ini: 2.9 },
+    { dia: "26 DE SETEMBRO", ini: 3.5 },
+    { t: "bom dia! alguém consegue hoje?", h: "08:40", ini: 3.8 },
+    { t: "o cliente fecha o relatório sexta 🙏", h: "14:22", ini: 4.4 },
+    { dia: "HOJE", ini: 5.0 },
+    { t: "gente?", h: "18:33", ini: 5.3 },
+  ];
+
+  const fluxo = document.getElementById("fluxo");
+  const els = itens.map((it) => {
+    const el = document.createElement("div");
+    if (it.dia) { el.className = "dia"; el.textContent = it.dia; }
+    else { el.className = "bal"; el.innerHTML = `<span>${it.t}</span><span class="hr">${it.h} ✓✓</span>`; }
+    fluxo.appendChild(el);
+    return el;
+  });
+
+  const carimbo = document.getElementById("carimbo");
+  const fecho = document.getElementById("fecho");
+  window.setT = (t) => {
+    els.forEach((el, i) => entra(el, t, itens[i].ini, 0.2, 11));
+    entra(carimbo, t, 6.2, 0.34, 18);
+    entra(fecho, t, 7.5, 0.3, 14);
+  };
+  setT(0);
+</script></body></html>

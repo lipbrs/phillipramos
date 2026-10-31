@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R28 — o fecho do lote: o relatório de verdade, rolando. Não é mockup, é a
+     captura da página de demonstração que o render tira do app rodando. Por
+     isso o rodapé diz "demonstração": o que está na tela é o produto real. -->
+<style>
+  .pal { position: absolute; inset: 0; background: #0a0a12; overflow: hidden; }
+  .moldura { position: absolute; left: 24px; top: 128px; width: 492px; height: 700px; border-radius: 22px; overflow: hidden; background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+  .moldura .barra { height: 30px; background: #18181b; display: flex; align-items: center; gap: 6px; padding: 0 12px; }
+  .moldura .barra i { width: 8px; height: 8px; border-radius: 50%; background: #3f3f46; }
+  .moldura .barra .u { margin-left: 8px; font-size: 10.5px; color: #a1a1aa; }
+  .janela { position: absolute; left: 0; right: 0; top: 30px; bottom: 0; overflow: hidden; }
+  .janela img { position: absolute; left: 0; top: 0; width: 492px; display: block; }
+
+  .selo { position: absolute; left: 24px; right: 24px; top: 842px; text-align: center; font-size: 12.5px; color: #71717a; font-weight: 600; }
+
+  .gancho { top: 34px; }
+  #fecho { position: absolute; left: 26px; right: 26px; top: 700px; display: flex; justify-content: center; z-index: 60; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="pal">
+    <div class="moldura">
+      <div class="barra"><i></i><i></i><i></i><span class="u">publiprova.com.br/r/verao-hidrata-demo</span></div>
+      <div class="janela"><img id="shot" src="relatorio-demo.png" alt=""></div>
+    </div>
+    <div class="selo">relatório de demonstração, aberto por link, sem login</div>
+  </div>
+  <div class="gancho"><div class="pilula grande">é isso que o cliente abre</div></div>
+  <div id="fecho"><div class="pilula fina">publiprova.com.br · em construção</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.0;
+
+  const shot = document.getElementById("shot");
+  const fecho = document.getElementById("fecho");
+
+  window.setT = (t) => {
+    // Rola a captura inteira dentro da moldura. A altura só existe depois que a
+    // imagem carregou, e o motor já espera por isso antes do primeiro quadro.
+    const limite = Math.max(0, shot.naturalHeight * (492 / shot.naturalWidth) - 670);
+    shot.style.transform = `translateY(${-eio(prog(t, 0.9, 5.8)) * limite}px)`;
+    entra(fecho, t, 6.9, 0.3, 14);
+  };
+  setT(0);
+</script></body></html>

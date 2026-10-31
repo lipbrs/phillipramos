@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R24 — o story tem 24h. O print não foi tirado a tempo, e o número do
+     alcance não existe mais em lugar nenhum. A contagem desce na tela. -->
+<style>
+  .st { position: absolute; inset: 0; background: #000; overflow: hidden; }
+  /* O "story": fundo de marca, sem foto de ninguém. */
+  .arte { position: absolute; inset: 0; background: radial-gradient(120% 90% at 30% 15%, #7c3aed 0%, #4f46e5 42%, #1e1b4b 100%); }
+  .arte .selo { position: absolute; left: 50%; margin-left: -118px; top: 300px; width: 236px; text-align: center; color: #fff; }
+  .arte .selo .mk { font-size: 13px; letter-spacing: 3px; opacity: .72; font-weight: 700; }
+  .arte .selo .pd { font-size: 34px; font-weight: 900; line-height: 1.08; margin-top: 8px; }
+  .arte .selo .tg { font-size: 14px; opacity: .8; margin-top: 12px; }
+
+  .barras { position: absolute; left: 10px; right: 10px; top: 44px; display: flex; gap: 4px; }
+  .barras i { flex: 1; height: 3px; background: rgba(255,255,255,.34); border-radius: 2px; overflow: hidden; }
+  .barras i b { display: block; height: 100%; width: 0; background: #fff; }
+  .cab { position: absolute; left: 14px; right: 14px; top: 58px; display: flex; align-items: center; gap: 9px; color: #fff; }
+  .cab .av { width: 30px; height: 30px; border-radius: 50%; background: #fff; color: #4f46e5; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; }
+  .cab .qn { font-size: 13.5px; font-weight: 700; }
+  .cab .hh { font-size: 12.5px; opacity: .72; }
+
+  /* Painel de insights do story, embaixo. */
+  .ins { position: absolute; left: 16px; right: 16px; bottom: 112px; background: rgba(0,0,0,.6); border: 1px solid rgba(255,255,255,.14); border-radius: 14px; padding: 13px 15px; color: #fff; backdrop-filter: blur(6px); }
+  .ins .tt { font-size: 11.5px; letter-spacing: .6px; text-transform: uppercase; opacity: .62; font-weight: 700; }
+  .ins .gr { display: flex; gap: 10px; margin-top: 9px; }
+  .ins .c { flex: 1; }
+  .ins .c .v { font-size: 25px; font-weight: 900; font-variant-numeric: tabular-nums; }
+  .ins .c .r { font-size: 11px; opacity: .66; margin-top: 1px; }
+
+  /* A contagem que some. */
+  .cont { position: absolute; left: 16px; right: 16px; bottom: 56px; text-align: center; color: #fff; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; opacity: .9; }
+
+  /* O fim: tela preta com o aviso do Instagram. */
+  .fim { position: absolute; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #fff; opacity: 0; }
+  .fim .ic { width: 62px; height: 62px; border-radius: 50%; border: 2.5px solid #3a3a3a; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #6b6b6b; }
+  .fim .t1 { font-size: 17px; font-weight: 700; }
+  .fim .t2 { font-size: 13.5px; color: #8e8e8e; text-align: center; padding: 0 44px; line-height: 1.45; }
+
+  .gancho { top: 122px; }
+  #fecho { position: absolute; left: 28px; right: 28px; top: 700px; display: flex; justify-content: center; z-index: 60; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="st">
+    <div class="arte">
+      <div class="selo">
+        <div class="mk">DERMALIS</div>
+        <div class="pd">Verão<br>Hidrata</div>
+        <div class="tg">link na bio ✨</div>
+      </div>
+    </div>
+    <div class="barras"><i><b id="b1"></b></i><i><b></b></i><i><b></b></i></div>
+    <div class="cab"><div class="av">LM</div><div class="qn">lara.m</div><div class="hh" id="hh">há 2 h</div></div>
+    <div class="ins" id="ins">
+      <div class="tt">Insights do story</div>
+      <div class="gr">
+        <div class="c"><div class="v">3.904</div><div class="r">contas alcançadas</div></div>
+        <div class="c"><div class="v">126</div><div class="r">interações</div></div>
+      </div>
+    </div>
+    <div class="cont" id="cont">expira em 21:58</div>
+    <div class="fim" id="fim">
+      <div class="ic">⏱</div>
+      <div class="t1">Este story não está mais disponível</div>
+      <div class="t2">Stories expiram depois de 24 horas.</div>
+    </div>
+  </div>
+  <div class="gancho"><div class="pilula grande">o story expira em 24h<br>o número vai junto</div></div>
+  <div id="fecho"><div class="pilula grande">ninguém tirou o print a tempo</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.0;
+
+  const b1 = document.getElementById("b1");
+  const hh = document.getElementById("hh");
+  const cont = document.getElementById("cont");
+  const ins = document.getElementById("ins");
+  const fim = document.getElementById("fim");
+  const fecho = document.getElementById("fecho");
+
+  const doisDig = (n) => String(n).padStart(2, "0");
+
+  window.setT = (t) => {
+    // A barra do story anda o tempo todo: é o relógio da cena.
+    b1.style.width = (prog(t, 0.3, 5.4) * 100) + "%";
+
+    // 21:58 até 00:00 em 5,4 s. O número desce e o olho acompanha.
+    const resta = Math.max(0, 1318 - Math.floor(prog(t, 0.3, 5.4) * 1318));
+    cont.textContent = resta > 0 ? `expira em ${doisDig(Math.floor(resta / 60))}:${doisDig(resta % 60)}` : "expirado";
+    hh.textContent = resta > 0 ? "há 2 h" : "há 24 h";
+
+    // Some tudo junto: a arte, os insights e a contagem.
+    const sumiu = eo(prog(t, 5.5, 0.6));
+    document.querySelector(".arte").style.opacity = 1 - sumiu;
+    ins.style.opacity = 1 - sumiu;
+    cont.style.opacity = (1 - sumiu) * 0.9;
+    document.querySelector(".barras").style.opacity = 1 - sumiu;
+    document.querySelector(".cab").style.opacity = 1 - sumiu;
+    fim.style.opacity = sumiu;
+
+    entra(fecho, t, 6.9, 0.3, 14);
+  };
+  setT(0);
+</script></body></html>

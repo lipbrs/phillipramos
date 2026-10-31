@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R27 — o mesmo minuto, dois caminhos. Em cima, você cobrando. Embaixo, o
+     link fazendo. Nada é afirmado em número: a diferença é quem faz o trabalho. -->
+<style>
+  .meta { position: absolute; left: 0; right: 0; height: 480px; overflow: hidden; }
+  .cima { top: 0; background: #0b141a; }
+  .baixo { top: 480px; background: #0a0a12; border-top: 2px solid #26263a; }
+
+  .etiq { position: absolute; left: 18px; z-index: 30; font-size: 11.5px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; padding: 4px 10px; border-radius: 7px; }
+  .etiq.a { top: 148px; background: #ff3b30; color: #fff; }
+  .etiq.b { top: 500px; background: #4f46e5; color: #fff; }
+
+  /* Em cima: a conversa de sempre. */
+  .msg { position: absolute; left: 16px; right: 16px; border-radius: 9px; padding: 7px 10px 5px; font-size: 14.5px; line-height: 1.3; color: #e9edef; opacity: 0; }
+  .msg .hr { font-size: 10px; color: #8696a0; float: right; margin: 5px 0 0 8px; }
+  .msg.dir { background: #005c4b; left: 92px; }
+  .msg.esq { background: #202c33; right: 92px; }
+
+  /* Embaixo: o link que o creator abre. */
+  .fone { position: absolute; left: 150px; top: 548px; width: 240px; height: 374px; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 14px 40px rgba(0,0,0,.55); }
+  .fone .bar { height: 34px; background: #4f46e5; color: #fff; font-size: 11.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; letter-spacing: .3px; }
+  .fone .in { padding: 13px 14px; }
+  .fone .rot { font-size: 10.5px; color: #71717a; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .fone .cx { border: 1.5px solid #e4e4e7; border-radius: 8px; height: 32px; margin: 5px 0 11px; display: flex; align-items: center; padding: 0 9px; font-size: 11.5px; color: #3f3f46; overflow: hidden; white-space: nowrap; }
+  .fone .solta { border: 1.5px dashed #c7d2fe; background: #f5f3ff; border-radius: 10px; height: 86px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #4f46e5; font-size: 11.5px; font-weight: 700; }
+  .fone .bt { margin-top: 12px; height: 36px; border-radius: 9px; background: #4f46e5; color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  .fone .ok { position: absolute; inset: 34px 0 0; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; opacity: 0; }
+  .fone .ok .bol { width: 56px; height: 56px; border-radius: 50%; background: #16a34a; display: flex; align-items: center; justify-content: center; }
+  .fone .ok .bol::after { content: ""; width: 13px; height: 25px; border: solid #fff; border-width: 0 4px 4px 0; transform: rotate(42deg) translate(-2px,-3px); }
+  .fone .ok .t { font-size: 14.5px; font-weight: 800; color: #18181b; }
+  .fone .ok .s { font-size: 11.5px; color: #71717a; }
+
+  .gancho { top: 36px; }
+  #fecho { position: absolute; left: 26px; right: 26px; top: 880px; display: flex; justify-content: center; z-index: 60; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="meta cima" id="cima"></div>
+  <div class="meta baixo"></div>
+  <div class="etiq a">do jeito de hoje</div>
+  <div class="etiq b">com um link</div>
+
+  <div class="fone">
+    <div class="bar">Verão Hidrata · sua entrega</div>
+    <div class="in">
+      <div class="rot">link do post</div>
+      <div class="cx" id="cx">instagram.com/p/C8xR2…</div>
+      <div class="rot">print dos insights</div>
+      <div class="solta">📷<span>toque para enviar</span></div>
+      <div class="bt">Enviar</div>
+    </div>
+    <div class="ok" id="ok">
+      <div class="bol"></div>
+      <div class="t">Entrega registrada</div>
+      <div class="s">sem cadastro, sem senha</div>
+    </div>
+  </div>
+
+  <div class="gancho"><div class="pilula grande">o mesmo print,<br>dois caminhos</div></div>
+  <div id="fecho"><div class="pilula fina">um deles não gasta a sua sexta-feira</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.5;
+
+  const msgs = [
+    { lado: "dir", t: "oi! manda o print? 🙏", h: "sex 14:02", y: 196, ini: 0.8 },
+    { lado: "esq", t: "mando hoje!", h: "sex 18:40", y: 250, ini: 1.5 },
+    { lado: "dir", t: "oi, lembra do print? 🙏", h: "seg 09:12", y: 300, ini: 2.2 },
+    { lado: "esq", t: "aaah desculpa 🙏", h: "seg 21:48", y: 354, ini: 2.9 },
+    { lado: "dir", t: "oi 🙏", h: "qui 19:01", y: 404, ini: 3.6 },
+  ];
+  const cima = document.getElementById("cima");
+  const els = msgs.map((m) => {
+    const el = document.createElement("div");
+    el.className = "msg " + m.lado;
+    el.style.top = m.y + "px";
+    el.innerHTML = `<span>${m.t}</span><span class="hr">${m.h}</span>`;
+    document.querySelector(".quadro").appendChild(el);
+    return el;
+  });
+
+  const ok = document.getElementById("ok");
+  const fecho = document.getElementById("fecho");
+
+  window.setT = (t) => {
+    els.forEach((el, i) => entra(el, t, msgs[i].ini, 0.22, 10));
+    // Embaixo, o creator resolve em um toque: a tela de sucesso entra e fica.
+    ok.style.opacity = eo(prog(t, 5.0, 0.45));
+    entra(fecho, t, 7.3, 0.3, 14);
+  };
+  setT(0);
+</script></body></html>

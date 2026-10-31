@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R26 — a lista do que acontece DEPOIS que a campanha acaba. Sem número
+     inventado: a conta quem faz é quem assiste. A lista rola e não termina. -->
+<style>
+  .tela { position: absolute; inset: 0; background: #0a0a12; color: #f4f4f5; overflow: hidden; }
+  .cab { position: absolute; left: 0; right: 0; top: 0; height: 128px; background: linear-gradient(#0a0a12 62%, rgba(10,10,18,0)); z-index: 40; }
+  .rodape { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; background: linear-gradient(rgba(10,10,18,0), #0a0a12 46%); z-index: 40; }
+
+  #rolo { position: absolute; left: 30px; right: 30px; top: 150px; }
+  .it { display: flex; align-items: flex-start; gap: 13px; padding: 13px 0; border-bottom: 1px solid #1c1c26; font-size: 17px; line-height: 1.34; }
+  .cx { width: 20px; height: 20px; border: 2px solid #3f3f52; border-radius: 5px; flex: none; margin-top: 2px; }
+  .it.ok .cx { background: #4f46e5; border-color: #4f46e5; position: relative; }
+  .it.ok .cx::after { content: ""; position: absolute; left: 5px; top: 1px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2.4px 2.4px 0; transform: rotate(42deg); }
+  .it.ok span { color: #6b6b7b; text-decoration: line-through; }
+
+  .gancho { top: 36px; }
+  #fecho { position: absolute; left: 26px; right: 26px; top: 714px; display: flex; justify-content: center; z-index: 60; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="tela">
+    <div id="rolo"></div>
+    <div class="cab"></div>
+    <div class="rodape"></div>
+  </div>
+  <div class="gancho"><div class="pilula grande">a campanha acabou 🎉<br>agora começa o trabalho</div></div>
+  <div id="fecho"><div class="pilula grande">e isso é UMA campanha</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 9.0;
+
+  // Só o que de fato acontece depois do post. Nenhum número afirmado:
+  // quem assiste faz a própria conta, e é isso que faz a pessoa marcar alguém.
+  const tarefas = [
+    ["conferir quem postou", true],
+    ["conferir quem postou no formato combinado", true],
+    ["salvar o link de cada post", true],
+    ["pedir o print dos insights", false],
+    ["pedir de novo pra quem não viu", false],
+    ["pedir de novo pra quem viu e esqueceu", false],
+    ["explicar onde fica a tela de insights", false],
+    ["receber print cortado e pedir outro", false],
+    ["receber print de outra campanha", false],
+    ["descobrir de quem é o print sem nome", false],
+    ["copiar número por número pra planilha", false],
+    ["conferir número que não bate", false],
+    ["montar o relatório", false],
+    ["colocar a marca da agência", false],
+    ["exportar em PDF", false],
+    ["mandar pro cliente", false],
+    ["responder a dúvida do cliente", false],
+    ["refazer o PDF com a correção", false],
+  ];
+
+  const rolo = document.getElementById("rolo");
+  tarefas.forEach(([t, ok]) => {
+    const el = document.createElement("div");
+    el.className = "it" + (ok ? " ok" : "");
+    el.innerHTML = `<div class="cx"></div><span>${t}</span>`;
+    rolo.appendChild(el);
+  });
+
+  const alturaTotal = () => rolo.scrollHeight;
+  const fecho = document.getElementById("fecho");
+
+  window.setT = (t) => {
+    // Rola devagar e constante: a lista não acaba, e é esse o recado.
+    const limite = Math.max(0, alturaTotal() - 560);
+    rolo.style.transform = `translateY(${-eio(prog(t, 0.9, 6.6)) * limite}px)`;
+    entra(fecho, t, 7.9, 0.3, 14);
+  };
+  setT(0);
+</script></body></html>

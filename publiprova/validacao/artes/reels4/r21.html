@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R21 — 23h47. O relatório é para as 9h. O relógio anda, as abas se acumulam
+     e a barra de exportar o PDF trava em 94%. Cena, não estatística. -->
+<style>
+  .nav { position: absolute; inset: 0; background: #202124; display: flex; flex-direction: column; }
+  .abas { display: flex; gap: 2px; padding: 34px 8px 0; flex: none; overflow: hidden; }
+  .aba { height: 32px; min-width: 0; flex: 1 1 0; background: #35363a; border-radius: 8px 8px 0 0; display: flex; align-items: center; gap: 5px; padding: 0 7px; font-size: 10.5px; color: #bdc1c6; white-space: nowrap; overflow: hidden; opacity: 0; }
+  .aba.on { background: #fff; color: #202124; font-weight: 600; }
+  .fav { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+  .url { height: 34px; background: #35363a; display: flex; align-items: center; padding: 0 12px; flex: none; }
+  .url .cx { flex: 1; height: 24px; background: #202124; border-radius: 12px; color: #9aa0a6; font-size: 11px; display: flex; align-items: center; padding: 0 11px; }
+  .pg { flex: 1; background: #fff; position: relative; overflow: hidden; }
+
+  .rel { padding: 18px 16px; }
+  .rel h1 { font-size: 17px; color: #18181b; margin-bottom: 3px; }
+  .rel .cli { font-size: 11.5px; color: #71717a; margin-bottom: 14px; }
+  .grade { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .card { border: 1px solid #e4e4e7; border-radius: 9px; padding: 9px 11px; }
+  .card .r { font-size: 10px; color: #71717a; text-transform: uppercase; letter-spacing: .4px; }
+  .card .v { font-size: 19px; font-weight: 800; color: #18181b; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .card.vazio .v { color: #d4d4d8; }
+  .lin { height: 37px; border-bottom: 1px solid #f4f4f5; display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: #3f3f46; }
+  .pt { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+
+  /* A caixa de exportar, por cima de tudo. */
+  /* left em px, sem translateX: o entra() do motor reescreve o transform inteiro
+     e qualquer centragem por translate é perdida no primeiro quadro. */
+  .exp { position: absolute; left: 105px; bottom: 74px; width: 330px; background: #fff; border-radius: 12px; box-shadow: 0 14px 44px rgba(0,0,0,.4); padding: 15px 17px; opacity: 0; }
+  .exp .t { font-size: 13.5px; font-weight: 700; color: #18181b; }
+  .exp .s { font-size: 11.5px; color: #71717a; margin: 3px 0 10px; }
+  .trilho { height: 6px; background: #e4e4e7; border-radius: 3px; overflow: hidden; }
+  .cheio { height: 100%; width: 0%; background: #4f46e5; }
+
+  /* O relógio desceu para a barra de endereço: em cima ele batia na última aba. */
+  .relogio { position: absolute; right: 14px; top: 76px; z-index: 60; background: #111; color: #fff; font-size: 14px; font-weight: 800; padding: 3px 9px; border-radius: 7px; font-variant-numeric: tabular-nums; }
+  .gancho { top: 126px; }
+  #fecho { position: absolute; left: 24px; right: 24px; top: 700px; display: flex; justify-content: center; z-index: 60; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="nav">
+    <div class="abas" id="abas"></div>
+    <div class="url"><div class="cx">drive.google.com / prints Verão Hidrata</div></div>
+    <div class="pg">
+      <div class="rel">
+        <h1>Relatório Verão Hidrata</h1>
+        <div class="cli">Cliente: Dermalis · 12 creators</div>
+        <div class="grade">
+          <div class="card"><div class="r">Impressões</div><div class="v">38.420</div></div>
+          <div class="card"><div class="r">Engajamento</div><div class="v">2.106</div></div>
+          <div class="card vazio"><div class="r">Alcance</div><div class="v">faltam 9</div></div>
+          <div class="card vazio"><div class="r">CPM</div><div class="v">—</div></div>
+        </div>
+        <div id="linhas"></div>
+      </div>
+    </div>
+  </div>
+  <div class="relogio" id="relogio">23:47</div>
+  <div class="exp" id="exp">
+    <div class="t">Exportando relatorio-final-v7.pdf</div>
+    <div class="s" id="pct">quase lá · faltam 9 prints</div>
+    <div class="trilho"><div class="cheio" id="cheio"></div></div>
+  </div>
+  <div class="gancho"><div class="pilula grande">o cliente pede 9h<br>são 23h47</div></div>
+  <div id="fecho"><div class="pilula grande">relatorio-final-v7.pdf</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.0;
+
+  // As abas vão aparecendo: cada uma é um creator que você foi caçar.
+  const abas = [
+    ["Relatório", "#4f46e5", true], ["Drive", "#fbbc04"], ["@lara.m", "#e1306c"],
+    ["@pedrohfit", "#e1306c"], ["@duda.reis", "#e1306c"], ["@rafa", "#e1306c"],
+    ["Planilha", "#0f9d58"], ["@gabi", "#e1306c"], ["@vini", "#e1306c"], ["Canva", "#00c4cc"],
+  ];
+  const caixaAbas = document.getElementById("abas");
+  const elAbas = abas.map(([t, c, on]) => {
+    const el = document.createElement("div");
+    el.className = "aba" + (on ? " on" : "");
+    el.innerHTML = `<span class="fav" style="background:${c}"></span><span>${t}</span>`;
+    caixaAbas.appendChild(el);
+    return el;
+  });
+
+  // Doze linhas, não oito: a lista tem de descer até o rodapé do quadro, senão
+  // sobra meia tela branca e o Reel parece página quebrada.
+  const linhas = [
+    ["@casa.da.bia", "#188038", "completo"], ["@theo.makeup", "#188038", "completo"],
+    ["@vini.lab", "#188038", "completo"], ["@lara.m", "#d93025", "sem print"],
+    ["@pedrohfit", "#d93025", "sem print"], ["@duda.reis", "#d93025", "sem print"],
+    ["@rafa.cozinha", "#d93025", "sem print"], ["@gabi.trend", "#d93025", "sem print"],
+    ["@tutorial.ju", "#d93025", "sem print"], ["@line.oficial", "#d93025", "sem print"],
+    ["@marina.dia", "#d93025", "sem print"], ["@nina.studio", "#d93025", "sem print"],
+  ];
+  const caixaLin = document.getElementById("linhas");
+  const elLin = linhas.map(([n, c, s]) => {
+    const el = document.createElement("div");
+    el.className = "lin";
+    el.style.opacity = 0;
+    el.innerHTML = `<span class="pt" style="background:${c}"></span><span>${n}</span><span style="margin-left:auto;color:${c}">${s}</span>`;
+    caixaLin.appendChild(el);
+    return el;
+  });
+
+  const relogio = document.getElementById("relogio");
+  const exp = document.getElementById("exp");
+  const cheio = document.getElementById("cheio");
+  const fecho = document.getElementById("fecho");
+
+  window.setT = (t) => {
+    elAbas.forEach((el, i) => entra(el, t, 0.5 + i * 0.17, 0.18, 8));
+    elLin.forEach((el, i) => entra(el, t, 2.6 + i * 0.2, 0.18, 8));
+    // O relógio anda de 23:47 a 23:58 enquanto a barra sobe e para.
+    const m = 47 + Math.floor(eio(prog(t, 1.0, 5.5)) * 11);
+    relogio.textContent = `23:${m}`;
+    entra(exp, t, 4.6, 0.3, 16);
+    // Sobe rápido até 94 e congela: o que falta não é o PDF, são os prints.
+    cheio.style.width = (eo(prog(t, 4.8, 1.2)) * 94) + "%";
+    entra(fecho, t, 7.0, 0.3, 14);
+  };
+  setT(0);
+</script></body></html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<!-- R20 — a planilha de fechamento no dia 28. A coluna "print?" vai sendo
+     preenchida e quase tudo é "não". No fim entra a célula com #REF!, que é o
+     detalhe que faz quem vive isso reconhecer a cena. Dados de demonstração. -->
+<style>
+  .pl { position: absolute; inset: 0; background: #fff; color: #202124; }
+  .barra { height: 46px; background: #0f9d58; display: flex; align-items: center; gap: 10px; padding: 0 14px; color: #fff; }
+  .barra .tit { font-size: 15px; font-weight: 600; }
+  .barra .ab { margin-left: auto; font-size: 12px; opacity: .9; }
+  .ferr { height: 30px; border-bottom: 1px solid #dadce0; display: flex; align-items: center; gap: 14px; padding: 0 14px; font-size: 12px; color: #5f6368; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+  /* Linha alta de propósito: 14 linhas × 54px enchem os 960px do quadro. Tabela
+     que acaba no meio deixa a metade de baixo branca, e aí o Reel parece erro. */
+  th, td { border: 1px solid #e0e0e0; padding: 0 7px; height: 54px; text-align: left; white-space: nowrap; overflow: hidden; }
+  thead th { background: #f8f9fa; color: #5f6368; font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .3px; }
+  .idx { width: 26px; background: #f8f9fa; color: #5f6368; text-align: center; font-size: 11px; }
+  .nao { color: #d93025; font-weight: 700; }
+  .sim { color: #188038; font-weight: 700; }
+  td.cel { opacity: 0; }
+  .ref { background: #fce8e6; color: #c5221f; font-weight: 800; }
+
+  .gancho { top: 250px; }
+  #fecho { position: absolute; left: 24px; right: 24px; top: 690px; display: flex; justify-content: center; z-index: 60; opacity: 0; }
+  .cursor { position: absolute; width: 2px; background: #1a73e8; opacity: 0; }
+</style></head>
+<body><div class="quadro">
+  <div class="pl">
+    <div class="barra"><div class="tit">Fechamento Verão Hidrata</div><div class="ab">dia 28</div></div>
+    <div class="ferr"><span>Arquivo</span><span>Editar</span><span>Inserir</span><span>Dados</span></div>
+    <table id="tab">
+      <thead><tr><th class="idx"></th><th>Creator</th><th>Postou?</th><th>Link</th><th>Print?</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+  <div class="gancho"><div class="pilula grande">a planilha de fechamento,<br>dia 28</div></div>
+  <div id="fecho"><div class="pilula grande">14 creators. 3 prints.</div></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  window.DUR = 8.5;
+
+  // A campanha foi bem: quase todos postaram. O print é que não chega.
+  const linhas = [
+    ["@lara.m",        "sim", "ok",    "não"],
+    ["@pedrohfit",     "sim", "ok",    "não"],
+    ["@casa.da.bia",   "sim", "ok",    "sim"],
+    ["@tutorial.ju",   "sim", "ok",    "não"],
+    ["@rafa.cozinha",  "sim", "falta", "não"],
+    ["@duda.reis",     "sim", "ok",    "não"],
+    ["@theo.makeup",   "sim", "ok",    "sim"],
+    ["@line.oficial",  "sim", "ok",    "não"],
+    ["@gabi.trend",    "sim", "falta", "não"],
+    ["@vini.lab",      "sim", "ok",    "sim"],
+    ["@marina.dia",    "sim", "ok",    "não"],
+    ["@nina.studio",   "sim", "ok",    "não"],
+    ["@bru.consome",   "sim", "ok",    "não"],
+    ["@oi.sou.ca",     "sim", "ok",    "#REF!"],
+  ];
+
+  const tb = document.getElementById("tb");
+  const celulas = [];
+  linhas.forEach((l, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td class="idx">${i + 2}</td>`;
+    l.forEach((v, j) => {
+      const td = document.createElement("td");
+      td.className = "cel";
+      if (v === "não") td.innerHTML = '<span class="nao">não</span>';
+      else if (v === "sim" && j === 3) td.innerHTML = '<span class="sim">sim</span>';
+      else if (v === "#REF!") { td.textContent = "#REF!"; td.classList.add("ref"); }
+      else td.textContent = v;
+      tr.appendChild(td);
+      // A coluna do print entra por último em cada linha: é a que importa.
+      celulas.push({ el: td, ini: 0.7 + i * 0.42 + j * 0.055 });
+    });
+    tb.appendChild(tr);
+  });
+
+  const fecho = document.getElementById("fecho");
+  window.setT = (t) => {
+    celulas.forEach((c) => { c.el.style.opacity = eo(prog(t, c.ini, 0.16)); });
+    entra(fecho, t, 7.4, 0.3, 14);
+  };
+  setT(0);
+</script></body></html>
