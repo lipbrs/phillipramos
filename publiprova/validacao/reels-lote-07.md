@@ -1,6 +1,7 @@
 # Lote 07 — 10 Reels para o @publiprova.app (31/10/2026)
 
-**Status: 10 prontos e renderizados. NENHUM agendado.** O motivo está no fim.
+**Status: 10 renderizados e AGENDADOS** no `@publiprova.app`, 1 a 10 de novembro de
+2026, um por dia às 10h. Conferência no fim do arquivo.
 
 Pedido do Phillip: "faça novas publicações e agende, deixo 10 dias prontos, quero os
 melhores marketings possíveis", com o canal escolhido por ele depois de eu ter
@@ -9,7 +10,7 @@ Decisão dele, registrada, e eu parei de reabrir.
 
 ## A aposta deste lote
 
-Com 7 seguidores não existe alcance orgânico para herdar. O único mecanismo que coloca
+Com menos de 20 seguidores não existe alcance orgânico para herdar. O único mecanismo que coloca
 o post na frente de alguém novo é **outra pessoa marcar um colega**. Então as dez
 legendas pedem **uma ação só, e é sempre a mesma**: marcar quem vive aquilo.
 
@@ -68,19 +69,47 @@ Segunda passada: **nada barrado**, nas 20 legendas e nas 20 telas.
 
 Nenhum dos três apareceria sem abrir o PNG: o render não reclama de nada disso.
 
-## Por que nada foi agendado
+## O agendamento, conferido na fila
 
-O `@publiprova.app` **não existe no Business Suite desta sessão**. O Chrome está logado
-no Facebook de "Pet Context" (`USER_ID 61592690146266`), portfólio **LashPost**, com dois
-ativos: `@thepetcontext` (1,2 mil seguidores) e "Daily PLan Store". Busquei "publiprova"
-no seletor de ativos: **No results**.
+Agendados em 31/10 pelo Business Suite, **um por dia, 1 a 10 de novembro, 10h**:
 
-Em 30/09 o lote 05 foi agendado normalmente, então a conta já esteve acessível. O que
-mudou foi o login.
+| data | reel | primeira linha da legenda |
+|---|---|---|
+| 01/nov | r22 | pedi o print, veio um áudio de 4 minutos |
+| 02/nov | r19 | ele mandou o print, cortou justo a linha do alcance |
+| 03/nov | r25 | o grupo da campanha tem 31 creators |
+| 04/nov | r20 | a planilha de fechamento no dia 28 |
+| 05/nov | r23 | três semanas depois do post: "qual campanha mesmo?" |
+| 06/nov | r24 | o story expira em 24 horas |
+| 07/nov | r21 | o cliente pede o relatório às 9h, são 23h47 |
+| 08/nov | r26 | a campanha acabou, agora começa o trabalho |
+| 09/nov | r27 | o mesmo print, dois caminhos |
+| 10/nov | r28 | é isso que o cliente abre |
 
-**Para destravar, uma das duas:**
-1. Entrar no Chrome com o Facebook que administra o `@publiprova.app`, ou
-2. Adicionar o `@publiprova.app` como ativo do portfólio LashPost.
+Conferido **lendo a aba Agendados**, não as minhas próprias confirmações: dez linhas,
+"Reel · publiprova.app", cada data uma vez só, nenhuma repetida, nenhuma faltando.
+Nenhum aviso de erro na coluna Status — os ícones de lá são legenda automática,
+impulsionamento ("Not currently boosted") e crosspost ("Not a crosspost").
 
-Feito isso, os dez `.mp4` estão em `validacao/artes/video/r19-ig.mp4` até `r28-ig.mp4` e
-as legendas em `artes/reels4/legendas.json`. Agendar é uma sessão de trabalho.
+A conta estava com **15 seguidores** no dia do agendamento, não 7. Dobrou, e ainda é
+pequena demais para alcance orgânico: a aposta de marcar colega continua de pé.
+
+## Como agendar no Business Suite, para a próxima vez
+
+O caminho de clique não funciona direto. Três coisas que custaram tempo:
+
+1. **O seletor de arquivo é um `input` solto, fora do DOM.** O botão "Add Video" abre
+   diálogo nativo do sistema, que eu não consigo operar. Prender
+   `HTMLInputElement.prototype.click` antes, guardar o `input` que tentou abrir,
+   `document.body.appendChild` nele e só então subir o arquivo pelo `ref`.
+2. **Coordenada de `getBoundingClientRect` NÃO bate com a da captura de tela.** Clique
+   por coordenada nos campos de data e hora não fazia nada. O que funciona é `.focus()`
+   por JavaScript e **digitação de verdade** depois. Para a data, `value` tem de ir pelo
+   setter nativo do React (`Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,
+   'value').set`) seguido de `input` com `bubbles`; a hora são três `spinbutton` ARIA,
+   que só aceitam digitado.
+3. **O autocompletar de hashtag engole o "Next".** Depois de colar a legenda, tirar o
+   foco do campo antes de avançar, senão o clique cai no menu de sugestão.
+
+Os dez `.mp4` ficam em `validacao/artes/video/r19-ig.mp4` até `r28-ig.mp4` e as legendas
+em `artes/reels4/legendas.json`.
